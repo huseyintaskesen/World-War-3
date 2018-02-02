@@ -1,16 +1,13 @@
-# 1F.projectName
+# Project Name: World War 3
 
+## Description
 
-
-# Contributors
+## Group 1F Members
 Nurefşan Müsevitoğlu  
 Doğacan Kaynak  
 Hüseyin Taşkesen  
 Halil İbrahim Çavdar
 
-
-# Meeting Hours  
+## Meeting Hours  
 Thursday 13:40-15:30
-
-
-
+Saturday 13:00-15:00
