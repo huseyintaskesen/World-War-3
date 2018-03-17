@@ -14,16 +14,17 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class Settings extends BasicGameState {
+public class Gameover extends BasicGameState {
+
 	Image view;
 	public String mouse= "No input yet";
 	
-	public Settings(int state) {
+	public Gameover(int state) {
 
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		view = new Image("res/settings.png");
+		view = new Image("res/gameover.png");
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -48,15 +49,10 @@ public class Settings extends BasicGameState {
 				sbg.enterState(0);
 			}
 		}
-		
-		if ((155 < xpos && xpos < 605) && (267 < ypos && ypos < 336)) {
-			if (input.isMouseButtonDown(0)) {
-				sbg.enterState(5);
-			}
-		}
 	}
 	public int getID() {
-		return 2;
+		// TODO Auto-generated method stub
+		return 4;
 	}
 
 }
