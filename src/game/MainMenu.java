@@ -57,6 +57,11 @@ public class MainMenu extends BasicGameState {
 				sbg.enterState(3);
 			}
 		}
+		else if ((413 < xpos && xpos < 537) && (487 < ypos && ypos < 513)) {
+			if (input.isMouseButtonDown(0)) {
+				gc.exit();
+			}
+		}
 	}
 
 	public int getID() {
