@@ -6,10 +6,7 @@ package game;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-/**
- * @author ibrahim
- *
- */
+
 public class UIManager extends StateBasedGame{
 
 	public static final String gamename = "Humans vs. Robots";

@@ -6,10 +6,7 @@ package game;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
-/**
- * @author ibrahim
- *
- */
+
 public class Play extends BasicGameState{
 	
 	public String mouse= "No input yet";
@@ -25,7 +22,7 @@ public class Play extends BasicGameState{
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
-		g.drawString("Play State", 200, 200);
+		//g.drawString("Play State", 200, 200);
 		g.drawRect(50, 50, 100, 50);
 		g.drawString("Back", 60, 67);
 		

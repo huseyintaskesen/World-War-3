@@ -13,10 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-/**
- * @author ibrahim
- *
- */
+
 public class Settings extends BasicGameState {
 	Image view;
 	public String mouse= "No input yet";
@@ -53,7 +50,6 @@ public class Settings extends BasicGameState {
 		}
 	}
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 2;
 	}
 
