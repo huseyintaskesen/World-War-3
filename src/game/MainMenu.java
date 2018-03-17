@@ -7,14 +7,9 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-/**
- * @author ibrahim
- *
- */
+
 public class MainMenu extends BasicGameState {
 
-	Image playNow;
-	Image quit;
 	Image menu;
 	public String mouse= "No input yet";
 	
@@ -24,8 +19,7 @@ public class MainMenu extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		menu = new Image("res/main menu.png");
-		playNow= new Image("res/playNow.png");
-		quit = new Image("res/quit.png");
+	
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -61,6 +55,11 @@ public class MainMenu extends BasicGameState {
 		else if ((413 < xpos && xpos < 537) && (442 < ypos && ypos < 472)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(3);
+			}
+		}
+		else if ((413 < xpos && xpos < 537) && (487 < ypos && ypos < 513)) {
+			if (input.isMouseButtonDown(0)) {
+				gc.exit();
 			}
 		}
 	}

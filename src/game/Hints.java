@@ -14,23 +14,26 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class Settings extends BasicGameState {
+public class Hints extends BasicGameState {
+
 	Image view;
 	public String mouse= "No input yet";
 	
-	public Settings(int state) {
+	public Hints(int state) {
 
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		view = new Image("res/settings.png");
+		view = new Image("res/guideBook.png");
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
 		
-//		g.fillOval(75, 100, 100, 100);
-//		g.drawString("Play", 80, 70);
+		g.drawRect(600, 30, 70, 30);
+		g.drawString("Back", 610, 35);
+		
+		
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
@@ -43,20 +46,15 @@ public class Settings extends BasicGameState {
 		int xpos = Mouse.getX();
 		int ypos = 600 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
-		if ((10 < xpos && xpos < 400) && (25 < ypos && ypos < 95)) {
+		if ((600 < xpos && xpos < 670) && (30 < ypos && ypos < 60)) {
 			if (input.isMouseButtonDown(0)) {
-				sbg.enterState(0);
-			}
-		}
-		
-		if ((155 < xpos && xpos < 605) && (267 < ypos && ypos < 336)) {
-			if (input.isMouseButtonDown(0)) {
-				sbg.enterState(5);
+				sbg.enterState(2);
 			}
 		}
 	}
 	public int getID() {
-		return 2;
+		// TODO Auto-generated method stub
+		return 5;
 	}
 
 }
