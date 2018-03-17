@@ -13,6 +13,4 @@
 * Hüseyin Taşkesen  
 * Halil İbrahim Çavdar
 
-## Meeting Hours  
-* Thursday 13:40-15:30
-* Saturday 13:00-15:00
+
