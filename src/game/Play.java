@@ -12,6 +12,7 @@ public class Play extends BasicGameState{
 	public String mouse= "No input yet";
 	Image view;
 	Image pause;
+	
 	private boolean pauseFlag=false;
 	
 	public Play (int state) {
@@ -30,6 +31,7 @@ public class Play extends BasicGameState{
 		//g.drawString("Play State", 200, 200);
 //		g.drawRect(50, 50, 100, 50);
 //		g.drawString("Back", 60, 67);
+
 		
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
@@ -40,7 +42,9 @@ public class Play extends BasicGameState{
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
 		int ypos = 600 - Mouse.getY();
-		mouse = "x : "+xpos+" y : "+ypos;
+		
+		
+		mouse = "x : "+xpos+" y : "+ypos+"delta:"+delta;
 		// Old back button
 //		if ((50 < xpos && xpos < 150) && (50 < ypos && ypos < 100)) {
 //			if (input.isMouseButtonDown(0)) {
@@ -57,7 +61,7 @@ public class Play extends BasicGameState{
 		
 		//Quit button
 		if ((750 < xpos && xpos < 790) && (19 < ypos && ypos < 72)) {
-			if (input.isMouseButtonDown(0)) {
+			if (input.isMouseButtonDown(0)&&!pauseFlag) {
 				sbg.enterState(0);
 			}
 		}
