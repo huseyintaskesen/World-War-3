@@ -11,13 +11,14 @@ import org.newdawn.slick.SlickException;
  *
  */
 public class Casual {
-	private final int startHealth=500;
+	private final int startHealth=50;
+	private final int speed = 2;
 	
 	private Image casual=new Image("res/casualtemp.png");
 	
 	private int damage;
 	private int health;
-	private int speed;	
+	private int curSpeed;	
 	private int x;
 	private int y;
 	
@@ -25,7 +26,7 @@ public class Casual {
 	public Casual(int x,int y) throws SlickException{
 		damage = 2;
 		health=startHealth;
-		speed=4;
+		curSpeed=speed;
 		this.x=x;
 		this.y=y;
 	}
@@ -39,17 +40,20 @@ public class Casual {
 	}
 
 	public int getSpeed() {
-		return speed;
+		return curSpeed;
 	}
 
 	public void setHealth(int health) {
 		this.health = health;
 	}
 
-	public void setSpeed(int speed) {
-		this.speed = speed;
+	public void run() {
+		curSpeed = speed;
 	}
 	
+	public void stop() {
+		curSpeed=0;
+	}
 	public int getX() {
 		return x;
 	}

@@ -9,14 +9,17 @@ import org.newdawn.slick.state.*;
 
 public class Play extends BasicGameState {
 
-	public String mouse = "No input yet";
-	int timePassed=0;
-	Image view;
-	Image pause;
-	Casual casual;
-	Shooter shooter;
+	public String mouse = "No input yet"; // To show mouse coordinates, for testing purposes
+	
+	int timePassed=0;	// time passed is calculated so that we can take actions at certain times
+	int timeCount=0;	// another variable time, used for creating bullets with a specified delay
+	
+	Image view;			// background image
+	Image pause;		// pause menu
+	Casual casual;		// sample robot
+	Shooter shooter;	// sample human
 
-	private boolean pauseFlag = false;
+	private boolean pauseFlag = false;	// to determine whether the game is in pause menu
 
 	public Play(int state) {
 
@@ -30,24 +33,25 @@ public class Play extends BasicGameState {
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		view.draw(0, 0);
+		view.draw(0, 0);	// background image drawn
 		
 		
 		// temporary gray background
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 100, 800, 500);
 		
+		// game objects are drawn
 		casual.draw();
 		shooter.draw();
+		for (int i = 0; i < shooter.bullets.size(); i++) {
+			shooter.bullets.get(i).draw();
+		}
 		
-		
-
+		// pause menu is drawn when flag is up
 		if (pauseFlag)
 			pause.draw(250, 200);
-		// g.drawString("Play State", 200, 200);
-		// g.drawRect(50, 50, 100, 50);
-		// g.drawString("Back", 60, 67);
 
+		// to show mouse coordinates
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
@@ -55,39 +59,57 @@ public class Play extends BasicGameState {
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		//get mouse coordinates
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
 		int ypos = 600 - Mouse.getY();
 		
 		//calculate time passed
 		timePassed+=delta;
+		timeCount+=delta;
+		
 		//reset the timer when 0.02 seconds has passed
 		// update the map every 0.02 seconds(50 FPS)
 		if(timePassed>20) {
+			// update the map
 			casual.updateLocation();
-			
-			//collision detection logic
-			if((shooter.getX()+shooter.getRange())>casual.getX()) {
-				shooter.attackToRobot(casual);
-				if(casual.getHealth()<=0) {
-					casual = new Casual(600, 100);
-				}
+			for (int i = 0; i < shooter.bullets.size(); i++) {
+				shooter.bullets.get(i).updateLocation();
 			}
+			
+			
+			/////////////
+			//collision detection logic
+			/////////////
+			// fire a bullet
+			if((shooter.getX()+shooter.getRange())>casual.getX()&&(Math.abs(shooter.getY()-casual.getY())<20)&&timeCount>=1000) {
+				shooter.attackToRobot(casual);
+				timeCount=0;
+				
+			}
+			// damage human as robot
 			if(((shooter.getX()+60)>casual.getX())&&(Math.abs(shooter.getY()-casual.getY())<20)) {
-				casual.setSpeed(0);
+				casual.stop();
 				casual.attackToHuman(shooter);
 				if(shooter.getHealth()<=0) {
 					shooter=new Shooter(100, 200);
-					casual.setSpeed(4);
+					casual.run();
 				}
 			}
+			// damage robots as bullet
+			for (int i = 0; i < shooter.bullets.size(); i++) {
+				if((shooter.bullets.get(i).getX()+25>=casual.getX())&&(Math.abs(shooter.getY()-casual.getY())<20)) {
+					shooter.bullets.get(i).damageRobot(casual, shooter);
+					if(casual.getHealth()<=0) {
+						casual = new Casual(600, 100);
+					}
+				}
+			}
+						
+			// to display mouse coordiantes
+			mouse = "x : " + xpos + " y : " + ypos;
 			
-			
-			
-			
-			
-			
-			mouse = "x : " + xpos + " y : " + ypos + "delta:" + delta;
+			// reset the timer
 			timePassed=0;
 		}
 

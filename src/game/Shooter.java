@@ -3,6 +3,8 @@
  */
 package game;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -20,15 +22,16 @@ public class Shooter {
 	private int range;
 	private int x;
 	private int y;
-	
+	protected ArrayList<Bullet> bullets;
 	
 	
 	public Shooter(int x,int y) throws SlickException {
-		damage = 1;
+		damage = 2;
 		health= startHealth;
 		range = 400;//TODO to be changed
 		this.x=x;
 		this.y=y;
+		bullets = new ArrayList<Bullet>();
 	}
 
 	public int getDamage() {
@@ -70,8 +73,8 @@ public class Shooter {
 	public void takeDamage(int damage) {
 		health=health-damage;
 	}
-	public void attackToRobot(Casual robot) {
-		robot.takeDamage(damage);
+	public void attackToRobot(Casual robot) throws SlickException {
+		bullets.add(new Bullet(getX()+50, getY()+25, damage));
 	}
 	public void draw() {
 		shooter.draw(x, y, 50, 50);
