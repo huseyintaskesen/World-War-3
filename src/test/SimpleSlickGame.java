@@ -15,6 +15,7 @@ import org.newdawn.slick.SlickException;
 public class SimpleSlickGame extends BasicGame
 {
 	int move=0;
+	int time;
 	public String mouse= "No input yet";
 	
 	public SimpleSlickGame(String gamename)
@@ -27,12 +28,16 @@ public class SimpleSlickGame extends BasicGame
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
+		time +=delta; 
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
 		int ypos = 600 - Mouse.getY();
-		mouse = "x : "+xpos+" y : "+ypos+"delta: "+delta;
+		mouse = "x : "+xpos+" y : "+ypos+"time: "+time/1000;
+		if(time/1000==1) {
+			move=move+1;
+			time =0;
+		}
 		
-		move=move+1;
 	}
 
 	@Override
