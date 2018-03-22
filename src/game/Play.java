@@ -65,6 +65,28 @@ public class Play extends BasicGameState {
 		// update the map every 0.02 seconds(50 FPS)
 		if(timePassed>20) {
 			casual.updateLocation();
+			
+			//collision detection logic
+			if((shooter.getX()+shooter.getRange())>casual.getX()) {
+				shooter.attackToRobot(casual);
+				if(casual.getHealth()<=0) {
+					casual = new Casual(600, 100);
+				}
+			}
+			if(((shooter.getX()+60)>casual.getX())&&(Math.abs(shooter.getY()-casual.getY())<20)) {
+				casual.setSpeed(0);
+				casual.attackToHuman(shooter);
+				if(shooter.getHealth()<=0) {
+					shooter=new Shooter(100, 200);
+					casual.setSpeed(4);
+				}
+			}
+			
+			
+			
+			
+			
+			
 			mouse = "x : " + xpos + " y : " + ypos + "delta:" + delta;
 			timePassed=0;
 		}
