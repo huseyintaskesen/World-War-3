@@ -6,6 +6,8 @@ package game;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
+import org.newdawn.slick.Music;
+
 
 public class Play extends BasicGameState {
 
@@ -18,6 +20,8 @@ public class Play extends BasicGameState {
 	Image pause;		// pause menu
 	Casual casual;		// sample robot
 	Shooter shooter;	// sample human
+	private Music music;
+
 
 	private boolean pauseFlag = false;	// to determine whether the game is in pause menu
 
@@ -30,6 +34,9 @@ public class Play extends BasicGameState {
 		pause = new Image("res/pause.png");
 		casual = new Casual(600, 100);
 		shooter = new Shooter(100, 100);
+		music = new Music("res/Jamie and Selda.aif");
+		music.loop();
+		music.setVolume(0.6f);
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
