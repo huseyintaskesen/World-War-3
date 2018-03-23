@@ -73,8 +73,8 @@ public class Casual {
 	public void takeDamage(int damage) {
 		health=health-damage;
 	}
-	public void attackToHuman(Shooter human) {
-		human.takeDamage(damage);
+	public void attackToHuman(AttackerHuman shooter) {
+		shooter.takeDamage(damage);
 	}
 	public void updateLocation() {
 		x=x-speed/2;
@@ -82,4 +82,5 @@ public class Casual {
 	public void draw() {
 		casual.draw(x, y, 50, 50);
 	}
+	
 }

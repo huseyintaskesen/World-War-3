@@ -3,6 +3,9 @@
  */
 package game;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
@@ -19,9 +22,13 @@ public class Play extends BasicGameState {
 	Image view;			// background image
 	Image pause;		// pause menu
 	Casual casual;		// sample robot
-	Shooter shooter;	// sample human
+	//Shooter shooter;	// sample human
 	private Music music;
+	
 
+	
+	ArrayList<AttackerHuman> humans;
+	AttackerHuman shooter;
 
 	private boolean pauseFlag = false;	// to determine whether the game is in pause menu
 
@@ -32,8 +39,15 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		view = new Image("res/play.png");
 		pause = new Image("res/pause.png");
+		
+		humans=new ArrayList<AttackerHuman>();
+		
+		humans.add(new Shooter(100, 100) );
+		humans.add(new Shooter(100, 200) );
+		shooter=humans.get(0);
+		
 		casual = new Casual(600, 100);
-		shooter = new Shooter(100, 100);
+		//shooter = new Shooter(100, 100);
 		music = new Music("res/Jamie and Selda.aif");
 		music.loop();
 		music.setVolume(0.6f);
@@ -49,9 +63,13 @@ public class Play extends BasicGameState {
 		
 		// game objects are drawn
 		casual.draw();
-		shooter.draw();
-		for (int i = 0; i < shooter.bullets.size(); i++) {
-			shooter.bullets.get(i).draw();
+		//shooter.draw();
+		
+		for (int i = 0; i < humans.size(); i++) {
+			humans.get(i).draw();
+		}
+		for (int i = 0; i < shooter.getBullets().size(); i++) {
+			shooter.getBullets().get(i).draw();
 		}
 		
 		// pause menu is drawn when flag is up
@@ -80,8 +98,8 @@ public class Play extends BasicGameState {
 		if(timePassed>20) {
 			// update the map
 			casual.updateLocation();
-			for (int i = 0; i < shooter.bullets.size(); i++) {
-				shooter.bullets.get(i).updateLocation();
+			for (int i = 0; i < shooter.getBullets().size(); i++) {
+				shooter.getBullets().get(i).updateLocation();
 			}
 			
 			
@@ -99,14 +117,15 @@ public class Play extends BasicGameState {
 				casual.stop();
 				casual.attackToHuman(shooter);
 				if(shooter.getHealth()<=0) {
-					shooter=new Shooter(100, 200);
+					humans.remove(shooter);
+					//shooter=new Shooter(100, 200);
 					casual.run();
 				}
 			}
 			// damage robots as bullet
-			for (int i = 0; i < shooter.bullets.size(); i++) {
-				if((shooter.bullets.get(i).getX()+25>=casual.getX())&&(Math.abs(shooter.getY()-casual.getY())<20)) {
-					shooter.bullets.get(i).damageRobot(casual, shooter);
+			for (int i = 0; i < shooter.getBullets().size(); i++) {
+				if((shooter.getBullets().get(i).getX()+25>=casual.getX())&&(Math.abs(shooter.getY()-casual.getY())<20)) {
+					shooter.getBullets().get(i).damageRobot(casual, shooter);
 					if(casual.getHealth()<=0) {
 						casual = new Casual(600, 100);
 					}

@@ -10,18 +10,17 @@ import org.newdawn.slick.SlickException;
  * @author ibrahim
  *
  */
-public class Bullet {
+public class Bullet extends GameElement{
 	private Image bullet=new Image("res/bullet.png");
 	
 	private int speed;	
 	private int damage;
-	private int x;
-	private int y;
+//	private int x;
+//	private int y;
 	
 	public Bullet(int x,int y, int damage) throws SlickException{
+		super(x, y);
 		speed = 8;
-		this.x=x;
-		this.y=y;
 		this.damage = damage;
 	}
 	
@@ -45,9 +44,9 @@ public class Bullet {
 		x=x+speed/2;
 	}
 	
-	public void damageRobot(Casual robot,Shooter human) {
+	public void damageRobot(Casual robot,AttackerHuman shooter) {
 		robot.takeDamage(damage);
-		human.bullets.remove(this);
+		shooter.getBullets().remove(this);
 	}
 	
 	public void draw() {
