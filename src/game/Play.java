@@ -82,7 +82,7 @@ public class Play extends BasicGameState {
 		
 		// pause menu is drawn when flag is up
 		if (pauseFlag)
-			pause.draw(250, 200);
+			pause.draw(500, 200);
 
 		// to show mouse coordinates
 		g.setColor(Color.white);
@@ -170,17 +170,25 @@ public class Play extends BasicGameState {
 		}
 
 		// Resume in pause menu
-		if ((333 < xpos && xpos < 455) && (244 < ypos && ypos < 284)) {
+		if ((576 < xpos && xpos < 776) && (285 < ypos && ypos < 335)) {
 			if (input.isMouseButtonDown(0)) {
 				pauseFlag = false;
 			}
 		}
-
-		// Quit in pause menu
-		if ((333 < xpos && xpos < 455) && (291 < ypos && ypos < 332)) {
+		
+		// Main Menu in pause menu
+		if ((576 < xpos && xpos < 776) && (365 < ypos && ypos < 415)) {
 			if (input.isMouseButtonDown(0)) {
 				pauseFlag = false;
 				sbg.enterState(0);
+			}
+		}
+
+		// Quit in pause menu
+		if ((576 < xpos && xpos < 776) && (445 < ypos && ypos < 495)) {
+			if (input.isMouseButtonDown(0)) {
+				pauseFlag = false;
+				gc.exit();
 			}
 		}
 	}
