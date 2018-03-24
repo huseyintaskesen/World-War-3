@@ -40,7 +40,7 @@ public class Play extends BasicGameState {
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		view = new Image("res/play.png");
+		view = new Image("res/playgame.png");
 		pause = new Image("res/pause.png");
 		
 		humans=new ArrayList<AttackerHuman>();
@@ -64,11 +64,6 @@ public class Play extends BasicGameState {
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);	// background image drawn
-		
-		
-		// temporary gray background
-		g.setColor(Color.lightGray);
-		g.fillRect(0, 100, 800, 500);
 		
 		// game objects are drawn
 		//casual.draw();
@@ -100,7 +95,7 @@ public class Play extends BasicGameState {
 		//get mouse coordinates
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
-		int ypos = 600 - Mouse.getY();
+		int ypos = 720 - Mouse.getY();
 		
 		//calculate time passed
 		timePassed+=delta;
@@ -161,14 +156,14 @@ public class Play extends BasicGameState {
 		// }
 
 		// Pause button
-		if ((560 < xpos && xpos < 600) && (19 < ypos && ypos < 72)) {
+		if ((1031 < xpos && xpos < 1095) && (15 < ypos && ypos < 79)) {
 			if (input.isMouseButtonDown(0)) {
 				pauseFlag = true;
 			}
 		}
 
 		// Quit button
-		if ((750 < xpos && xpos < 790) && (19 < ypos && ypos < 72)) {
+		if ((1203 < xpos && xpos < 1267) && (15 < ypos && ypos < 79)) {
 			if (input.isMouseButtonDown(0) && !pauseFlag) {
 				sbg.enterState(0);
 			}
