@@ -43,7 +43,7 @@ public class UIManager extends StateBasedGame{
 		AppGameContainer appgc;
 		try {
 			appgc = new AppGameContainer(new UIManager(gamename));
-			appgc.setDisplayMode(800, 600, false);
+			appgc.setDisplayMode(1280, 720, false);
 			appgc.start();
 		}catch(SlickException e) {
 			e.printStackTrace();

@@ -3,8 +3,6 @@
  */
 package game;
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
