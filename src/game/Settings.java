@@ -17,8 +17,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Settings extends BasicGameState {
 	Image view;
 	public String mouse= "No input yet";
-	private Image soundButton;
-	private Image musicButton;
 	private boolean mousePressed;
 	
 	public Settings(int state) {
@@ -27,14 +25,10 @@ public class Settings extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		view = new Image("res/settings.png");
-		soundButton = new Image("res/soundbutton.png");
-		musicButton = new Image("res/musicbutton.png");
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
-		soundButton.draw(100,375);
-		musicButton.draw(490,410);
 //		g.fillOval(75, 100, 100, 100);
 //		g.drawString("Play", 80, 70);
 		g.setColor(Color.white);
@@ -47,14 +41,15 @@ public class Settings extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
-		int ypos = 600 - Mouse.getY();
+		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
-		if ((10 < xpos && xpos < 400) && (25 < ypos && ypos < 95)) {
+		
+		if ((16 < xpos && xpos < 244) && (23 < ypos && ypos < 71)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(0);
 			}
 		}
-		if ((490 < xpos && xpos < 640) && (419 < ypos && ypos < 553)) {
+		if ((550 < xpos && xpos < 814) && (245 < ypos && ypos < 295)) {
 			if (input.isMouseButtonDown(0) && !mousePressed) {
 				mousePressed = true;
 				gc.setMusicOn(!gc.isMusicOn());
@@ -65,7 +60,7 @@ public class Settings extends BasicGameState {
 			}
 		}
 		
-		if ((155 < xpos && xpos < 605) && (267 < ypos && ypos < 336)) {
+		if ((550 < xpos && xpos < 814) && (325 < ypos && ypos < 375)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(5);
 			}
