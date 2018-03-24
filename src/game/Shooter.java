@@ -27,7 +27,7 @@ public class Shooter extends AttackerHuman{// implements AggressiveHuman{
 	
 	public Shooter(int x,int y) throws SlickException {
 		super(x, y);
-		super.img=new Image("res/shooter.png");
+		super.img=new Image("res/Robots & Humans/doubleShooter.png");
 		
 		damage = 2;
 		health= startHealth;
