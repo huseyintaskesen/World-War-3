@@ -44,8 +44,8 @@ public class Bullet extends GameElement{
 		x=x+speed/2;
 	}
 	
-	public void damageRobot(Casual robot,AttackerHuman shooter) {
-		robot.takeDamage(damage);
+	public void damageRobot(Robot casual,AttackerHuman shooter) {
+		casual.takeDamage(damage);
 		shooter.getBullets().remove(this);
 	}
 	

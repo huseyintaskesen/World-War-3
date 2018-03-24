@@ -21,7 +21,7 @@ public class Play extends BasicGameState {
 	
 	Image view;			// background image
 	Image pause;		// pause menu
-	Casual casual;		// sample robot
+	//Casual casual;		// sample robot
 	//Shooter shooter;	// sample human
 	private Music music;
 	
@@ -29,6 +29,9 @@ public class Play extends BasicGameState {
 	
 	ArrayList<AttackerHuman> humans;
 	AttackerHuman shooter;
+	
+	ArrayList<Robot> robots;
+	Robot casual;
 
 	private boolean pauseFlag = false;	// to determine whether the game is in pause menu
 
@@ -41,12 +44,18 @@ public class Play extends BasicGameState {
 		pause = new Image("res/pause.png");
 		
 		humans=new ArrayList<AttackerHuman>();
+		robots = new ArrayList<Robot>();
+		
 		
 		humans.add(new Shooter(100, 100) );
 		humans.add(new Shooter(100, 200) );
 		shooter=humans.get(0);
 		
-		casual = new Casual(600, 100);
+		robots.add(new Casual(600, 100));
+		robots.add(new Casual(600, 200));
+		casual=robots.get(0);
+		
+		//casual = new Casual(600, 100);
 		//shooter = new Shooter(100, 100);
 		music = new Music("res/Jamie and Selda.aif");
 		music.loop();
@@ -62,8 +71,12 @@ public class Play extends BasicGameState {
 		g.fillRect(0, 100, 800, 500);
 		
 		// game objects are drawn
-		casual.draw();
+		//casual.draw();
 		//shooter.draw();
+		
+		for (int i = 0; i < robots.size(); i++) {
+			robots.get(i).draw();
+		}
 		
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).draw();

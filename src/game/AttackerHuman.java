@@ -42,7 +42,7 @@ public abstract class AttackerHuman extends Human {
 		this.bullets = bullets;
 	}
 	
-	public void attackToRobot(Casual robot) throws SlickException {
+	public void attackToRobot(Robot casual) throws SlickException {
 		bullets.add(new Bullet(getX()+50, getY()+25, damage));
 	}
 
