@@ -52,7 +52,7 @@ public class Play extends BasicGameState {
 		casual = robots.get(0);
 
 		// music
-		music = new Music("res/Jamie and Selda.aif");
+		music = new Music("res/soundtrack.aiff");
 		music.loop();
 		music.setVolume(0.6f);
 	}
