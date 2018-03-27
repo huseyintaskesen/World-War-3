@@ -4,10 +4,10 @@
 package game;
 
 import java.util.ArrayList;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
-import org.newdawn.slick.Music;
 
 public class Play extends BasicGameState {
 
@@ -72,9 +72,16 @@ public class Play extends BasicGameState {
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).draw();
 		}
-		for (int i = 0; i < shooter.getBullets().size(); i++) {
-			shooter.getBullets().get(i).draw();
+		
+		for (int i = 0; i < humans.size(); i++) {
+			for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
+				humans.get(i).getBullets().get(j).draw();
+			}
 		}
+		
+//		for (int i = 0; i < shooter.getBullets().size(); i++) {
+//			shooter.getBullets().get(i).draw();
+//		}
 
 		// pause menu is drawn when flag is up
 		if (pauseFlag)
@@ -110,6 +117,7 @@ public class Play extends BasicGameState {
 			if ((576 < xpos && xpos < 776) && (365 < ypos && ypos < 415)) {
 				if (input.isMouseButtonDown(0)) {
 					pauseFlag = false;
+					resetMap();
 					sbg.enterState(0);
 				}
 			}
@@ -132,42 +140,106 @@ public class Play extends BasicGameState {
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
 			if (timePassed > 20) {
-				// update the map
-				casual.updateLocation();
-				for (int i = 0; i < shooter.getBullets().size(); i++) {
-					shooter.getBullets().get(i).updateLocation();
+				
+				
+				// add human or robot simply by clicking the corresponding mouse button
+				// added for first iteration demo, testing purposes
+				if ((100 < xpos && xpos < 1280) && (100 < ypos && ypos < 720)) {
+					if (input.isMouseButtonDown(1)) {
+						humans.add(new Shooter((xpos-xpos%100), (ypos-ypos%100)));
+					}
+					else if(input.isMouseButtonDown(2)) {
+						robots.add(new Casual((xpos-xpos%100), (ypos-ypos%100)));
+					}
 				}
-
+				
+				
+				
+				// update the map				
+				for (int i = 0; i < robots.size(); i++) {
+					robots.get(i).updateLocation();
+				}
+				for (int i = 0; i < humans.size(); i++) {
+					for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
+						humans.get(i).getBullets().get(j).updateLocation();
+					}
+				}
+				
 				/////////////
 				// collision detection logic
 				/////////////
+				
 				// fire a bullet
-				if ((shooter.getX() + shooter.getRange()) > casual.getX()
-						&& (Math.abs(shooter.getY() - casual.getY()) < 20) && timeCount >= 1000) {
-					shooter.attackToRobot(casual);
-					timeCount = 0;
-
-				}
-				// damage human as robot
-				if (((shooter.getX() + 60) > casual.getX()) && (Math.abs(shooter.getY() - casual.getY()) < 20)) {
-					casual.stop();
-					casual.attackToHuman(shooter);
-					if (shooter.getHealth() <= 0) {
-						humans.remove(shooter);
-						// shooter=new Shooter(100, 200);
-						casual.run();
-					}
-				}
-				// damage robots as bullet
-				for (int i = 0; i < shooter.getBullets().size(); i++) {
-					if ((shooter.getBullets().get(i).getX() + 25 >= casual.getX())
-							&& (Math.abs(shooter.getY() - casual.getY()) < 20)) {
-						shooter.getBullets().get(i).damageRobot(casual, shooter);
-						if (casual.getHealth() <= 0) {
-							casual = new Casual(600, 100);
+				for (int i = 0; i < humans.size(); i++) {
+					for (int j = 0; j < robots.size(); j++) {
+						AttackerHuman tempHuman = humans.get(i);
+						Robot tempRobot = robots.get(j);
+						
+						// fire a bullet
+						if((tempHuman.getX()+tempHuman.getRange())>tempRobot.getX() && (Math.abs(tempHuman.getY()-tempRobot.getY())<20)&&timeCount>=1000) {//TODO make this timecount special for every human
+							tempHuman.attackToRobot(tempRobot);
+							timeCount=0;
 						}
+						
+						// damage human as robot
+						if (((tempHuman.getX() + 60) > tempRobot.getX()) && (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20)) {
+							tempRobot.stop();
+							tempRobot.attackToHuman(tempHuman);
+							if (tempHuman.getHealth() <= 0) {
+								humans.remove(tempHuman);
+								tempRobot.run();
+								break;
+							}
+						}
+						
+						
+						
+						
+						for (int k = 0; k < tempHuman.getBullets().size(); k++) {
+							//tempHuman.getBullets().get(k).draw();
+							
+							if ((tempHuman.getBullets().get(k).getX() + 25 >= tempRobot.getX())
+									&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20)) {
+								tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
+								if (tempRobot.getHealth() <= 0) {
+									robots.remove(tempRobot);
+								}
+							}
+						}
+						
+						
 					}
 				}
+				
+				
+				
+				
+				
+				
+				
+				/////////////
+				// collision detection logic
+				/////////////
+				// damage human as robot
+//				if (((shooter.getX() + 60) > casual.getX()) && (Math.abs(shooter.getY() - casual.getY()) < 20)) {
+//					casual.stop();
+//					casual.attackToHuman(shooter);
+//					if (shooter.getHealth() <= 0) {
+//						humans.remove(shooter);
+//						// shooter=new Shooter(100, 200);
+//						casual.run();
+//					}
+//				}
+				// damage robots as bullet
+//				for (int i = 0; i < shooter.getBullets().size(); i++) {
+//					if ((shooter.getBullets().get(i).getX() + 25 >= casual.getX())
+//							&& (Math.abs(shooter.getY() - casual.getY()) < 20)) {
+//						shooter.getBullets().get(i).damageRobot(casual, shooter);
+//						if (casual.getHealth() <= 0) {
+//							casual = new Casual(600, 100);
+//						}
+//					}
+//				}
 
 				// reset the timer
 				timePassed = 0;
@@ -183,10 +255,22 @@ public class Play extends BasicGameState {
 			// Quit button
 			if ((1203 < xpos && xpos < 1267) && (15 < ypos && ypos < 79)) {
 				if (input.isMouseButtonDown(0)) {
+					resetMap();
 					sbg.enterState(0);
 				}
 			}
 		}
+	}
+
+	/**
+	 * @throws SlickException 
+	 * 
+	 */
+	private void resetMap() throws SlickException {
+		humans.clear();
+		humans.add(new Shooter(100, 100));
+		robots.clear();
+		robots.add(new Casual(600, 100));
 	}
 
 	public int getID() {
