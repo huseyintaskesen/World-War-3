@@ -4,6 +4,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.awt.Font;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -11,10 +12,14 @@ import org.newdawn.slick.state.*;
 
 public class Play extends BasicGameState {
 
+	TrueTypeFont myFont;//
+	
+	
 	public String mouse = "No input yet"; // To show mouse coordinates, for testing purposes
 
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
+	int score = 0;
 
 	Image view; // background image
 	Image pause; // pause menu
@@ -35,6 +40,10 @@ public class Play extends BasicGameState {
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		
+		myFont = new TrueTypeFont (new Font("Pixeled Regular", Font.PLAIN, 30), true);
+		
+		
 		// background and pause menu images
 		view = new Image("res/playgame.png");
 		pause = new Image("res/pause.png");
@@ -43,13 +52,7 @@ public class Play extends BasicGameState {
 		humans = new ArrayList<AttackerHuman>();
 		robots = new ArrayList<Robot>();
 
-		humans.add(new Shooter(100, 100));
-		humans.add(new Shooter(100, 200));
-		shooter = humans.get(0);
-
-		robots.add(new Casual(600, 100));
-		robots.add(new Casual(600, 200));
-		casual = robots.get(0);
+		resetMap();
 
 		// music
 		music = new Music("res/soundtrack.aiff");
@@ -79,10 +82,7 @@ public class Play extends BasicGameState {
 			}
 		}
 		
-//		for (int i = 0; i < shooter.getBullets().size(); i++) {
-//			shooter.getBullets().get(i).draw();
-//		}
-
+		
 		// pause menu is drawn when flag is up
 		if (pauseFlag)
 			pause.draw(500, 200);
@@ -92,6 +92,11 @@ public class Play extends BasicGameState {
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
+		
+		
+		g.setFont(myFont);
+		//g.drawString(String.valueOf(score/1000), 390, 30);
+		g.drawString("Score: " + score/1000, 500, 30);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -136,6 +141,7 @@ public class Play extends BasicGameState {
 			// calculate time passed
 			timePassed += delta;
 			timeCount += delta;
+			score += delta;
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
@@ -175,14 +181,23 @@ public class Play extends BasicGameState {
 						AttackerHuman tempHuman = humans.get(i);
 						Robot tempRobot = robots.get(j);
 						
+						// gameover when one robot reaches basement
+						if(tempRobot.getX()<=100) {
+							gameover(sbg);
+							break;
+						}
 						// fire a bullet
-						if((tempHuman.getX()+tempHuman.getRange())>tempRobot.getX() && (Math.abs(tempHuman.getY()-tempRobot.getY())<20)&&timeCount>=1000) {//TODO make this timecount special for every human
+						if((tempHuman.getX()+tempHuman.getRange())>tempRobot.getX() 
+								&& (Math.abs(tempHuman.getY()-tempRobot.getY())<20)
+								&&timeCount>=1000) {//TODO make this timecount special for every human
 							tempHuman.attackToRobot(tempRobot);
 							timeCount=0;
 						}
 						
 						// damage human as robot
-						if (((tempHuman.getX() + 60) > tempRobot.getX()) && (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20)) {
+						if (((tempHuman.getX() + 60) > tempRobot.getX()) 
+								&& tempHuman.getY() == tempRobot.getY() 
+								&& tempHuman.getX()-10 <= tempRobot.getX()) {
 							tempRobot.stop();
 							tempRobot.attackToHuman(tempHuman);
 							if (tempHuman.getHealth() <= 0) {
@@ -194,12 +209,11 @@ public class Play extends BasicGameState {
 						
 						
 						
-						
-						for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-							//tempHuman.getBullets().get(k).draw();
-							
+						// damage robot as bullet
+						for (int k = 0; k < tempHuman.getBullets().size(); k++) {							
 							if ((tempHuman.getBullets().get(k).getX() + 25 >= tempRobot.getX())
-									&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20)) {
+									&& tempHuman.getY() == tempRobot.getY() 
+									&& tempHuman.getBullets().get(k).getX()-10 <= tempRobot.getX()) {
 								tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
 								if (tempRobot.getHealth() <= 0) {
 									robots.remove(tempRobot);
@@ -210,36 +224,6 @@ public class Play extends BasicGameState {
 						
 					}
 				}
-				
-				
-				
-				
-				
-				
-				
-				/////////////
-				// collision detection logic
-				/////////////
-				// damage human as robot
-//				if (((shooter.getX() + 60) > casual.getX()) && (Math.abs(shooter.getY() - casual.getY()) < 20)) {
-//					casual.stop();
-//					casual.attackToHuman(shooter);
-//					if (shooter.getHealth() <= 0) {
-//						humans.remove(shooter);
-//						// shooter=new Shooter(100, 200);
-//						casual.run();
-//					}
-//				}
-				// damage robots as bullet
-//				for (int i = 0; i < shooter.getBullets().size(); i++) {
-//					if ((shooter.getBullets().get(i).getX() + 25 >= casual.getX())
-//							&& (Math.abs(shooter.getY() - casual.getY()) < 20)) {
-//						shooter.getBullets().get(i).damageRobot(casual, shooter);
-//						if (casual.getHealth() <= 0) {
-//							casual = new Casual(600, 100);
-//						}
-//					}
-//				}
 
 				// reset the timer
 				timePassed = 0;
@@ -266,7 +250,17 @@ public class Play extends BasicGameState {
 	 * @throws SlickException 
 	 * 
 	 */
+	private void gameover(StateBasedGame sbg) throws SlickException {
+		resetMap();
+		sbg.enterState(4);	
+	}
+
+	/**
+	 * @throws SlickException 
+	 * 
+	 */
 	private void resetMap() throws SlickException {
+		score = 0;
 		humans.clear();
 		humans.add(new Shooter(100, 100));
 		robots.clear();
