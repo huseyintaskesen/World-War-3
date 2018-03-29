@@ -95,8 +95,8 @@ public class Play extends BasicGameState {
 		
 		
 		g.setFont(myFont);
-		//g.drawString(String.valueOf(score/1000), 390, 30);
-		g.drawString("Score: " + score/1000, 500, 30);
+		g.drawString("250", 380, 30);
+		g.drawString("Score: " + score/1000, 600, 30);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -151,10 +151,10 @@ public class Play extends BasicGameState {
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
 				if ((100 < xpos && xpos < 1280) && (100 < ypos && ypos < 720)) {
-					if (input.isMouseButtonDown(1)) {
+					if (input.isMousePressed(1)) {
 						humans.add(new Shooter((xpos-xpos%100), (ypos-ypos%100)));
 					}
-					else if(input.isMouseButtonDown(2)) {
+					else if(input.isMousePressed(2)) {
 						robots.add(new Casual((xpos-xpos%100), (ypos-ypos%100)));
 					}
 				}
