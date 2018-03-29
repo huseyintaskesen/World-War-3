@@ -40,24 +40,24 @@ public class MainMenu extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
-		int ypos = 600 - Mouse.getY();
+		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
-		if ((567 < xpos && xpos < 721) && (253 < ypos && ypos < 293)) {
+		if ((907 < xpos && xpos < 1154) && (300 < ypos && ypos < 353)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(1);
 			}
 		}
-		else if ((413 < xpos && xpos < 537) && (402 < ypos && ypos < 430)) {
+		else if ((661 < xpos && xpos < 858) && (480 < ypos && ypos < 520)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(2);
 			}
 		}
-		else if ((413 < xpos && xpos < 537) && (442 < ypos && ypos < 472)) {
+		else if ((661 < xpos && xpos < 858) && (530 < ypos && ypos < 568)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(3);
 			}
 		}
-		else if ((413 < xpos && xpos < 537) && (487 < ypos && ypos < 513)) {
+		else if ((661 < xpos && xpos < 858) && (583 < ypos && ypos < 620)) {
 			if (input.isMouseButtonDown(0)) {
 				gc.exit();
 			}

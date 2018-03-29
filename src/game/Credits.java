@@ -42,9 +42,9 @@ public class Credits extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
-		int ypos = 600 - Mouse.getY();
+		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
-		if ((10 < xpos && xpos < 400) && (25 < ypos && ypos < 95)) {
+		if ((16 < xpos && xpos < 244) && (23 < ypos && ypos < 71)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(0);
 			}

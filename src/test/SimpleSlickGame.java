@@ -2,14 +2,22 @@ package test;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class SimpleSlickGame extends BasicGame
 {
+	int move=0;
+	int time;
+	public String mouse= "No input yet";
+	
 	public SimpleSlickGame(String gamename)
 	{
 		super(gamename);
@@ -19,12 +27,32 @@ public class SimpleSlickGame extends BasicGame
 	public void init(GameContainer gc) throws SlickException {}
 
 	@Override
-	public void update(GameContainer gc, int i) throws SlickException {}
+	public void update(GameContainer gc, int delta) throws SlickException {
+		time +=delta; 
+		Input input = gc.getInput();
+		int xpos = Mouse.getX();
+		int ypos = 600 - Mouse.getY();
+		mouse = "x : "+xpos+" y : "+ypos+"time: "+time/1000;
+		if(time/1000==1) {
+			move=move+1;
+			time =0;
+		}
+		
+	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
+		g.setColor(Color.white);
 		g.drawString("Howdy!", 100, 10);
+		g.fillRect(5+move, 25+move, 50, 50);
+		
+		
+		g.fillRect(300, 300, 230, 60);
+		g.setColor(Color.black);
+		g.drawString(mouse, 300, 300);
+		
+		
 	}
 
 	public static void main(String[] args)
