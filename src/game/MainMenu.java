@@ -12,14 +12,19 @@ public class MainMenu extends BasicGameState {
 
 	Image menu;
 	public String mouse= "No input yet";
-	
+
+	private String userName;
+
+
 	public MainMenu(int state) {
 
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		menu = new Image("res/main menu.png");
-	
+
+
+
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -42,6 +47,8 @@ public class MainMenu extends BasicGameState {
 		int xpos = Mouse.getX();
 		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
+
+
 		if ((907 < xpos && xpos < 1154) && (300 < ypos && ypos < 353)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(1);
@@ -62,10 +69,13 @@ public class MainMenu extends BasicGameState {
 				gc.exit();
 			}
 		}
+
 	}
 
 	public int getID() {
 		return 0;
 	}
+
+
 
 }
