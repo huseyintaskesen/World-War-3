@@ -13,8 +13,7 @@ import org.newdawn.slick.state.*;
 public class Play extends BasicGameState {
 
 	TrueTypeFont myFont;//
-	
-	
+
 	public String mouse = "No input yet"; // To show mouse coordinates, for testing purposes
 
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
@@ -23,6 +22,7 @@ public class Play extends BasicGameState {
 
 	Image view; // background image
 	Image pause; // pause menu
+	Image land;
 	private Music music;
 
 	// declare lists of game objects
@@ -40,10 +40,9 @@ public class Play extends BasicGameState {
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		
-		myFont = new TrueTypeFont (new Font("Pixeled Regular", Font.PLAIN, 30), true);
-		
-		
+
+		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
+
 		// background and pause menu images
 		view = new Image("res/playgame.png");
 		pause = new Image("res/pause.png");
@@ -52,12 +51,14 @@ public class Play extends BasicGameState {
 		humans = new ArrayList<AttackerHuman>();
 		robots = new ArrayList<Robot>();
 
+		land = new Image("res/Land.png");
+
 		resetMap();
 
 		// music
 		music = new Music("res/soundtrack.aiff");
 		music.loop();
-		music.setVolume(0.6f);
+		music.setVolume(0.0f);
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -67,6 +68,8 @@ public class Play extends BasicGameState {
 		g.setColor(Color.lightGray);
 		g.fillRect(100, 100, 1180, 620);
 
+		// land.draw(100,100,1180,620);
+
 		// game objects are drawn
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).draw();
@@ -75,14 +78,13 @@ public class Play extends BasicGameState {
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).draw();
 		}
-		
+
 		for (int i = 0; i < humans.size(); i++) {
 			for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
 				humans.get(i).getBullets().get(j).draw();
 			}
 		}
-		
-		
+
 		// pause menu is drawn when flag is up
 		if (pauseFlag)
 			pause.draw(500, 200);
@@ -92,11 +94,10 @@ public class Play extends BasicGameState {
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
-		
-		
+
 		g.setFont(myFont);
 		g.drawString("250", 380, 30);
-		g.drawString("Score: " + score/1000, 600, 30);
+		g.drawString("Score: " + score / 1000, 600, 30);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -135,9 +136,8 @@ public class Play extends BasicGameState {
 				}
 			}
 
-		} 
-		else {// Pause flag is down, game is running
-			
+		} else {// Pause flag is down, game is running
+
 			// calculate time passed
 			timePassed += delta;
 			timeCount += delta;
@@ -146,22 +146,18 @@ public class Play extends BasicGameState {
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
 			if (timePassed > 20) {
-				
-				
+
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
 				if ((100 < xpos && xpos < 1280) && (100 < ypos && ypos < 720)) {
 					if (input.isMousePressed(1)) {
-						humans.add(new Shooter((xpos-xpos%100), (ypos-ypos%100)));
-					}
-					else if(input.isMousePressed(2)) {
-						robots.add(new Casual((xpos-xpos%100), (ypos-ypos%100)));
+						humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+					} else if (input.isMousePressed(2)) {
+						robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 					}
 				}
-				
-				
-				
-				// update the map				
+
+				// update the map
 				for (int i = 0; i < robots.size(); i++) {
 					robots.get(i).updateLocation();
 				}
@@ -170,59 +166,72 @@ public class Play extends BasicGameState {
 						humans.get(i).getBullets().get(j).updateLocation();
 					}
 				}
-				
+
 				/////////////
 				// collision detection logic
 				/////////////
-				
-				// fire a bullet
+
 				for (int i = 0; i < humans.size(); i++) {
+
 					for (int j = 0; j < robots.size(); j++) {
 						AttackerHuman tempHuman = humans.get(i);
 						Robot tempRobot = robots.get(j);
-						
+
 						// gameover when one robot reaches basement
-						if(tempRobot.getX()<=100) {
+						if (tempRobot.getX() <= 100) {
 							gameover(sbg);
 							break;
 						}
 						// fire a bullet
-						if((tempHuman.getX()+tempHuman.getRange())>tempRobot.getX() 
-								&& (Math.abs(tempHuman.getY()-tempRobot.getY())<20)
-								&&timeCount>=1000) {//TODO make this timecount special for every human
+						if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
+								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) && timeCount >= 1000) {// TODO
+																												// make
+																												// this
+																												// timecount
+																												// special
+																												// for
+																												// every
+																												// human
 							tempHuman.attackToRobot(tempRobot);
-							timeCount=0;
+							timeCount = 0;
 						}
-						
+
 						// damage human as robot
-						if (((tempHuman.getX() + 60) > tempRobot.getX()) 
-								&& tempHuman.getY() == tempRobot.getY() 
-								&& tempHuman.getX()-10 <= tempRobot.getX()) {
-							tempRobot.stop();
-							tempRobot.attackToHuman(tempHuman);
-							if (tempHuman.getHealth() <= 0) {
-								humans.remove(tempHuman);
+						if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
+								&& tempHuman.getX() - 10 <= tempRobot.getX()) {
+
+							if (tempHuman.getHealth() > 0) {
+								tempRobot.stop();
+								tempRobot.attackToHuman(tempHuman);
+							}
+							if (tempHuman.getHealth() <= 0 && !tempRobot.isRunning()) {
+								tempHuman.setToBeRemoved();
 								tempRobot.run();
-								break;
+								j = -1;
 							}
 						}
-						
-						
-						
+
 						// damage robot as bullet
-						for (int k = 0; k < tempHuman.getBullets().size(); k++) {							
+						for (int k = 0; k < tempHuman.getBullets().size(); k++) {
 							if ((tempHuman.getBullets().get(k).getX() + 25 >= tempRobot.getX())
-									&& tempHuman.getY() == tempRobot.getY() 
-									&& tempHuman.getBullets().get(k).getX()-10 <= tempRobot.getX()) {
+									&& tempHuman.getY() == tempRobot.getY()
+									&& tempHuman.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
 								tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
 								if (tempRobot.getHealth() <= 0) {
 									robots.remove(tempRobot);
 								}
 							}
 						}
-						
-						
+
 					}
+				}
+
+				////////////////////////////
+				////// handle removals
+				////////////////////////////
+				for (int i = 0; i < humans.size(); i++) {
+					if (humans.get(i).isToBeRemoved())
+						humans.remove(i);
 				}
 
 				// reset the timer
@@ -247,16 +256,16 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * @throws SlickException 
+	 * @throws SlickException
 	 * 
 	 */
 	private void gameover(StateBasedGame sbg) throws SlickException {
 		resetMap();
-		sbg.enterState(4);	
+		sbg.enterState(4);
 	}
 
 	/**
-	 * @throws SlickException 
+	 * @throws SlickException
 	 * 
 	 */
 	private void resetMap() throws SlickException {

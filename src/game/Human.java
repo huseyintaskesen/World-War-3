@@ -16,10 +16,12 @@ public abstract class Human extends GameElement{
 	protected int damage;
 	protected int health;
 	protected Image img;
+	protected boolean toBeRemoved;
 	
 	
 	public Human(int x,int y) throws SlickException{
 		super(x, y);
+		toBeRemoved=false;
 	}
 	
 	
@@ -43,15 +45,11 @@ public abstract class Human extends GameElement{
 		this.health = health;
 	}
 	
-
-//
-//	/**
-//	 * @param casual
-//	 * @throws SlickException 
-//	 */
-//	public void attackToRobot(Casual casual) throws SlickException {
-//		// TODO Auto-generated method stub
-//		
-//	}	
+	public boolean isToBeRemoved() {
+		return toBeRemoved;
+	}
+	public void setToBeRemoved() {
+		toBeRemoved=true;
+	}
 
 }
