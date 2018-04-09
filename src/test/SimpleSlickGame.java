@@ -17,7 +17,7 @@ public class SimpleSlickGame extends BasicGame
 	int move=0;
 	int time;
 	public String mouse= "No input yet";
-	
+
 	public SimpleSlickGame(String gamename)
 	{
 		super(gamename);
@@ -28,7 +28,7 @@ public class SimpleSlickGame extends BasicGame
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
-		time +=delta; 
+		time +=delta;
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
 		int ypos = 600 - Mouse.getY();
@@ -37,7 +37,7 @@ public class SimpleSlickGame extends BasicGame
 			move=move+1;
 			time =0;
 		}
-		
+
 	}
 
 	@Override
@@ -46,13 +46,13 @@ public class SimpleSlickGame extends BasicGame
 		g.setColor(Color.white);
 		g.drawString("Howdy!", 100, 10);
 		g.fillRect(5+move, 25+move, 50, 50);
-		
-		
+
+
 		g.fillRect(300, 300, 230, 60);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
-		
-		
+
+
 	}
 
 	public static void main(String[] args)

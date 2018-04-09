@@ -6,25 +6,46 @@ package game;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
+import java.awt.Font;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.gui.TextField;
+
 
 
 public class MainMenu extends BasicGameState {
 
 	Image menu;
 	public String mouse= "No input yet";
-	
+	private TextField text1;
+	private UnicodeFont font = getNewFont("Arial" , 30);
+	private String userName;
+
+
 	public MainMenu(int state) {
 
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		menu = new Image("res/main menu.png");
-	
+		font.loadGlyphs();
+		text1 = new TextField(gc, font, 932,257,195,30);
+		
+
+
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.drawString("Humans vs. Robots", 100, 50);
 		menu.draw(0, 0);
+		text1.render(gc, g);
+
+
 //		playNow.draw(100,100);
 //		quit.draw(100,200);
 		
@@ -42,6 +63,8 @@ public class MainMenu extends BasicGameState {
 		int xpos = Mouse.getX();
 		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
+
+
 		if ((907 < xpos && xpos < 1154) && (300 < ypos && ypos < 353)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(1);
@@ -62,10 +85,25 @@ public class MainMenu extends BasicGameState {
 				gc.exit();
 			}
 		}
+		if ((932 < xpos && xpos < 1132) && (256 < ypos && ypos < 292)) {
+			if (input.isMouseButtonDown(0)) {
+				text1.setText("pressed!");
+				text1.setTextColor(Color.orange);
+				
+			}
+		}
+
 	}
 
 	public int getID() {
 		return 0;
 	}
+	public UnicodeFont getNewFont(String fontName , int fontSize){
+		UnicodeFont returnFont = new UnicodeFont(new Font(fontName , Font.BOLD , fontSize));
+		returnFont.addAsciiGlyphs();
+		returnFont.getEffects().add(new ColorEffect(java.awt.Color.red));
+		return (returnFont);
+	}
+
 
 }
