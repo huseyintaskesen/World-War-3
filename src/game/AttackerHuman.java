@@ -13,8 +13,8 @@ import org.newdawn.slick.SlickException;
  */
 public abstract class AttackerHuman extends Human {
 	
-	protected ArrayList<Bullet> bullets;
-	protected int range;
+	private ArrayList<Bullet> bullets;
+	private int range;
 	private int reloadTime;
 	/**
 	 * @param x
@@ -44,7 +44,7 @@ public abstract class AttackerHuman extends Human {
 	}
 	
 	public void attackToRobot(Robot casual) throws SlickException {
-		bullets.add(new Bullet(getX()+50, getY()+25, damage));
+		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
 	}
 
 	public int getReloadTime() {

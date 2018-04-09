@@ -28,7 +28,7 @@ public abstract class Robot extends GameElement{
 	}
 	
 	public void draw() {
-		img.draw(x, y, 50, 50);
+		img.draw(getX(), getY(), 50, 50);
 	}
 	
 	public int getDamage() {
@@ -51,7 +51,7 @@ public abstract class Robot extends GameElement{
 		shooter.takeDamage(damage);
 	}
 	public void updateLocation() {
-		x=x-curSpeed/2;
+		setX(getX()-curSpeed/2);
 	}
 	public void run() {
 		isRunning=true;

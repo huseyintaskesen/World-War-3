@@ -10,9 +10,9 @@ import org.newdawn.slick.SlickException;
  *
  */
 public abstract class GameElement {
-	protected int x;
-	protected int y;
-	protected boolean toBeRemoved;
+	private int x;
+	private int y;
+	private boolean toBeRemoved;
 	
 	public GameElement(int x,int y) throws SlickException{
 		this.x=x;
