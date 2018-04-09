@@ -11,17 +11,14 @@ import org.newdawn.slick.SlickException;
  *
  */
 public abstract class Human extends GameElement{
-//	private int x;
-//	private int y;
 	protected int damage;
 	protected int health;
 	protected Image img;
-	protected boolean toBeRemoved;
 	
 	
 	public Human(int x,int y) throws SlickException{
 		super(x, y);
-		toBeRemoved=false;
+		
 	}
 	
 	
@@ -45,11 +42,6 @@ public abstract class Human extends GameElement{
 		this.health = health;
 	}
 	
-	public boolean isToBeRemoved() {
-		return toBeRemoved;
-	}
-	public void setToBeRemoved() {
-		toBeRemoved=true;
-	}
+	
 
 }

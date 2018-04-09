@@ -15,6 +15,7 @@ public abstract class AttackerHuman extends Human {
 	
 	protected ArrayList<Bullet> bullets;
 	protected int range;
+	private int reloadTime;
 	/**
 	 * @param x
 	 * @param y
@@ -46,4 +47,13 @@ public abstract class AttackerHuman extends Human {
 		bullets.add(new Bullet(getX()+50, getY()+25, damage));
 	}
 
+	public int getReloadTime() {
+		return reloadTime;
+	}
+
+	public void setReloadTime(int reloadTime) {
+		this.reloadTime = reloadTime;
+	}
+	
+	
 }

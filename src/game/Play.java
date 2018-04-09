@@ -140,7 +140,10 @@ public class Play extends BasicGameState {
 
 			// calculate time passed
 			timePassed += delta;
-			timeCount += delta;
+			for (int i = 0; i < humans.size(); i++) {
+				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
+			}
+			//timeCount += delta;
 			score += delta;
 
 			// reset the timer when 0.02 seconds has passed
@@ -184,16 +187,10 @@ public class Play extends BasicGameState {
 						}
 						// fire a bullet
 						if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
-								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) && timeCount >= 1000) {// TODO
-																												// make
-																												// this
-																												// timecount
-																												// special
-																												// for
-																												// every
-																												// human
+								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) 
+								&& tempHuman.getReloadTime() >= 1000) {
 							tempHuman.attackToRobot(tempRobot);
-							timeCount = 0;
+							tempHuman.setReloadTime(0);
 						}
 
 						// damage human as robot
@@ -218,7 +215,8 @@ public class Play extends BasicGameState {
 									&& tempHuman.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
 								tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
 								if (tempRobot.getHealth() <= 0) {
-									robots.remove(tempRobot);
+									//robots.remove(tempRobot);
+									tempRobot.setToBeRemoved();
 								}
 							}
 						}
@@ -230,9 +228,18 @@ public class Play extends BasicGameState {
 				////// handle removals
 				////////////////////////////
 				for (int i = 0; i < humans.size(); i++) {
-					if (humans.get(i).isToBeRemoved())
+					AttackerHuman tempHuman = humans.get(i); 
+					if (tempHuman.isToBeRemoved())
 						humans.remove(i);
+//					for (int k = 0; k < tempHuman.getBullets().size(); k++) {
+//						
+//					}
 				}
+				for (int i = 0; i < robots.size(); i++) {
+					if (robots.get(i).isToBeRemoved())
+						robots.remove(i);
+				}
+				
 
 				// reset the timer
 				timePassed = 0;
