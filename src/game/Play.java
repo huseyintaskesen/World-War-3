@@ -26,12 +26,12 @@ public class Play extends BasicGameState {
 	private Music music;
 
 	// declare lists of game objects
-	ArrayList<AttackerHuman> humans;
-	ArrayList<Robot> robots;
+//	ArrayList<AttackerHuman> humans;
+//	ArrayList<Robot> robots;
+	
+	
+	GameManager gameManager;
 
-	// temporary reference to these objects
-	AttackerHuman shooter;
-	Robot casual;
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
 
@@ -47,13 +47,15 @@ public class Play extends BasicGameState {
 		view = new Image("res/playgame.png");
 		pause = new Image("res/pause.png");
 
-		// lists of game objects are initialized
-		humans = new ArrayList<AttackerHuman>();
-		robots = new ArrayList<Robot>();
+//		// lists of game objects are initialized
+//		humans = new ArrayList<AttackerHuman>();
+//		robots = new ArrayList<Robot>();
+		
+		gameManager = GameManager.getInstance();
 
 		land = new Image("res/Land.png");
 
-		resetMap();
+		gameManager.resetMap();
 
 		// music
 		music = new Music("res/soundtrack.aiff");
@@ -71,19 +73,7 @@ public class Play extends BasicGameState {
 		// land.draw(100,100,1180,620);
 
 		// game objects are drawn
-		for (int i = 0; i < robots.size(); i++) {
-			robots.get(i).draw();
-		}
-
-		for (int i = 0; i < humans.size(); i++) {
-			humans.get(i).draw();
-		}
-
-		for (int i = 0; i < humans.size(); i++) {
-			for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
-				humans.get(i).getBullets().get(j).draw();
-			}
-		}
+		gameManager.draw();
 
 		// pause menu is drawn when flag is up
 		if (pauseFlag)
@@ -123,7 +113,7 @@ public class Play extends BasicGameState {
 			if ((576 < xpos && xpos < 776) && (365 < ypos && ypos < 415)) {
 				if (input.isMouseButtonDown(0)) {
 					pauseFlag = false;
-					resetMap();
+					gameManager.resetMap();
 					sbg.enterState(0);
 				}
 			}
@@ -138,11 +128,12 @@ public class Play extends BasicGameState {
 
 		} else {// Pause flag is down, game is running
 
+			
 			// calculate time passed
 			timePassed += delta;
-			for (int i = 0; i < humans.size(); i++) {
-				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
-			}
+//			for (int i = 0; i < humans.size(); i++) {
+//				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
+//			}
 			//timeCount += delta;
 			score += delta;
 
@@ -150,95 +141,106 @@ public class Play extends BasicGameState {
 			// update the map every 0.02 seconds(50 FPS)
 			if (timePassed > 20) {
 
+				
+				gameManager.gameUpdate(timePassed);
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
 				if ((100 < xpos && xpos < 1280) && (100 < ypos && ypos < 720)) {
 					if (input.isMousePressed(1)) {
-						humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+						gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+						//humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 					} else if (input.isMousePressed(2)) {
-						robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
+						gameManager.addRobot(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
+						//robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 					}
 				}
 
 				// update the map
-				for (int i = 0; i < robots.size(); i++) {
-					robots.get(i).updateLocation();
-				}
-				for (int i = 0; i < humans.size(); i++) {
-					for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
-						humans.get(i).getBullets().get(j).updateLocation();
-					}
-				}
+//				for (int i = 0; i < robots.size(); i++) {
+//					robots.get(i).updateLocation();
+//				}
+//				for (int i = 0; i < humans.size(); i++) {
+//					for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
+//						humans.get(i).getBullets().get(j).updateLocation();
+//					}
+//				}
 
 				/////////////
 				// collision detection logic
 				/////////////
 
-				for (int i = 0; i < humans.size(); i++) {
-
-					for (int j = 0; j < robots.size(); j++) {
-						AttackerHuman tempHuman = humans.get(i);
-						Robot tempRobot = robots.get(j);
-
-						// gameover when one robot reaches basement
-						if (tempRobot.getX() <= 100) {
-							gameover(sbg);
-							break;
-						}
-						// fire a bullet
-						if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
-								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) 
-								&& tempHuman.getReloadTime() >= 1000) {
-							tempHuman.attackToRobot(tempRobot);
-							tempHuman.setReloadTime(0);
-						}
-
-						// damage human as robot
-						if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
-								&& tempHuman.getX() - 10 <= tempRobot.getX()) {
-
-							if (tempHuman.getHealth() > 0) {
-								tempRobot.stop();
-								tempRobot.attackToHuman(tempHuman);
-							}
-							if (tempHuman.getHealth() <= 0 && !tempRobot.isRunning()) {
-								tempHuman.setToBeRemoved();
-								tempRobot.run();
-								j = -1;
-							}
-						}
-
-						// damage robot as bullet
-						for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-							if ((tempHuman.getBullets().get(k).getX() + 25 >= tempRobot.getX())
-									&& tempHuman.getY() == tempRobot.getY()
-									&& tempHuman.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
-								tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
-								if (tempRobot.getHealth() <= 0) {
-									//robots.remove(tempRobot);
-									tempRobot.setToBeRemoved();
-								}
-							}
-						}
-
-					}
-				}
+				if(!gameManager.handleCollisions())
+					gameover(sbg);
+				
+				
+				
+//				for (int i = 0; i < humans.size(); i++) {
+//
+//					for (int j = 0; j < robots.size(); j++) {
+//						AttackerHuman tempHuman = humans.get(i);
+//						Robot tempRobot = robots.get(j);
+//
+//						// gameover when one robot reaches basement
+//						if (tempRobot.getX() <= 100) {
+//							gameover(sbg);
+//							break;
+//						}
+//						// fire a bullet
+//						if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
+//								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) 
+//								&& tempHuman.getReloadTime() >= 1000) {
+//							tempHuman.attackToRobot(tempRobot);
+//							tempHuman.setReloadTime(0);
+//						}
+//
+//						// damage human as robot
+//						if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
+//								&& tempHuman.getX() - 10 <= tempRobot.getX()) {
+//
+//							if (tempHuman.getHealth() > 0) {
+//								tempRobot.stop();
+//								tempRobot.attackToHuman(tempHuman);
+//							}
+//							if (tempHuman.getHealth() <= 0 && !tempRobot.isRunning()) {
+//								tempHuman.setToBeRemoved();
+//								tempRobot.run();
+//								j = -1;
+//							}
+//						}
+//
+//						// damage robot as bullet
+//						for (int k = 0; k < tempHuman.getBullets().size(); k++) {
+//							if ((tempHuman.getBullets().get(k).getX() + 25 >= tempRobot.getX())
+//									&& tempHuman.getY() == tempRobot.getY()
+//									&& tempHuman.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
+//								tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
+//								if (tempRobot.getHealth() <= 0) {
+//									//robots.remove(tempRobot);
+//									tempRobot.setToBeRemoved();
+//								}
+//							}
+//						}
+//
+//					}
+//				}
 
 				////////////////////////////
 				////// handle removals
 				////////////////////////////
-				for (int i = 0; i < humans.size(); i++) {
-					AttackerHuman tempHuman = humans.get(i); 
-					if (tempHuman.isToBeRemoved())
-						humans.remove(i);
-//					for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-//						
-//					}
-				}
-				for (int i = 0; i < robots.size(); i++) {
-					if (robots.get(i).isToBeRemoved())
-						robots.remove(i);
-				}
+				
+				gameManager.handleRemovals();
+//				for (int i = 0; i < humans.size(); i++) {
+//					AttackerHuman tempHuman = humans.get(i); 
+//					if (tempHuman.isToBeRemoved())
+//						humans.remove(i);
+////					for (int k = 0; k < tempHuman.getBullets().size(); k++) {
+////						
+////					}
+//				}
+//				for (int i = 0; i < robots.size(); i++) {
+//					if (robots.get(i).isToBeRemoved())
+//						robots.remove(i);
+//				}
 				
 
 				// reset the timer
@@ -255,7 +257,7 @@ public class Play extends BasicGameState {
 			// Quit button
 			if ((1203 < xpos && xpos < 1267) && (15 < ypos && ypos < 79)) {
 				if (input.isMouseButtonDown(0)) {
-					resetMap();
+					gameManager.resetMap();
 					sbg.enterState(0);
 				}
 			}
@@ -267,7 +269,7 @@ public class Play extends BasicGameState {
 	 * 
 	 */
 	private void gameover(StateBasedGame sbg) throws SlickException {
-		resetMap();
+		gameManager.resetMap();
 		sbg.enterState(4);
 	}
 
@@ -275,13 +277,13 @@ public class Play extends BasicGameState {
 	 * @throws SlickException
 	 * 
 	 */
-	private void resetMap() throws SlickException {
-		score = 0;
-		humans.clear();
-		humans.add(new Shooter(100, 100));
-		robots.clear();
-		robots.add(new Casual(600, 100));
-	}
+//	private void resetMap() throws SlickException {
+//		score = 0;
+//		humans.clear();
+//		humans.add(new Shooter(100, 100));
+//		robots.clear();
+//		robots.add(new Casual(600, 100));
+//	}
 
 	public int getID() {
 		return 1;

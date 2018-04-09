@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
  * @author ibrahim
  *
  */
-public class Shooter extends AttackerHuman{// implements AggressiveHuman{
+public class Shooter extends AttackerHuman{
 	private final int startHealth=20;
 	
 	public Shooter(int x,int y) throws SlickException {
