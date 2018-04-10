@@ -24,6 +24,7 @@ public class Casual extends Robot{
 	}
 
 	public void run() {
+		super.run();
 		curSpeed = speed;
 	}
 	

@@ -10,12 +10,14 @@ import org.newdawn.slick.SlickException;
  *
  */
 public abstract class GameElement {
-	protected int x;
-	protected int y;
+	private int x;
+	private int y;
+	private boolean toBeRemoved;
 	
 	public GameElement(int x,int y) throws SlickException{
 		this.x=x;
 		this.y=y;
+		toBeRemoved=false;
 	}
 	
 	public int getX() {
@@ -32,5 +34,12 @@ public abstract class GameElement {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public boolean isToBeRemoved() {
+		return toBeRemoved;
+	}
+	public void setToBeRemoved() {
+		toBeRemoved=true;
 	}
 }
