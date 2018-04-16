@@ -15,10 +15,12 @@ public abstract class Robot extends GameElement{
 	protected int health;
 	protected int curSpeed;
 	protected Image img;
+	protected boolean isRunning;
 	
 	
 	public Robot(int x,int y) throws SlickException{
 		super(x, y);
+		isRunning=true;
 	}
 	
 	public void takeDamage(int damage) {
@@ -26,7 +28,7 @@ public abstract class Robot extends GameElement{
 	}
 	
 	public void draw() {
-		img.draw(x, y, 50, 50);
+		img.draw(getX(), getY(), 50, 50);
 	}
 	
 	public int getDamage() {
@@ -49,11 +51,19 @@ public abstract class Robot extends GameElement{
 		shooter.takeDamage(damage);
 	}
 	public void updateLocation() {
-		x=x-curSpeed/2;
+		setX(getX()-curSpeed/2);
 	}
-	public abstract void run();
+	public void run() {
+		isRunning=true;
+	}
+	
+	public boolean isRunning() {
+		return isRunning;
+	}
+	
 	
 	public void stop() {
 		curSpeed=0;
+		isRunning=false;
 	}
 }

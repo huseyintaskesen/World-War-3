@@ -18,12 +18,13 @@ public class Casual extends Robot{
 	public Casual(int x,int y) throws SlickException{
 		super(x, y);
 		img=new Image("res/Robots & Humans/basicRobot.png");
-		damage = 2;
+		damage = 3;
 		health=startHealth;
 		curSpeed=speed;
 	}
 
 	public void run() {
+		super.run();
 		curSpeed = speed;
 	}
 	

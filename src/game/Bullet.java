@@ -15,33 +15,15 @@ public class Bullet extends GameElement{
 	
 	private int speed;	
 	private int damage;
-//	private int x;
-//	private int y;
 	
 	public Bullet(int x,int y, int damage) throws SlickException{
 		super(x, y);
 		speed = 8;
 		this.damage = damage;
 	}
-	
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
 
 	public void updateLocation() {
-		x=x+speed/2;
+		setX(getX()+speed/2);
 	}
 	
 	public void damageRobot(Robot casual,AttackerHuman shooter) {
@@ -50,6 +32,6 @@ public class Bullet extends GameElement{
 	}
 	
 	public void draw() {
-		bullet.draw(x, y, 25, 10);
+		bullet.draw(getX(), getY(), 25, 10);
 	}
 }

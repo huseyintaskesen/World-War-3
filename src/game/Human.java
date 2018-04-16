@@ -11,15 +11,24 @@ import org.newdawn.slick.SlickException;
  *
  */
 public abstract class Human extends GameElement{
-//	private int x;
-//	private int y;
-	protected int damage;
-	protected int health;
-	protected Image img;
+	private int damage;
+	private int health;
+	private Image img;
 	
 	
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+
+	public void setImg(Image img) {
+		this.img = img;
+	}
+
+
 	public Human(int x,int y) throws SlickException{
 		super(x, y);
+		
 	}
 	
 	
@@ -28,7 +37,7 @@ public abstract class Human extends GameElement{
 	}
 	
 	public void draw() {
-		img.draw(x, y, 50, 50);
+		img.draw(getX(), getY(), 50, 50);
 	}
 	
 	public int getDamage() {
@@ -43,15 +52,6 @@ public abstract class Human extends GameElement{
 		this.health = health;
 	}
 	
-
-//
-//	/**
-//	 * @param casual
-//	 * @throws SlickException 
-//	 */
-//	public void attackToRobot(Casual casual) throws SlickException {
-//		// TODO Auto-generated method stub
-//		
-//	}	
+	
 
 }

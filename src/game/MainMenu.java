@@ -35,6 +35,7 @@ public class MainMenu extends BasicGameState {
 		menu = new Image("res/main menu.png");
 		font.loadGlyphs();
 		text1 = new TextField(gc, font, 932,257,195,30);
+		
 
 
 	}
@@ -86,6 +87,7 @@ public class MainMenu extends BasicGameState {
 		}
 		if ((932 < xpos && xpos < 1132) && (256 < ypos && ypos < 292)) {
 			if (input.isMouseButtonDown(0)) {
+				text1.setText("pressed!");
 				text1.setTextColor(Color.orange);
 
 			}
