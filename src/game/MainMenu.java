@@ -87,7 +87,7 @@ public class MainMenu extends BasicGameState {
 		if ((932 < xpos && xpos < 1132) && (256 < ypos && ypos < 292)) {
 			if (input.isMouseButtonDown(0)) {
 				text1.setTextColor(Color.orange);
-				
+
 			}
 		}
 
