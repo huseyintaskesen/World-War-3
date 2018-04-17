@@ -89,7 +89,7 @@ public class MainMenu extends BasicGameState {
 			if (input.isMouseButtonDown(0)) {
 				text1.setText("pressed!");
 				text1.setTextColor(Color.orange);
-				
+
 			}
 		}
 
