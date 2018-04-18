@@ -6,6 +6,7 @@ package game;
 import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 /**
  * @author ibrahim
@@ -16,6 +17,8 @@ public abstract class AttackerHuman extends Human {
 	private ArrayList<Bullet> bullets;
 	private int range;
 	private int reloadTime;
+	public Sound shotSound;
+
 	/**
 	 * @param x
 	 * @param y
@@ -24,6 +27,8 @@ public abstract class AttackerHuman extends Human {
 	public AttackerHuman(int x, int y) throws SlickException {
 		super(x, y);
 		bullets = new ArrayList<Bullet>();
+		shotSound = new Sound("res/fire-shot.wav");
+
 	}
 	
 	public int getRange() {
@@ -45,6 +50,7 @@ public abstract class AttackerHuman extends Human {
 	
 	public void attackToRobot(Robot casual) throws SlickException {
 		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
+		shotSound.play();
 	}
 
 	public int getReloadTime() {

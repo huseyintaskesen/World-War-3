@@ -26,7 +26,6 @@ public class Play extends BasicGameState {
 	private Music music;
 	public Sound ridiculousSound;
 	public Sound shitSound;
-	public Sound shotSound;
 
 	// declare lists of game objects
 //	ArrayList<AttackerHuman> humans;
@@ -64,13 +63,11 @@ public class Play extends BasicGameState {
 		music = new Music("res/soundtrack.aiff");
 		music.loop();
 		music.setVolume(0.0f);
-		// sound
-		ridiculousSound = new Sound("this-is-ridiculous.wav");
-		shitSound = new Sound("shit.wav");
-		shotSound = new Sound("fire-shot.wav");
+		/* sound
+		ridiculousSound = new Sound("res/this-is-ridiculous.wav");
+		shitSound = new Sound("res/shit.wav");
 		ridiculousSound.play();
-		shitSound.play();
-		shotSound.play();
+		shitSound.play();*/
 
 	}
 

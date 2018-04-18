@@ -79,6 +79,7 @@ public class GameManager {
 					tempHuman.attackToRobot(tempRobot);
 					tempHuman.setReloadTime(0);
 
+
 				}
 
 				// damage human as robot
@@ -108,8 +109,6 @@ public class GameManager {
 						tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
 						if (tempRobot.getHealth() <= 0) {
 							// robots.remove(tempRobot);
-
-
 							tempRobot.setToBeRemoved();
 						}
 					}
