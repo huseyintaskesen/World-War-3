@@ -3,6 +3,7 @@
  */
 package game;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -13,6 +14,7 @@ public abstract class GameElement {
 	private int x;
 	private int y;
 	private boolean toBeRemoved;
+	private Image img;
 	
 	public GameElement(int x,int y) throws SlickException{
 		this.x=x;
@@ -34,6 +36,14 @@ public abstract class GameElement {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public void setImg(Image img) {
+		this.img = img;
+	}
+	
+	public void draw() {
+		img.draw(getX(), getY(), 50, 50);
 	}
 	
 	public boolean isToBeRemoved() {

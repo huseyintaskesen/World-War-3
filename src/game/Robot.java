@@ -11,12 +11,11 @@ import org.newdawn.slick.SlickException;
  *
  */
 public abstract class Robot extends GameElement{
-	protected int damage;
-	protected int health;
-	protected int curSpeed;
-	protected Image img;
-	protected boolean isRunning;
-	
+	private int damage;
+	private int health;
+	private int curSpeed;
+	private boolean isRunning;
+	private int attackTime;
 	
 	public Robot(int x,int y) throws SlickException{
 		super(x, y);
@@ -27,12 +26,15 @@ public abstract class Robot extends GameElement{
 		health=health-damage;
 	}
 	
-	public void draw() {
-		img.draw(getX(), getY(), 50, 50);
-	}
-	
 	public int getDamage() {
 		return damage;
+	}
+
+	/**
+	 * @param damage the damage to set
+	 */
+	public void setDamage(int damage) {
+		this.damage = damage;
 	}
 
 	public int getHealth() {
@@ -47,8 +49,12 @@ public abstract class Robot extends GameElement{
 		return curSpeed;
 	}
 	
+	public void setSpeed(int speed) {
+		this.curSpeed=speed;
+	}
+	
 	public void attackToHuman(AttackerHuman shooter) {
-		shooter.takeDamage(damage);
+		shooter.takeDamage(getDamage());
 	}
 	public void updateLocation() {
 		setX(getX()-curSpeed/2);
@@ -65,5 +71,19 @@ public abstract class Robot extends GameElement{
 	public void stop() {
 		curSpeed=0;
 		isRunning=false;
+	}
+
+	/**
+	 * @return the attackTime
+	 */
+	public int getAttackTime() {
+		return attackTime;
+	}
+
+	/**
+	 * @param attackTime the attackTime to set
+	 */
+	public void setAttackTime(int attackTime) {
+		this.attackTime = attackTime;
 	}
 }

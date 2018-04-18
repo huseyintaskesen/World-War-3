@@ -13,16 +13,11 @@ import org.newdawn.slick.SlickException;
 public abstract class Human extends GameElement{
 	private int damage;
 	private int health;
-	private Image img;
+	
 	
 	
 	public void setDamage(int damage) {
 		this.damage = damage;
-	}
-
-
-	public void setImg(Image img) {
-		this.img = img;
 	}
 
 
@@ -36,9 +31,7 @@ public abstract class Human extends GameElement{
 		health=health-damage;
 	}
 	
-	public void draw() {
-		img.draw(getX(), getY(), 50, 50);
-	}
+	
 	
 	public int getDamage() {
 		return damage;

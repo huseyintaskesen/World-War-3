@@ -46,6 +46,9 @@ public class GameManager {
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
 		}
+		for (int i = 0; i < robots.size(); i++) {
+			robots.get(i).setAttackTime(robots.get(i).getAttackTime()+delta);
+		}
 		
 		//update the map
 		for (int i = 0; i < robots.size(); i++) {
@@ -71,15 +74,18 @@ public class GameManager {
 				}
 				// fire a bullet
 				if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
-						&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) && tempHuman.getReloadTime() >= 1000) {
+						&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) 
+						&& tempHuman.getReloadTime() >= 1000) {
 					tempHuman.attackToRobot(tempRobot);
 					tempHuman.setReloadTime(0);
 
 				}
 
 				// damage human as robot
-				if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
-						&& tempHuman.getX() - 10 <= tempRobot.getX()) {
+				if (((tempHuman.getX() + 60) > tempRobot.getX()) 
+						&& tempHuman.getY() == tempRobot.getY()
+						&& tempHuman.getX() - 10 <= tempRobot.getX()
+						&& tempRobot.getAttackTime()>=1000) {
 
 					if (tempHuman.getHealth() > 0) {
 						tempRobot.stop();
@@ -90,6 +96,8 @@ public class GameManager {
 						tempRobot.run();
 						j = -1;
 					}
+					
+					tempRobot.setAttackTime(0);
 				}
 
 				// damage robot as bullet
@@ -132,15 +140,19 @@ public class GameManager {
 	public void handleRemovals() {
 		for (int i = 0; i < humans.size(); i++) {
 			AttackerHuman tempHuman = humans.get(i); 
-			if (tempHuman.isToBeRemoved())
+			if (tempHuman.isToBeRemoved()) {
 				humans.remove(i);
+				i--;
+			}
 //			for (int k = 0; k < tempHuman.getBullets().size(); k++) {
 //				
 //			}
 		}
 		for (int i = 0; i < robots.size(); i++) {
-			if (robots.get(i).isToBeRemoved())
+			if (robots.get(i).isToBeRemoved()) {
 				robots.remove(i);
+				i--;
+			}
 		}
 		
 	}
