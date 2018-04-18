@@ -6,6 +6,8 @@ package game;
 import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+
 
 /**
  * @author ibrahim
@@ -20,12 +22,13 @@ public class GameManager {
 	private static ArrayList<Robot> robots;
 	MapManager mapManager;
 	int score = 0;
+
 	/*
 	 * A private Constructor prevents any other class from instantiating.
 	 */
 	private GameManager() {
 		mapManager = MapManager.getInstance();
-		
+
 		
 		// lists of game objects are initialized
 		humans = new ArrayList<AttackerHuman>();
@@ -63,6 +66,7 @@ public class GameManager {
 
 				// gameover when one robot reaches basement
 				if (tempRobot.getX() <= 100) {
+
 					return false;
 				}
 				// fire a bullet
@@ -70,6 +74,7 @@ public class GameManager {
 						&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) && tempHuman.getReloadTime() >= 1000) {
 					tempHuman.attackToRobot(tempRobot);
 					tempHuman.setReloadTime(0);
+
 				}
 
 				// damage human as robot
@@ -95,6 +100,8 @@ public class GameManager {
 						tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
 						if (tempRobot.getHealth() <= 0) {
 							// robots.remove(tempRobot);
+
+
 							tempRobot.setToBeRemoved();
 						}
 					}

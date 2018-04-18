@@ -24,6 +24,9 @@ public class Play extends BasicGameState {
 	Image pause; // pause menu
 	Image land;
 	private Music music;
+	public Sound ridiculousSound;
+	public Sound shitSound;
+	public Sound shotSound;
 
 	// declare lists of game objects
 //	ArrayList<AttackerHuman> humans;
@@ -61,6 +64,14 @@ public class Play extends BasicGameState {
 		music = new Music("res/soundtrack.aiff");
 		music.loop();
 		music.setVolume(0.0f);
+		// sound
+		ridiculousSound = new Sound("this-is-ridiculous.wav");
+		shitSound = new Sound("shit.wav");
+		shotSound = new Sound("fire-shot.wav");
+		ridiculousSound.play();
+		shitSound.play();
+		shotSound.play();
+
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -271,6 +282,7 @@ public class Play extends BasicGameState {
 	private void gameover(StateBasedGame sbg) throws SlickException {
 		gameManager.resetMap();
 		sbg.enterState(4);
+		shitSound.play();
 	}
 
 	/**
