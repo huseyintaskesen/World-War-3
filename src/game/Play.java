@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package game;
 
@@ -17,7 +17,6 @@ public class Play extends BasicGameState {
 	public String mouse = "No input yet"; // To show mouse coordinates, for testing purposes
 
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
-	int timePassed2 = 0; // used for AI
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
 	int score = 0;
 
@@ -25,15 +24,12 @@ public class Play extends BasicGameState {
 	Image pause; // pause menu
 	Image land;
 	private Music music;
-	public Sound ridiculousSound;
-	public Sound shitSound;
-	public boolean isgameOver;
 
 	// declare lists of game objects
 //	ArrayList<AttackerHuman> humans;
 //	ArrayList<Robot> robots;
-	
-	
+
+
 	GameManager gameManager;
 
 
@@ -54,7 +50,7 @@ public class Play extends BasicGameState {
 //		// lists of game objects are initialized
 //		humans = new ArrayList<AttackerHuman>();
 //		robots = new ArrayList<Robot>();
-		
+
 		gameManager = GameManager.getInstance();
 
 		land = new Image("res/Land.png");
@@ -65,13 +61,6 @@ public class Play extends BasicGameState {
 		music = new Music("res/soundtrack.aiff");
 		music.loop();
 		music.setVolume(0.0f);
-		isgameOver = true;
-		/* sound
-		ridiculousSound = new Sound("res/this-is-ridiculous.wav");
-		shitSound = new Sound("res/shit.wav");
-		ridiculousSound.play();
-		shitSound.play();*/
-
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -139,10 +128,9 @@ public class Play extends BasicGameState {
 
 		} else {// Pause flag is down, game is running
 
-			
+
 			// calculate time passed
 			timePassed += delta;
-			timePassed2 += delta;
 //			for (int i = 0; i < humans.size(); i++) {
 //				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
 //			}
@@ -167,7 +155,6 @@ public class Play extends BasicGameState {
 					}
 				}
 
-
 				// update the map
 //				for (int i = 0; i < robots.size(); i++) {
 //					robots.get(i).updateLocation();
@@ -184,9 +171,9 @@ public class Play extends BasicGameState {
 
 				if(!gameManager.handleCollisions())
 					gameover(sbg);
-				
-				
-				
+
+
+
 //				for (int i = 0; i < humans.size(); i++) {
 //
 //					for (int j = 0; j < robots.size(); j++) {
@@ -200,7 +187,7 @@ public class Play extends BasicGameState {
 //						}
 //						// fire a bullet
 //						if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
-//								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) 
+//								&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20)
 //								&& tempHuman.getReloadTime() >= 1000) {
 //							tempHuman.attackToRobot(tempRobot);
 //							tempHuman.setReloadTime(0);
@@ -240,25 +227,24 @@ public class Play extends BasicGameState {
 				////////////////////////////
 				////// handle removals
 				////////////////////////////
-				
+
 				gameManager.handleRemovals();
 //				for (int i = 0; i < humans.size(); i++) {
-//					AttackerHuman tempHuman = humans.get(i); 
+//					AttackerHuman tempHuman = humans.get(i);
 //					if (tempHuman.isToBeRemoved())
 //						humans.remove(i);
 ////					for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-////						
+////
 ////					}
 //				}
 //				for (int i = 0; i < robots.size(); i++) {
 //					if (robots.get(i).isToBeRemoved())
 //						robots.remove(i);
 //				}
-				
+
 
 				// reset the timer
 				timePassed = 0;
-				timePassed2 = 0;
 			}
 
 			// Pause button
@@ -276,23 +262,20 @@ public class Play extends BasicGameState {
 				}
 			}
 		}
-
-
-
-	/**
-	 * @throws SlickException
-	 * 
-	 */
-	private void gameover(StateBasedGame sbg) throws SlickException {
-		gameManager.resetMap();
-		sbg.enterState(4);
-		shitSound.play();
-		isgameOver = true;
 	}
 
 	/**
 	 * @throws SlickException
-	 * 
+	 *
+	 */
+	private void gameover(StateBasedGame sbg) throws SlickException {
+		gameManager.resetMap();
+		sbg.enterState(4);
+	}
+
+	/**
+	 * @throws SlickException
+	 *
 	 */
 //	private void resetMap() throws SlickException {
 //		score = 0;
