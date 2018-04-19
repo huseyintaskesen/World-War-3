@@ -17,6 +17,7 @@ public class Play extends BasicGameState {
 	public String mouse = "No input yet"; // To show mouse coordinates, for testing purposes
 
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
+	int timePassed2 = 0; // used for AI
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
 	int score = 0;
 
@@ -26,6 +27,7 @@ public class Play extends BasicGameState {
 	private Music music;
 	public Sound ridiculousSound;
 	public Sound shitSound;
+	public boolean isgameOver;
 
 	// declare lists of game objects
 //	ArrayList<AttackerHuman> humans;
@@ -63,6 +65,7 @@ public class Play extends BasicGameState {
 		music = new Music("res/soundtrack.aiff");
 		music.loop();
 		music.setVolume(0.0f);
+		isgameOver = true;
 		/* sound
 		ridiculousSound = new Sound("res/this-is-ridiculous.wav");
 		shitSound = new Sound("res/shit.wav");
@@ -139,6 +142,7 @@ public class Play extends BasicGameState {
 			
 			// calculate time passed
 			timePassed += delta;
+			timePassed2 += delta;
 //			for (int i = 0; i < humans.size(); i++) {
 //				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
 //			}
@@ -149,7 +153,7 @@ public class Play extends BasicGameState {
 			// update the map every 0.02 seconds(50 FPS)
 			if (timePassed > 20) {
 
-				
+
 				gameManager.gameUpdate(timePassed);
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
@@ -162,6 +166,7 @@ public class Play extends BasicGameState {
 						//robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 					}
 				}
+
 
 				// update the map
 //				for (int i = 0; i < robots.size(); i++) {
@@ -253,6 +258,7 @@ public class Play extends BasicGameState {
 
 				// reset the timer
 				timePassed = 0;
+				timePassed2 = 0;
 			}
 
 			// Pause button
@@ -270,7 +276,8 @@ public class Play extends BasicGameState {
 				}
 			}
 		}
-	}
+
+
 
 	/**
 	 * @throws SlickException
@@ -280,6 +287,7 @@ public class Play extends BasicGameState {
 		gameManager.resetMap();
 		sbg.enterState(4);
 		shitSound.play();
+		isgameOver = true;
 	}
 
 	/**
