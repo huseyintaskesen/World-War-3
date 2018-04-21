@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game;
+package model;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -20,6 +20,7 @@ public class Shooter extends AttackerHuman{
 		setDamage(2);
 		setHealth(startHealth);
 		setRange(400);//TODO to be changed
+		setCost(150);
 	}
 
 

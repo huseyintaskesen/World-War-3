@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game;
+package model;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,11 @@ public abstract class AttackerHuman extends Human {
 	
 	public void attackToRobot(Robot casual) throws SlickException {
 		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
+<<<<<<< HEAD:src/game/AttackerHuman.java
 		shotSound.play(0.3f,0.3f);
+=======
+		shotSound.play(0.5f,0.1f);
+>>>>>>> 84ebd33eb9109338882c3e668565479fb78e276b:src/model/AttackerHuman.java
 	}
 
 	public int getReloadTime() {

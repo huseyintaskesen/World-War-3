@@ -1,12 +1,17 @@
 /**
  * 
  */
-package game;
+package controller;
 
 import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+
+import model.AttackerHuman;
+import model.Casual;
+import model.Robot;
+import model.Shooter;
+import view.MapManager;
 
 
 /**
