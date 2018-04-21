@@ -1,13 +1,17 @@
 /**
  *
  */
-package game;
+package view;
 
 import java.awt.Font;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
+
+import controller.GameManager;
+import model.Casual;
+import model.Shooter;
 
 public class Play extends BasicGameState {
 

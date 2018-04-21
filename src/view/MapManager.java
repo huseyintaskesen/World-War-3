@@ -1,9 +1,12 @@
 /**
  * 
  */
-package game;
+package view;
 
 import java.util.ArrayList;
+
+import model.AttackerHuman;
+import model.Robot;
 
 /**
  * @author ibrahim

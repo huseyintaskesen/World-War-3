@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game;
+package model;
 
 /**
  * @author ibrahim

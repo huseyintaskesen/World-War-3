@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game;
+package view;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;

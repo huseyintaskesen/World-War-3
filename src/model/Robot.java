@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game;
+package model;
 
 import org.newdawn.slick.SlickException;
 
