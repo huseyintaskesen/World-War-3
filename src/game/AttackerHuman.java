@@ -50,7 +50,7 @@ public abstract class AttackerHuman extends Human {
 	
 	public void attackToRobot(Robot casual) throws SlickException {
 		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
-		shotSound.play(0.5f,0.5f);
+		shotSound.play(0.5f,0.1f);
 	}
 
 	public int getReloadTime() {

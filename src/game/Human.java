@@ -3,7 +3,7 @@
  */
 package game;
 
-import org.newdawn.slick.Image;
+
 import org.newdawn.slick.SlickException;
 
 /**
@@ -13,18 +13,28 @@ import org.newdawn.slick.SlickException;
 public abstract class Human extends GameElement{
 	private int damage;
 	private int health;
+	private int cost;
 	
+	public Human(int x,int y) throws SlickException{
+		super(x, y);
+		
+	}
 	
-	
+	public int getCost() {
+		return cost;
+	}
+
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
 	public void setDamage(int damage) {
 		this.damage = damage;
 	}
 
 
-	public Human(int x,int y) throws SlickException{
-		super(x, y);
-		
-	}
+	
 	
 	
 	public void takeDamage(int damage) {

@@ -3,7 +3,6 @@
  */
 package game;
 
-import java.util.ArrayList;
 import java.awt.Font;
 
 import org.lwjgl.input.Mouse;

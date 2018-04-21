@@ -20,6 +20,7 @@ public class Shooter extends AttackerHuman{
 		setDamage(2);
 		setHealth(startHealth);
 		setRange(400);//TODO to be changed
+		setCost(150);
 	}
 
 
