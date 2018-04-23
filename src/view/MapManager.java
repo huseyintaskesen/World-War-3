@@ -5,8 +5,9 @@ package view;
 
 import java.util.ArrayList;
 
-import model.AttackerHuman;
-import model.Robot;
+
+import model.RangedAttacker;
+import model.RobotSide;
 
 /**
  * @author ibrahim
@@ -28,7 +29,7 @@ public class MapManager {
 		return singleton;
 	}
 	
-	public void drawAttackerHumans(ArrayList<AttackerHuman> humans) {
+	public void drawAttackerHumans(ArrayList<RangedAttacker> humans) {
 
 		for (int i = 0; i < humans.size(); i++) {
 			humans.get(i).draw();
@@ -41,7 +42,7 @@ public class MapManager {
 	/**
 	 * @param robots
 	 */
-	public void drawRobots(ArrayList<Robot> robots) {
+	public void drawRobots(ArrayList<RobotSide> robots) {
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).draw();
 		}
