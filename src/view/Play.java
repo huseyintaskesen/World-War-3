@@ -188,24 +188,13 @@ public class Play extends BasicGameState {
 				////////////////////////////
 
 				gameManager.handleRemovals();
-//				for (int i = 0; i < humans.size(); i++) {
-//					AttackerHuman tempHuman = humans.get(i);
-//					if (tempHuman.isToBeRemoved())
-//						humans.remove(i);
-////					for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-////
-////					}
-//				}
-//				for (int i = 0; i < robots.size(); i++) {
-//					if (robots.get(i).isToBeRemoved())
-//						robots.remove(i);
-//				}
+
 
 
 				// reset the timer
 				timePassed = 0;
 			}
-
+			
 			// Pause button
 			if ((1031 < xpos && xpos < 1095) && (15 < ypos && ypos < 79)) {
 				if (input.isMouseButtonDown(0)) {

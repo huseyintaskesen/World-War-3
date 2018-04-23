@@ -22,7 +22,10 @@ public abstract class Robot extends GameElement{
 	}
 	
 	public void takeDamage(int damage) {
-		health=health-damage;
+		if(health<=0)
+			setToBeRemoved();
+		else
+			health=health-damage;
 	}
 	
 	public int getDamage() {

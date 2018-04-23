@@ -38,7 +38,10 @@ public abstract class Human extends GameElement{
 	
 	
 	public void takeDamage(int damage) {
-		health=health-damage;
+		if(health<=0)
+			setToBeRemoved();
+		else
+			health=health-damage;
 	}
 	
 	

@@ -71,9 +71,8 @@ public class GameManager {
 
 	public boolean handleCollisions() throws SlickException {
 		for (int i = 0; i < humans.size(); i++) {
-
-			for (int j = 0; j < robots.size(); j++) {
-				AttackerHuman tempHuman = humans.get(i);
+			AttackerHuman tempHuman = humans.get(i);
+			for (int j = 0; j < robots.size(); j++) {			
 				Robot tempRobot = robots.get(j);
 
 				// gameover when one robot reaches basement
@@ -89,22 +88,7 @@ public class GameManager {
 
 				}
 
-				// damage human as robot
-				if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
-						&& tempHuman.getX() - 10 <= tempRobot.getX() && tempRobot.getAttackTime() >= 1000) {
-
-					if (tempHuman.getHealth() > 0) {
-						tempRobot.stop();
-						tempRobot.attackToHuman(tempHuman);
-					}
-					if (tempHuman.getHealth() <= 0 && !tempRobot.isRunning()) {
-						tempHuman.setToBeRemoved();
-						tempRobot.run();
-						j = -1;
-					}
-
-					tempRobot.setAttackTime(0);
-				}
+				
 
 				// damage robot as bullet
 				for (int k = 0; k < tempHuman.getBullets().size(); k++) {
@@ -112,16 +96,57 @@ public class GameManager {
 							&& tempHuman.getY() == tempRobot.getY()
 							&& tempHuman.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
 						tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
-						if (tempRobot.getHealth() <= 0) {
-							// robots.remove(tempRobot);
-							tempRobot.setToBeRemoved();
-						}
+//						if (tempRobot.getHealth() <= 0) {
+//							// robots.remove(tempRobot);
+//							tempRobot.setToBeRemoved();
+//						}
 					}
 				}
+				
+				// damage human as robot
+				if (((tempHuman.getX() + 60) > tempRobot.getX()) 
+						&& tempHuman.getY() == tempRobot.getY()
+						&& tempHuman.getX() - 10 <= tempRobot.getX() 
+						&& tempRobot.getAttackTime() >= 1000) {
 
+					tempRobot.stop();
+					tempRobot.attackToHuman(tempHuman);
+
+					tempRobot.setAttackTime(0);
+				}
 			}
 		}
 		return true;
+	}
+	
+	public void handleRemovals() {
+		for (int i = 0; i < humans.size(); i++) {
+			AttackerHuman tempHuman = humans.get(i);
+			if (tempHuman.isToBeRemoved()) {
+				for (int j = 0; j < robots.size(); j++) {
+					Robot tempRobot = robots.get(j);
+					
+					// delete marked robots
+					if(tempRobot.isToBeRemoved()) {
+						robots.remove(j);
+						j--;
+					}
+					
+					// make the stopped robots move
+					if (((tempHuman.getX() + 60) > tempRobot.getX()) 
+							&& tempHuman.getY() == tempRobot.getY()
+							&& tempHuman.getX() - 10 <= tempRobot.getX() ) {
+						tempRobot.run();
+					}
+				}
+				
+				// delete marked humans
+				humans.remove(i);
+				i--;
+			}
+
+		}
+
 	}
 
 	/**
@@ -149,26 +174,7 @@ public class GameManager {
 	/**
 	 * 
 	 */
-	public void handleRemovals() {
-		for (int i = 0; i < humans.size(); i++) {
-			AttackerHuman tempHuman = humans.get(i);
-			if (tempHuman.isToBeRemoved()) {
-				humans.remove(i);
-				i--;
-			}
-			// for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-			//
-			// }
-		}
-		for (int i = 0; i < robots.size(); i++) {
-			if (robots.get(i).isToBeRemoved()) {
-				robots.remove(i);
-				i--;
-			}
-		}
-
-	}
-
+	
 	public boolean checkBalance(int humanCode) {
 		if (user.getBalance() < 150) {
 			System.out.println("not enough diamonds!");
