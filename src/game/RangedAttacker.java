@@ -1,28 +1,19 @@
-/**
- * 
- */
 package game;
 
 import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 
-/**
- * @author ibrahim
- *
- */
-public abstract class AttackerHuman extends Human {
-	
-	private ArrayList<Bullet> bullets;
+
+
+public abstract class RangedAttacker extends Human {
 	private int range;
+	private ArrayList<Bullet> bullets;
 	private int reloadTime;
-	/**
-	 * @param x
-	 * @param y
-	 * @throws SlickException
-	 */
-	public AttackerHuman(int x, int y) throws SlickException {
-		super(x, y);
+	
+	
+	public RangedAttacker(int x, int y) throws SlickException {
+		super(x,y);
 		bullets = new ArrayList<Bullet>();
 	}
 	
@@ -54,6 +45,4 @@ public abstract class AttackerHuman extends Human {
 	public void setReloadTime(int reloadTime) {
 		this.reloadTime = reloadTime;
 	}
-	
-	
 }
