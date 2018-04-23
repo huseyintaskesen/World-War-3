@@ -12,6 +12,7 @@ import org.newdawn.slick.state.*;
 import controller.GameManager;
 import model.Casual;
 import model.Shooter;
+import model.User;
 
 public class Play extends BasicGameState {
 
@@ -33,7 +34,8 @@ public class Play extends BasicGameState {
 //	ArrayList<Robot> robots;
 
 
-	GameManager gameManager;
+	private GameManager gameManager;
+	private User user;
 
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
@@ -55,7 +57,9 @@ public class Play extends BasicGameState {
 //		robots = new ArrayList<Robot>();
 
 		gameManager = GameManager.getInstance();
-
+		user = new User("Dummy");//TODO name
+		gameManager.defineUser(user);
+		
 		land = new Image("res/Land.png");
 
 		gameManager.resetMap();
@@ -89,7 +93,7 @@ public class Play extends BasicGameState {
 		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
-		g.drawString("250", 380, 30);
+		g.drawString(""+user.getBalance(), 380, 30);
 		g.drawString("Score: " + score / 1000, 600, 30);
 	}
 

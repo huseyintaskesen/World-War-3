@@ -11,6 +11,7 @@ import model.AttackerHuman;
 import model.Casual;
 import model.Robot;
 import model.Shooter;
+import model.User;
 import view.MapManager;
 
 
@@ -21,6 +22,7 @@ import view.MapManager;
 public class GameManager {
 
 	private static GameManager singleton = new GameManager();
+	private static User user;
 
 	// declare lists of game objects
 	private static ArrayList<AttackerHuman> humans;
@@ -45,7 +47,9 @@ public class GameManager {
 		return singleton;
 	}
 
-	
+	public void defineUser(User u) {
+		user = u;
+	}
 	public void gameUpdate(int delta) {
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
@@ -128,7 +132,15 @@ public class GameManager {
 	 * @param shooter
 	 */
 	public void addAttackerHuman(AttackerHuman attackerHuman) {
-		humans.add(attackerHuman);
+		if(checkBalance(1)) {
+			updateBalance(-150);
+			humans.add(attackerHuman);
+		}
+			
+	}
+	
+	public void updateBalance(int change) {
+		user.setBalance(user.getBalance()+change);
 	}
 
 	/**
@@ -159,6 +171,15 @@ public class GameManager {
 			}
 		}
 		
+	}
+	
+	public boolean checkBalance(int humanCode) {
+		if(user.getBalance()<150) {	
+			System.out.println("not enough diamonds!");
+			return false;
+		}
+		else
+			return true;
 	}
 	
 	public void resetMap() throws SlickException {
