@@ -32,6 +32,6 @@ public class Bullet extends GameElement{
 	}
 	
 	public void draw() {
-		bullet.draw(getX(), getY(), 25, 10);
+		bullet.draw(getX()+25, getY()+25, 25, 10);
 	}
 }

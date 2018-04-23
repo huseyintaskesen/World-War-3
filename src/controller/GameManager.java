@@ -14,7 +14,6 @@ import model.Shooter;
 import model.User;
 import view.MapManager;
 
-
 /**
  * @author ibrahim
  *
@@ -22,7 +21,7 @@ import view.MapManager;
 public class GameManager {
 
 	private static GameManager singleton = new GameManager();
-	private static User user;
+	private User user;
 
 	// declare lists of game objects
 	private static ArrayList<AttackerHuman> humans;
@@ -36,7 +35,6 @@ public class GameManager {
 	private GameManager() {
 		mapManager = MapManager.getInstance();
 
-		
 		// lists of game objects are initialized
 		humans = new ArrayList<AttackerHuman>();
 		robots = new ArrayList<Robot>();
@@ -50,16 +48,17 @@ public class GameManager {
 	public void defineUser(User u) {
 		user = u;
 	}
+
 	public void gameUpdate(int delta) {
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
-			humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
+			humans.get(i).setReloadTime(humans.get(i).getReloadTime() + delta);
 		}
 		for (int i = 0; i < robots.size(); i++) {
-			robots.get(i).setAttackTime(robots.get(i).getAttackTime()+delta);
+			robots.get(i).setAttackTime(robots.get(i).getAttackTime() + delta);
 		}
-		
-		//update the map
+
+		// update the map
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).updateLocation();
 		}
@@ -69,6 +68,7 @@ public class GameManager {
 			}
 		}
 	}
+
 	public boolean handleCollisions() throws SlickException {
 		for (int i = 0; i < humans.size(); i++) {
 
@@ -83,19 +83,15 @@ public class GameManager {
 				}
 				// fire a bullet
 				if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
-						&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) 
-						&& tempHuman.getReloadTime() >= 1000) {
+						&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) && tempHuman.getReloadTime() >= 1000) {
 					tempHuman.attackToRobot(tempRobot);
 					tempHuman.setReloadTime(0);
-
 
 				}
 
 				// damage human as robot
-				if (((tempHuman.getX() + 60) > tempRobot.getX()) 
-						&& tempHuman.getY() == tempRobot.getY()
-						&& tempHuman.getX() - 10 <= tempRobot.getX()
-						&& tempRobot.getAttackTime()>=1000) {
+				if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
+						&& tempHuman.getX() - 10 <= tempRobot.getX() && tempRobot.getAttackTime() >= 1000) {
 
 					if (tempHuman.getHealth() > 0) {
 						tempRobot.stop();
@@ -106,7 +102,7 @@ public class GameManager {
 						tempRobot.run();
 						j = -1;
 					}
-					
+
 					tempRobot.setAttackTime(0);
 				}
 
@@ -132,21 +128,21 @@ public class GameManager {
 	 * @param shooter
 	 */
 	public void addAttackerHuman(AttackerHuman attackerHuman) {
-		if(checkBalance(1)) {
+		if (checkBalance(1)) {
 			updateBalance(-150);
 			humans.add(attackerHuman);
 		}
-			
+
 	}
-	
+
 	public void updateBalance(int change) {
-		user.setBalance(user.getBalance()+change);
+		user.setBalance(user.getBalance() + change);
 	}
 
 	/**
 	 * @param casual
 	 */
-	public void addRobot(Robot robot) {	
+	public void addRobot(Robot robot) {
 		robots.add(robot);
 	}
 
@@ -155,14 +151,14 @@ public class GameManager {
 	 */
 	public void handleRemovals() {
 		for (int i = 0; i < humans.size(); i++) {
-			AttackerHuman tempHuman = humans.get(i); 
+			AttackerHuman tempHuman = humans.get(i);
 			if (tempHuman.isToBeRemoved()) {
 				humans.remove(i);
 				i--;
 			}
-//			for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-//				
-//			}
+			// for (int k = 0; k < tempHuman.getBullets().size(); k++) {
+			//
+			// }
 		}
 		for (int i = 0; i < robots.size(); i++) {
 			if (robots.get(i).isToBeRemoved()) {
@@ -170,18 +166,17 @@ public class GameManager {
 				i--;
 			}
 		}
-		
+
 	}
-	
+
 	public boolean checkBalance(int humanCode) {
-		if(user.getBalance()<150) {	
+		if (user.getBalance() < 150) {
 			System.out.println("not enough diamonds!");
 			return false;
-		}
-		else
+		} else
 			return true;
 	}
-	
+
 	public void resetMap() throws SlickException {
 		score = 0;
 		humans.clear();
@@ -189,7 +184,7 @@ public class GameManager {
 		robots.clear();
 		robots.add(new Casual(600, 100));
 	}
-	
+
 	// to draw game objects
 	public void draw() {
 		mapManager.drawAttackerHumans(humans);
