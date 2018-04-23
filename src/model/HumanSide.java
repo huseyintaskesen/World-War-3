@@ -10,12 +10,12 @@ import org.newdawn.slick.SlickException;
  * @author ibrahim
  *
  */
-public abstract class Human extends GameElement{
+public abstract class HumanSide extends GameElement{
 	private int damage;
 	private int health;
 	private int cost;
 	
-	public Human(int x,int y) throws SlickException{
+	public HumanSide(int x,int y) throws SlickException{
 		super(x, y);
 		
 	}

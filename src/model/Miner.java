@@ -1,4 +1,4 @@
-package game;
+package model;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -10,5 +10,6 @@ public class Miner extends Passive {
 		setImg(new Image("res/Robots & Humans/miner.png"));
 		
 		setHealth(startHealth);
+		setCost(50);
 	}
 }

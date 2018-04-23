@@ -1,4 +1,4 @@
-package game;
+package model;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -11,6 +11,6 @@ public class Swordsman extends MeleeAttacker {
 		
 		setDamage(1);
 		setHealth(startHealth);
-		setRange(0);
+		setCost(100);
 	}
 }

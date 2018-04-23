@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 
-import model.AttackerHuman;
+import model.RangedAttacker;
 import model.Casual;
-import model.Robot;
+import model.RobotSide;
 import model.Shooter;
 import model.User;
 import view.MapManager;
@@ -24,8 +24,8 @@ public class GameManager {
 	private User user;
 
 	// declare lists of game objects
-	private static ArrayList<AttackerHuman> humans;
-	private static ArrayList<Robot> robots;
+	private static ArrayList<RangedAttacker> humans;
+	private static ArrayList<RobotSide> robots;
 	MapManager mapManager;
 	int score = 0;
 
@@ -36,8 +36,8 @@ public class GameManager {
 		mapManager = MapManager.getInstance();
 
 		// lists of game objects are initialized
-		humans = new ArrayList<AttackerHuman>();
-		robots = new ArrayList<Robot>();
+		humans = new ArrayList<RangedAttacker>();
+		robots = new ArrayList<RobotSide>();
 	}
 
 	/* Static 'instance' method */
@@ -71,9 +71,9 @@ public class GameManager {
 
 	public boolean handleCollisions() throws SlickException {
 		for (int i = 0; i < humans.size(); i++) {
-			AttackerHuman tempHuman = humans.get(i);
+			RangedAttacker tempHuman = humans.get(i);
 			for (int j = 0; j < robots.size(); j++) {			
-				Robot tempRobot = robots.get(j);
+				RobotSide tempRobot = robots.get(j);
 
 				// gameover when one robot reaches basement
 				if (tempRobot.getX() <= 100) {
@@ -125,10 +125,10 @@ public class GameManager {
 	
 	public void handleHumanRemovals() {
 		for (int i = 0; i < humans.size(); i++) {
-			AttackerHuman tempHuman = humans.get(i);
+			RangedAttacker tempHuman = humans.get(i);
 			if (tempHuman.isToBeRemoved()) {
 				for (int j = 0; j < robots.size(); j++) {
-					Robot tempRobot = robots.get(j);
+					RobotSide tempRobot = robots.get(j);
 			
 					// make the stopped robots move
 					if (((tempHuman.getX() + 60) > tempRobot.getX()) 
@@ -149,7 +149,7 @@ public class GameManager {
 
 	public void handleRobotRemovals() {
 		for (int i = 0; i < robots.size(); i++) {
-			Robot tempRobot = robots.get(i);
+			RobotSide tempRobot = robots.get(i);
 			
 			// delete marked robots
 			if(tempRobot.isToBeRemoved()) {
@@ -162,7 +162,7 @@ public class GameManager {
 	/**
 	 * @param shooter
 	 */
-	public void addAttackerHuman(AttackerHuman attackerHuman) {
+	public void addAttackerHuman(RangedAttacker attackerHuman) {
 		if (checkBalance(1)) {
 			updateBalance(-150);
 			humans.add(attackerHuman);
@@ -177,7 +177,7 @@ public class GameManager {
 	/**
 	 * @param casual
 	 */
-	public void addRobot(Robot robot) {
+	public void addRobot(RobotSide robot) {
 		robots.add(robot);
 	}
 

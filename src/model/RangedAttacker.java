@@ -12,7 +12,7 @@ import org.newdawn.slick.Sound;
  * @author ibrahim
  *
  */
-public abstract class AttackerHuman extends Human {
+public abstract class RangedAttacker extends HumanSide {
 	
 	private ArrayList<Bullet> bullets;
 	private int range;
@@ -24,7 +24,7 @@ public abstract class AttackerHuman extends Human {
 	 * @param y
 	 * @throws SlickException
 	 */
-	public AttackerHuman(int x, int y) throws SlickException {
+	public RangedAttacker(int x, int y) throws SlickException {
 		super(x, y);
 		bullets = new ArrayList<Bullet>();
 		shotSound = new Sound("res/fire-shot.wav");
@@ -48,7 +48,7 @@ public abstract class AttackerHuman extends Human {
 		this.bullets = bullets;
 	}
 	
-	public void attackToRobot(Robot casual) throws SlickException {
+	public void attackToRobot(RobotSide casual) throws SlickException {
 		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
 		shotSound.play(0.3f,0.1f);
 	}

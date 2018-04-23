@@ -1,4 +1,4 @@
-package game;
+package model;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -12,5 +12,6 @@ public class Freezer extends RangedAttacker {
 		setHealth(startHealth);
 		setDamage(3);
 		setRange(400);
+		setCost(200);
 	}
 }

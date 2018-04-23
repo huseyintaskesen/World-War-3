@@ -9,14 +9,14 @@ import org.newdawn.slick.SlickException;
  * @author ibrahim
  *
  */
-public abstract class Robot extends GameElement{
+public abstract class RobotSide extends GameElement{
 	private int damage;
 	private int health;
 	private int curSpeed;
 	private boolean isRunning;
 	private int attackTime;
 	
-	public Robot(int x,int y) throws SlickException{
+	public RobotSide(int x,int y) throws SlickException{
 		super(x, y);
 		isRunning=true;
 	}
@@ -55,7 +55,7 @@ public abstract class Robot extends GameElement{
 		this.curSpeed=speed;
 	}
 	
-	public void attackToHuman(AttackerHuman shooter) {
+	public void attackToHuman(RangedAttacker shooter) {
 		shooter.takeDamage(getDamage());
 	}
 	public void updateLocation() {

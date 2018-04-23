@@ -1,4 +1,4 @@
-package game;
+package model;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -9,5 +9,6 @@ public class LandMine extends Passive {
 		super(x,y);
 		setImg(new Image("res/Robots & Humans/mine.png"));
 		setHealth(startHealth);
+		setCost(50);
 	}
 }

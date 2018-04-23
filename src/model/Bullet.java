@@ -26,7 +26,7 @@ public class Bullet extends GameElement{
 		setX(getX()+speed/2);
 	}
 	
-	public void damageRobot(Robot casual,AttackerHuman shooter) {
+	public void damageRobot(RobotSide casual,RangedAttacker shooter) {
 		casual.takeDamage(damage);
 		shooter.getBullets().remove(this);
 	}

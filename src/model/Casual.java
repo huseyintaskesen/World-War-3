@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
  * @author ibrahim
  *
  */
-public class Casual extends Robot{
+public class Casual extends RobotSide{
 	private final int startHealth=5;
 	private final int speed = 3;
 	
