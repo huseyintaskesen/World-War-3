@@ -187,7 +187,7 @@ public class Play extends BasicGameState {
 				////// handle removals
 				////////////////////////////
 
-				gameManager.handleRemovals();
+				//gameManager.handleRemovals();
 
 
 

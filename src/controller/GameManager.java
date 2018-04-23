@@ -100,9 +100,11 @@ public class GameManager {
 //							// robots.remove(tempRobot);
 //							tempRobot.setToBeRemoved();
 //						}
+						
 					}
+					
 				}
-				
+				handleRobotRemovals();
 				// damage human as robot
 				if (((tempHuman.getX() + 60) > tempRobot.getX()) 
 						&& tempHuman.getY() == tempRobot.getY()
@@ -114,24 +116,20 @@ public class GameManager {
 
 					tempRobot.setAttackTime(0);
 				}
+				
+				handleHumanRemovals();
 			}
 		}
 		return true;
 	}
 	
-	public void handleRemovals() {
+	public void handleHumanRemovals() {
 		for (int i = 0; i < humans.size(); i++) {
 			AttackerHuman tempHuman = humans.get(i);
 			if (tempHuman.isToBeRemoved()) {
 				for (int j = 0; j < robots.size(); j++) {
 					Robot tempRobot = robots.get(j);
-					
-					// delete marked robots
-					if(tempRobot.isToBeRemoved()) {
-						robots.remove(j);
-						j--;
-					}
-					
+			
 					// make the stopped robots move
 					if (((tempHuman.getX() + 60) > tempRobot.getX()) 
 							&& tempHuman.getY() == tempRobot.getY()
@@ -149,6 +147,18 @@ public class GameManager {
 
 	}
 
+	public void handleRobotRemovals() {
+		for (int i = 0; i < robots.size(); i++) {
+			Robot tempRobot = robots.get(i);
+			
+			// delete marked robots
+			if(tempRobot.isToBeRemoved()) {
+				robots.remove(i);
+				i--;
+			}
+		}
+	}
+	
 	/**
 	 * @param shooter
 	 */
