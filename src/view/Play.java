@@ -165,7 +165,8 @@ public class Play extends BasicGameState {
 				// added for first iteration demo, testing purposes
 				if ((100 < xpos && xpos < 1280) && (100 < ypos && ypos < 720)) {
 					if (input.isMousePressed(1)) {
-						gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+						//gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+						gameManager.addHuman(selectedElement,xpos,ypos);
 						//humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 					} else if (input.isMousePressed(2)) {
 						gameManager.addRobot(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
@@ -211,6 +212,11 @@ public class Play extends BasicGameState {
 			}
 			
 			
+			
+			if ((320 < xpos && xpos < 370) && (25 < ypos && ypos < 70)) {
+				if (input.isMouseButtonDown(0)) 
+					user.setBalance(99999);
+			}
 			/////////////
 			/// Human Selection
 			///////////

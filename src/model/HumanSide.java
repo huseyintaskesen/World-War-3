@@ -13,20 +13,20 @@ import org.newdawn.slick.SlickException;
 public abstract class HumanSide extends GameElement{
 	private int damage;
 	private int health;
-	private int cost;
+	private static int cost;
 	
 	public HumanSide(int x,int y) throws SlickException{
 		super(x, y);
 		
 	}
 	
-	public int getCost() {
+	public static int getCost() {
 		return cost;
 	}
 
 
 	public void setCost(int cost) {
-		this.cost = cost;
+		HumanSide.cost = cost;
 	}
 
 	public void setDamage(int damage) {

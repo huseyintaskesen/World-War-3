@@ -50,12 +50,8 @@ public abstract class RangedAttacker extends HumanSide {
 	
 	public void attackToRobot(RobotSide casual) throws SlickException {
 		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
-<<<<<<< HEAD:src/model/AttackerHuman.java
-		shotSound.play(0.3f,0.3f);
-		shotSound.play(0.5f,0.1f);
-=======
-		shotSound.play(0.3f,0.1f);
->>>>>>> 97161734757e089967b9f96440cbdc12da39e017:src/model/RangedAttacker.java
+		shotSound.play(1.0f,0.1f);
+
 	}
 
 	public int getReloadTime() {
