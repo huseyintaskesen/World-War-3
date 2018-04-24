@@ -43,7 +43,7 @@ public class Settings extends BasicGameState {
 		int xpos = Mouse.getX();
 		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
-		
+
 		if ((16 < xpos && xpos < 244) && (23 < ypos && ypos < 71)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(0);
