@@ -191,43 +191,52 @@ public class GameManager {
 	}
 
 	public void addHuman(int humanCode, int xpos, int ypos) throws SlickException {
+		int fixedX = (xpos - xpos % 100);
+		int fixedY = (ypos - ypos % 100);
+		
 		if (checkBalance(humanCode)) {
 			int cost=0;
-			if( (ypos - ypos % 100) >= 100 && (ypos - ypos % 100) <= 200);
-			firstRow++;
-			if( (ypos - ypos % 100) >= 200 && (ypos - ypos % 100) <= 300);
-			secondRow++;
-			if( (ypos - ypos % 100) >= 300 && (ypos - ypos % 100) <= 400);
-			thirdRow++;
-			if( (ypos - ypos % 100) >= 400 && (ypos - ypos % 100) <= 500);
-			fourthRow++;
-			if( (ypos - ypos % 100) >= 500 && (ypos - ypos % 100) <= 600);
-			fifthRow++;
-			if( (ypos - ypos % 100) >= 600 && (ypos - ypos % 100) <= 700);
-			sixthRow++;
+//			if( (ypos - ypos % 100) >= 100 && (ypos - ypos % 100) <= 200);
+//			firstRow++;
+//			if( (ypos - ypos % 100) >= 200 && (ypos - ypos % 100) <= 300);
+//			secondRow++;
+//			if( (ypos - ypos % 100) >= 300 && (ypos - ypos % 100) <= 400);
+//			thirdRow++;
+//			if( (ypos - ypos % 100) >= 400 && (ypos - ypos % 100) <= 500);
+//			fourthRow++;
+//			if( (ypos - ypos % 100) >= 500 && (ypos - ypos % 100) <= 600);
+//			fifthRow++;
+//			if( (ypos - ypos % 100) >= 600 && (ypos - ypos % 100) <= 700);
+//			sixthRow++;
+			
+			if(fixedY==100)// bu deðerleri fixlediðimiz için 100 ile 200 arasýnda olamaz zaten 100,200 gibi tam katlar olacak hep
+				firstRow++;
+			////// Böyle devam edebiliriz ama bence 6 farklý variable ile tutmak çok mantýklý deðil
+			////// bir array yapabiliriz ya da ben boolean arrayi düþünüyorum slot kontrol etmek için
+			////// direk o arrayden çekebiliriz deðerleri
 			switch (humanCode) {
 			case 1:
-				humans.add(new Miner((xpos - xpos % 100), (ypos - ypos % 100)));
+				humans.add(new Miner(fixedX, fixedY));
 				cost=Miner.getCost();
 				break;
 			case 2:
-				humans.add(new Swordsman((xpos - xpos % 100), (ypos - ypos % 100)));
+				humans.add(new Swordsman(fixedX, fixedY));
 				cost = Swordsman.getCost();
 				break;
 			case 3:
-				humans.add(new Freezer((xpos - xpos % 100), (ypos - ypos % 100)));
+				humans.add(new Freezer(fixedX, fixedY));
 				cost = Freezer.getCost();
 				break;
 			case 4:
-				humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+				humans.add(new Shooter(fixedX, fixedY));
 				cost = Shooter.getCost();
 				break;
 			case 5:
-				humans.add(new Obstacle((xpos - xpos % 100), (ypos - ypos % 100)));
+				humans.add(new Obstacle(fixedX, fixedY));
 				cost = Obstacle.getCost();
 				break;
 			case 6:
-				humans.add(new LandMine((xpos - xpos % 100), (ypos - ypos % 100)));
+				humans.add(new LandMine(fixedX, fixedY));
 				cost = LandMine.getCost();
 				break;
 
