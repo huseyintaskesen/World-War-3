@@ -21,6 +21,7 @@ public class Play extends BasicGameState {
 	public String mouse = "No input yet"; // To show mouse coordinates, for testing purposes
 
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
+	int timePassed2 = 0;
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
 	int score = 0;
 
@@ -149,6 +150,7 @@ public class Play extends BasicGameState {
 
 			// calculate time passed
 			timePassed += delta;
+			timePassed2 += delta;
 //			for (int i = 0; i < humans.size(); i++) {
 //				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
 //			}
@@ -157,6 +159,16 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
+			if(timePassed2>50)
+				{
+					gameManager.gameUpdate(timePassed2);
+
+					gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for first row
+					gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for second row
+					gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for third row
+					gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for fourth row
+					gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for fifth row
+				}
 			if (timePassed > 20) {
 
 
@@ -168,10 +180,12 @@ public class Play extends BasicGameState {
 						gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 						//humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 					} else if (input.isMousePressed(2)) {
+
 						gameManager.addRobot(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 						//robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 					}
 				}
+
 
 
 
@@ -194,6 +208,7 @@ public class Play extends BasicGameState {
 				// reset the timer
 				timePassed = 0;
 			}
+			timePassed2=0;
 			
 			// Pause button
 			if ((1031 < xpos && xpos < 1095) && (15 < ypos && ypos < 79)) {
