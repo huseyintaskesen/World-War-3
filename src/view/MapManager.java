@@ -5,7 +5,7 @@ package view;
 
 import java.util.ArrayList;
 
-
+import model.HumanSide;
 import model.RangedAttacker;
 import model.RobotSide;
 
@@ -28,7 +28,7 @@ public class MapManager {
 	public static MapManager getInstance() {
 		return singleton;
 	}
-	
+
 	public void drawAttackerHumans(ArrayList<RangedAttacker> humans) {
 
 		for (int i = 0; i < humans.size(); i++) {
@@ -47,5 +47,23 @@ public class MapManager {
 			robots.get(i).draw();
 		}
 	}
-	
+
+	/**
+	 * @param humans
+	 */
+	public void drawHumans(ArrayList<HumanSide> humans) {
+		for (int i = 0; i < humans.size(); i++) {
+			HumanSide tempHuman = humans.get(i);
+			tempHuman.draw();
+
+			if (tempHuman instanceof RangedAttacker) {
+				RangedAttacker rangedAttacker = (RangedAttacker) tempHuman;
+				for (int j = 0; j < rangedAttacker.getBullets().size(); j++) {
+					rangedAttacker.getBullets().get(j).draw();
+				}
+			}
+		}
+
+	}
+
 }

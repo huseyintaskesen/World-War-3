@@ -53,6 +53,7 @@ public abstract class RangedAttacker extends HumanSide {
 		shotSound.play(0.3f,0.3f);
 		shotSound.play(0.5f,0.1f);
 		shotSound.play(0.3f,0.1f);
+		shotSound.play(1.0f,0.1f);
 	}
 
 	public int getReloadTime() {

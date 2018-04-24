@@ -55,8 +55,8 @@ public abstract class RobotSide extends GameElement{
 		this.curSpeed=speed;
 	}
 	
-	public void attackToHuman(RangedAttacker shooter) {
-		shooter.takeDamage(getDamage());
+	public void attackToHuman(HumanSide tempHuman) {
+		tempHuman.takeDamage(getDamage());
 	}
 	public void updateLocation() {
 		setX(getX()-curSpeed/2);

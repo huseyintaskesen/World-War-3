@@ -9,8 +9,16 @@ import org.newdawn.slick.SlickException;
 
 import model.RangedAttacker;
 import model.Casual;
+import model.Freezer;
+import model.HumanSide;
+import model.LandMine;
+import model.MeleeAttacker;
+import model.Miner;
+import model.Obstacle;
+import model.Passive;
 import model.RobotSide;
 import model.Shooter;
+import model.Swordsman;
 import model.User;
 import view.MapManager;
 
@@ -24,7 +32,8 @@ public class GameManager {
 	private User user;
 
 	// declare lists of game objects
-	private static ArrayList<RangedAttacker> humans;
+	// private static ArrayList<RangedAttacker> humans;
+	private static ArrayList<HumanSide> humans;
 	private static ArrayList<RobotSide> robots;
 	MapManager mapManager;
 	int score = 0;
@@ -36,7 +45,8 @@ public class GameManager {
 		mapManager = MapManager.getInstance();
 
 		// lists of game objects are initialized
-		humans = new ArrayList<RangedAttacker>();
+		// humans = new ArrayList<RangedAttacker>();
+		humans = new ArrayList<HumanSide>();
 		robots = new ArrayList<RobotSide>();
 	}
 
@@ -52,7 +62,15 @@ public class GameManager {
 	public void gameUpdate(int delta) {
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
-			humans.get(i).setReloadTime(humans.get(i).getReloadTime() + delta);
+			if (humans.get(i) instanceof RangedAttacker) {
+				RangedAttacker tempHuman = (RangedAttacker) humans.get(i);
+				tempHuman.setReloadTime(tempHuman.getReloadTime() + delta);
+
+				// update bullet location
+				for (int j = 0; j < tempHuman.getBullets().size(); j++) {
+					tempHuman.getBullets().get(j).updateLocation();
+				}
+			}
 		}
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).setAttackTime(robots.get(i).getAttackTime() + delta);
@@ -62,17 +80,27 @@ public class GameManager {
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).updateLocation();
 		}
-		for (int i = 0; i < humans.size(); i++) {
-			for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
-				humans.get(i).getBullets().get(j).updateLocation();
-			}
-		}
+		// for (int i = 0; i < humans.size(); i++) {
+		// for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
+		// humans.get(i).getBullets().get(j).updateLocation();
+		// }
+		// }
 	}
 
 	public boolean handleCollisions() throws SlickException {
 		for (int i = 0; i < humans.size(); i++) {
-			RangedAttacker tempHuman = humans.get(i);
-			for (int j = 0; j < robots.size(); j++) {			
+			HumanSide tempHuman = humans.get(i);
+			RangedAttacker rangedAttacker = null;
+			Passive passive = null;
+			MeleeAttacker meleeAttacker = null;
+			if (tempHuman instanceof RangedAttacker)
+				rangedAttacker = (RangedAttacker) tempHuman;
+			if (tempHuman instanceof MeleeAttacker)
+				meleeAttacker = (MeleeAttacker) tempHuman;
+			if (tempHuman instanceof Passive)
+				passive = (Passive) tempHuman;
+
+			for (int j = 0; j < robots.size(); j++) {
 				RobotSide tempRobot = robots.get(j);
 
 				// gameover when one robot reaches basement
@@ -80,64 +108,65 @@ public class GameManager {
 
 					return false;
 				}
-				// fire a bullet
-				if ((tempHuman.getX() + tempHuman.getRange()) > tempRobot.getX()
-						&& (Math.abs(tempHuman.getY() - tempRobot.getY()) < 20) && tempHuman.getReloadTime() >= 1000) {
-					tempHuman.attackToRobot(tempRobot);
-					tempHuman.setReloadTime(0);
 
-				}
+				if (rangedAttacker != null) {
 
-				
+					// fire a bullet
+					if ((rangedAttacker.getX() + rangedAttacker.getRange()) > tempRobot.getX()
+							&& (Math.abs(rangedAttacker.getY() - tempRobot.getY()) < 20)
+							&& rangedAttacker.getReloadTime() >= 1000) {
+						rangedAttacker.attackToRobot(tempRobot);
+						rangedAttacker.setReloadTime(0);
 
-				// damage robot as bullet
-				for (int k = 0; k < tempHuman.getBullets().size(); k++) {
-					if ((tempHuman.getBullets().get(k).getX() + 25 >= tempRobot.getX())
-							&& tempHuman.getY() == tempRobot.getY()
-							&& tempHuman.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
-						tempHuman.getBullets().get(k).damageRobot(tempRobot, tempHuman);
-//						if (tempRobot.getHealth() <= 0) {
-//							// robots.remove(tempRobot);
-//							tempRobot.setToBeRemoved();
-//						}
-						
 					}
-					
+
+					// damage robot as bullet
+					for (int k = 0; k < rangedAttacker.getBullets().size(); k++) {
+						if ((rangedAttacker.getBullets().get(k).getX() + 25 >= tempRobot.getX())
+								&& rangedAttacker.getY() == tempRobot.getY()
+								&& rangedAttacker.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
+							rangedAttacker.getBullets().get(k).damageRobot(tempRobot, rangedAttacker);
+							// if (tempRobot.getHealth() <= 0) {
+							// // robots.remove(tempRobot);
+							// tempRobot.setToBeRemoved();
+							// }
+
+						}
+
+					}
 				}
+
 				handleRobotRemovals();
 				// damage human as robot
-				if (((tempHuman.getX() + 60) > tempRobot.getX()) 
-						&& tempHuman.getY() == tempRobot.getY()
-						&& tempHuman.getX() - 10 <= tempRobot.getX() 
-						&& tempRobot.getAttackTime() >= 1000) {
+				if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
+						&& tempHuman.getX() - 10 <= tempRobot.getX() && tempRobot.getAttackTime() >= 1000) {
 
 					tempRobot.stop();
 					tempRobot.attackToHuman(tempHuman);
 
 					tempRobot.setAttackTime(0);
 				}
-				
+
 				handleHumanRemovals();
 			}
 		}
 		return true;
 	}
-	
+
 	public void handleHumanRemovals() {
 		for (int i = 0; i < humans.size(); i++) {
-			RangedAttacker tempHuman = humans.get(i);
+			HumanSide tempHuman = humans.get(i);
 			if (tempHuman.isToBeRemoved()) {
 				for (int j = 0; j < robots.size(); j++) {
 					RobotSide tempRobot = robots.get(j);
-			
+
 					// make the stopped robots move
-					if (((tempHuman.getX() + 60) > tempRobot.getX()) 
-							&& tempHuman.getY() == tempRobot.getY()
-							&& tempHuman.getX() - 10 <= tempRobot.getX() ) {
+					if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
+							&& tempHuman.getX() - 10 <= tempRobot.getX()) {
 						tempRobot.run();
 					}
 				}
-				
+
 				// delete marked humans
 				humans.remove(i);
 				i--;
@@ -150,24 +179,49 @@ public class GameManager {
 	public void handleRobotRemovals() {
 		for (int i = 0; i < robots.size(); i++) {
 			RobotSide tempRobot = robots.get(i);
-			
+
 			// delete marked robots
-			if(tempRobot.isToBeRemoved()) {
+			if (tempRobot.isToBeRemoved()) {
 				robots.remove(i);
 				i--;
 			}
 		}
 	}
-	
-	/**
-	 * @param shooter
-	 */
-	public void addAttackerHuman(RangedAttacker attackerHuman) {
-		if (checkBalance(1)) {
-			updateBalance(-150);
-			humans.add(attackerHuman);
-		}
 
+	public void addHuman(int humanCode, int xpos, int ypos) throws SlickException {
+		if (checkBalance(humanCode)) {
+			int cost=0;
+			switch (humanCode) {
+			case 1:
+				humans.add(new Miner((xpos - xpos % 100), (ypos - ypos % 100)));
+				cost=Miner.getCost();
+				break;
+			case 2:
+				humans.add(new Swordsman((xpos - xpos % 100), (ypos - ypos % 100)));
+				cost = Swordsman.getCost();
+				break;
+			case 3:
+				humans.add(new Freezer((xpos - xpos % 100), (ypos - ypos % 100)));
+				cost = Freezer.getCost();
+				break;
+			case 4:
+				humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+				cost = Shooter.getCost();
+				break;
+			case 5:
+				humans.add(new Obstacle((xpos - xpos % 100), (ypos - ypos % 100)));
+				cost = Obstacle.getCost();
+				break;
+			case 6:
+				humans.add(new LandMine((xpos - xpos % 100), (ypos - ypos % 100)));
+				cost = LandMine.getCost();
+				break;
+
+			default:
+				break;
+			}
+			updateBalance(-cost);
+		}
 	}
 
 	public void updateBalance(int change) {
@@ -184,7 +238,7 @@ public class GameManager {
 	/**
 	 * 
 	 */
-	
+
 	public boolean checkBalance(int humanCode) {
 		if (user.getBalance() < 150) {
 			System.out.println("not enough diamonds!");
@@ -203,7 +257,8 @@ public class GameManager {
 
 	// to draw game objects
 	public void draw() {
-		mapManager.drawAttackerHumans(humans);
+		mapManager.drawHumans(humans);
 		mapManager.drawRobots(robots);
 	}
+
 }
