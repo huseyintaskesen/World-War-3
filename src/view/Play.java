@@ -159,7 +159,7 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if(timePassed2>50)
+			if(timePassed2>20)
 				{
 					gameManager.gameUpdate(timePassed2);
 

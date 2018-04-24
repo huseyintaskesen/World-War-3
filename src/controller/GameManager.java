@@ -37,6 +37,7 @@ public class GameManager {
 	private static ArrayList<RobotSide> robots;
 	MapManager mapManager;
 	int score = 0;
+	int firstRow=0,secondRow=0,thirdRow=0,fourthRow=0,fifthRow=0,sixthRow=0;
 
 	/*
 	 * A private Constructor prevents any other class from instantiating.
@@ -191,6 +192,18 @@ public class GameManager {
 	public void addHuman(int humanCode, int xpos, int ypos) throws SlickException {
 		if (checkBalance(humanCode)) {
 			int cost=0;
+			if( (ypos - ypos % 100) >= 100 && (ypos - ypos % 100) <= 200);
+			firstRow++;
+			if( (ypos - ypos % 100) >= 200 && (ypos - ypos % 100) <= 300);
+			secondRow++;
+			if( (ypos - ypos % 100) >= 300 && (ypos - ypos % 100) <= 400);
+			thirdRow++;
+			if( (ypos - ypos % 100) >= 400 && (ypos - ypos % 100) <= 500);
+			fourthRow++;
+			if( (ypos - ypos % 100) >= 500 && (ypos - ypos % 100) <= 600);
+			fifthRow++;
+			if( (ypos - ypos % 100) >= 600 && (ypos - ypos % 100) <= 700);
+			sixthRow++;
 			switch (humanCode) {
 			case 1:
 				humans.add(new Miner((xpos - xpos % 100), (ypos - ypos % 100)));
@@ -246,6 +259,7 @@ public class GameManager {
 		} else
 			return true;
 	}
+
 
 	public void resetMap() throws SlickException {
 		score = 0;

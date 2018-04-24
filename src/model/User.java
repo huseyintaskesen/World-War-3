@@ -13,7 +13,7 @@ public class User {
 	
 	public User(String name) {
 		this.name= name;
-		balance = 250;
+		balance = 1000;
 	}
 
 	public String getName() {
