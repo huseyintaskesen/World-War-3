@@ -11,30 +11,30 @@ import org.newdawn.slick.SlickException;
  *
  */
 public abstract class GameElement {
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 	private boolean toBeRemoved;
 	private Image img;
 	
-	public GameElement(int x,int y) throws SlickException{
+	public GameElement(float x,float y) throws SlickException{
 		this.x=x;
 		this.y=y;
 		toBeRemoved=false;
 	}
 	
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	

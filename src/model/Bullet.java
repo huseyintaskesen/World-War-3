@@ -16,19 +16,21 @@ public class Bullet extends GameElement{
 	private int speed;	
 	private int damage;
 	
-	public Bullet(int x,int y, int damage) throws SlickException{
+	public Bullet(float x,float y, int damage) throws SlickException{
 		super(x, y);
-		speed = 8;
+		speed = 4;
 		this.damage = damage;
 	}
 
 	public void updateLocation() {
-		setX(getX()+speed/2);
+		setX(getX()+speed);
 	}
 	
-	public void damageRobot(RobotSide casual,RangedAttacker shooter) {
-		casual.takeDamage(damage);
-		shooter.getBullets().remove(this);
+	public void damageRobot(RobotSide robot,RangedAttacker rangedAttacker) {
+		robot.takeDamage(damage);
+		if(rangedAttacker instanceof Freezer)
+			robot.slow();
+		rangedAttacker.getBullets().remove(this);
 	}
 	
 	public void draw() {

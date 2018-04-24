@@ -113,6 +113,7 @@ public class GameManager {
 
 					// fire a bullet
 					if ((rangedAttacker.getX() + rangedAttacker.getRange()) > tempRobot.getX()
+							&& rangedAttacker.getX() + 20 < tempRobot.getX()
 							&& (Math.abs(rangedAttacker.getY() - tempRobot.getY()) < 20)
 							&& rangedAttacker.getReloadTime() >= 1000) {
 						rangedAttacker.attackToRobot(tempRobot);
