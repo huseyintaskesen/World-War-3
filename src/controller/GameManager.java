@@ -198,8 +198,8 @@ public class GameManager {
 	}
 
 	public void addHuman(int humanCode, int xpos, int ypos) throws SlickException {
-		int fixedX = (xpos - xpos % 100);
-		int fixedY = (ypos - ypos % 100);
+		int fixedX = (xpos - xpos % 125);
+		int fixedY = (ypos - ypos % 125);
 
 		if (checkBalance(humanCode) && checkSlot(fixedX, fixedY)) {
 			int cost = 0;
@@ -229,36 +229,36 @@ public class GameManager {
 			case 1:
 				humans.add(new Miner(fixedX, fixedY));
 				cost = Miner.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 2:
 				humans.add(new Swordsman(fixedX, fixedY));
 				cost = Swordsman.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 3:
 				humans.add(new Freezer(fixedX, fixedY));
 				cost = Freezer.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 4:
 				humans.add(new Shooter(fixedX, fixedY));
 				cost = Shooter.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 5:
 				humans.add(new Obstacle(fixedX, fixedY));
 				cost = Obstacle.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 6:
 				humans.add(new LandMine(fixedX, fixedY));
 				cost = LandMine.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 
 			default:
-				// slotArray[fixedY/100][fixedX/100]=false;
+				// slotArray[fixedY/125][fixedX/125]=false;
 				break;
 			}
 			updateBalance(-cost);
@@ -274,8 +274,8 @@ public class GameManager {
 	// }
 
 	public void addRobot(int robotCode, int xpos, int ypos) throws SlickException {
-		int fixedX = (xpos - xpos % 100);
-		int fixedY = (ypos - ypos % 100);
+		int fixedX = (xpos - xpos % 125);
+		int fixedY = (ypos - ypos % 125);
 
 		switch (robotCode) {
 		case 1:
@@ -327,7 +327,7 @@ public class GameManager {
 	}
 
 	public boolean checkSlot(int x, int y) {
-		if (slotArray[y / 100 - 1][x / 100 - 1] == true)
+		if (slotArray[y / 125 - 1][x / 125 - 2] == true)
 			return false;
 		else
 			return true;

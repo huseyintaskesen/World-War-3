@@ -53,7 +53,8 @@ public class Play extends BasicGameState {
 		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
 
 		// background and pause menu images
-		view = new Image("res/playgame.png");
+		//view = new Image("res/playgame.png");
+		view = new Image("res/playxd.png");
 		pause = new Image("res/pause.png");
 
 //		// lists of game objects are initialized
@@ -78,8 +79,8 @@ public class Play extends BasicGameState {
 		view.draw(0, 0); // background image drawn
 
 		// temporary gray background
-		g.setColor(Color.lightGray);
-		g.fillRect(100, 100, 1180, 620);
+		//g.setColor(Color.lightGray);
+		//g.fillRect(100, 100, 1180, 620);
 
 		// land.draw(100,100,1180,620);
 
@@ -106,7 +107,7 @@ public class Play extends BasicGameState {
 		g.setLineWidth(4);
 		g.setColor(Color.orange);
 		g.resetLineWidth();
-		g.drawRect(17, 100*selectedElement, 83, 100);
+		g.drawRect(17, 100*selectedElement, 118, 100);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -177,7 +178,7 @@ public class Play extends BasicGameState {
 				gameManager.gameUpdate(timePassed);
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
-				if ((100 < xpos && xpos < 1280) && (100 < ypos && ypos < 720)) {
+				if ((250 < xpos && xpos < 1280) && (125 < ypos && ypos < 720)) {
 					if (input.isMousePressed(1)) {
 						//gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 						gameManager.addHuman(selectedElement,xpos,ypos);
@@ -229,37 +230,37 @@ public class Play extends BasicGameState {
 			/////////////
 			/// Human Selection
 			///////////
-			if ((17 < xpos && xpos < 100) && (100 < ypos && ypos < 200)) {
+			if ((17 < xpos && xpos < 135) && (100 < ypos && ypos < 200)) {
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=1;
 				}
 			}
 			
-			else if ((17 < xpos && xpos < 100) && (200 < ypos && ypos < 300)) {
+			else if ((17 < xpos && xpos < 135) && (200 < ypos && ypos < 300)) {
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=2;
 				}
 			}
 			
-			else if ((17 < xpos && xpos < 100) && (300 < ypos && ypos < 400)) {
+			else if ((17 < xpos && xpos < 135) && (300 < ypos && ypos < 400)) {
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=3;
 				}
 			}
 			
-			else if ((17 < xpos && xpos < 100) && (400 < ypos && ypos < 500)) {
+			else if ((17 < xpos && xpos < 135) && (400 < ypos && ypos < 500)) {
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=4;
 				}
 			}
 			
-			else if ((17 < xpos && xpos < 100) && (500 < ypos && ypos < 600)) {
+			else if ((17 < xpos && xpos < 135) && (500 < ypos && ypos < 600)) {
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=5;
 				}
 			}
 			
-			else if ((17 < xpos && xpos < 100) && (600 < ypos && ypos < 700)) {
+			else if ((17 < xpos && xpos < 135) && (600 < ypos && ypos < 700)) {
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=6;
 				}
@@ -281,17 +282,6 @@ public class Play extends BasicGameState {
 		sbg.enterState(4);
 	}
 
-	/**
-	 * @throws SlickException
-	 *
-	 */
-//	private void resetMap() throws SlickException {
-//		score = 0;
-//		humans.clear();
-//		humans.add(new Shooter(100, 100));
-//		robots.clear();
-//		robots.add(new Casual(600, 100));
-//	}
 
 	public int getID() {
 		return 1;
