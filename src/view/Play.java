@@ -163,11 +163,11 @@ public class Play extends BasicGameState {
 				{
 					//gameManager.gameUpdate(timePassed2);
 
-					gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for first row
-					gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for second row
-					gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for third row
-					gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for fourth row
-					gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for fifth row
+//					gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for first row
+//					gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for second row
+//					gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for third row
+//					gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for fourth row
+//					gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for fifth row
 					
 					timePassed2=0;
 				}
@@ -184,7 +184,7 @@ public class Play extends BasicGameState {
 						//humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 					} else if (input.isMousePressed(2)) {
 
-						gameManager.addRobot(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
+						gameManager.addRobot(1,xpos,ypos);
 						//robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 					}
 				}

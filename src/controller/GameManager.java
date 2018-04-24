@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import model.RangedAttacker;
 import model.Casual;
+import model.FastRobot;
 import model.Freezer;
 import model.HumanSide;
 import model.LandMine;
@@ -19,6 +20,7 @@ import model.Passive;
 import model.RobotSide;
 import model.Shooter;
 import model.Swordsman;
+import model.TankRobot;
 import model.User;
 import view.MapManager;
 
@@ -35,9 +37,13 @@ public class GameManager {
 	// private static ArrayList<RangedAttacker> humans;
 	private static ArrayList<HumanSide> humans;
 	private static ArrayList<RobotSide> robots;
-	MapManager mapManager;
-	int score = 0;
-	int firstRow=0,secondRow=0,thirdRow=0,fourthRow=0,fifthRow=0,sixthRow=0;
+
+	private MapManager mapManager;
+	private int score = 0;
+
+	private boolean[][] slotArray;
+
+	int firstRow = 0, secondRow = 0, thirdRow = 0, fourthRow = 0, fifthRow = 0, sixthRow = 0;
 
 	/*
 	 * A private Constructor prevents any other class from instantiating.
@@ -49,6 +55,7 @@ public class GameManager {
 		// humans = new ArrayList<RangedAttacker>();
 		humans = new ArrayList<HumanSide>();
 		robots = new ArrayList<RobotSide>();
+		slotArray = new boolean[4][12];
 	}
 
 	/* Static 'instance' method */
@@ -193,54 +200,65 @@ public class GameManager {
 	public void addHuman(int humanCode, int xpos, int ypos) throws SlickException {
 		int fixedX = (xpos - xpos % 100);
 		int fixedY = (ypos - ypos % 100);
-		
-		if (checkBalance(humanCode)) {
-			int cost=0;
-//			if( (ypos - ypos % 100) >= 100 && (ypos - ypos % 100) <= 200);
-//			firstRow++;
-//			if( (ypos - ypos % 100) >= 200 && (ypos - ypos % 100) <= 300);
-//			secondRow++;
-//			if( (ypos - ypos % 100) >= 300 && (ypos - ypos % 100) <= 400);
-//			thirdRow++;
-//			if( (ypos - ypos % 100) >= 400 && (ypos - ypos % 100) <= 500);
-//			fourthRow++;
-//			if( (ypos - ypos % 100) >= 500 && (ypos - ypos % 100) <= 600);
-//			fifthRow++;
-//			if( (ypos - ypos % 100) >= 600 && (ypos - ypos % 100) <= 700);
-//			sixthRow++;
-			
-			if(fixedY==100)// bu deðerleri fixlediðimiz için 100 ile 200 arasýnda olamaz zaten 100,200 gibi tam katlar olacak hep
+
+		if (checkBalance(humanCode) && checkSlot(fixedX, fixedY)) {
+			int cost = 0;
+			// if( (ypos - ypos % 100) >= 100 && (ypos - ypos % 100) <= 200);
+			// firstRow++;
+			// if( (ypos - ypos % 100) >= 200 && (ypos - ypos % 100) <= 300);
+			// secondRow++;
+			// if( (ypos - ypos % 100) >= 300 && (ypos - ypos % 100) <= 400);
+			// thirdRow++;
+			// if( (ypos - ypos % 100) >= 400 && (ypos - ypos % 100) <= 500);
+			// fourthRow++;
+			// if( (ypos - ypos % 100) >= 500 && (ypos - ypos % 100) <= 600);
+			// fifthRow++;
+			// if( (ypos - ypos % 100) >= 600 && (ypos - ypos % 100) <= 700);
+			// sixthRow++;
+
+			if (fixedY == 100)// bu deðerleri fixlediðimiz için 100 ile 200 arasýnda olamaz zaten 100,200 gibi
+								// tam katlar olacak hep
 				firstRow++;
-			////// Böyle devam edebiliriz ama bence 6 farklý variable ile tutmak çok mantýklý deðil
-			////// bir array yapabiliriz ya da ben boolean arrayi düþünüyorum slot kontrol etmek için
+			////// Böyle devam edebiliriz ama bence 6 farklý variable ile tutmak çok
+			////// mantýklý deðil
+			////// bir array yapabiliriz ya da ben boolean arrayi düþünüyorum slot kontrol
+			////// etmek için
 			////// direk o arrayden çekebiliriz deðerleri
+
 			switch (humanCode) {
 			case 1:
 				humans.add(new Miner(fixedX, fixedY));
-				cost=Miner.getCost();
+				cost = Miner.getCost();
+				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
 				break;
 			case 2:
 				humans.add(new Swordsman(fixedX, fixedY));
 				cost = Swordsman.getCost();
+				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
 				break;
 			case 3:
 				humans.add(new Freezer(fixedX, fixedY));
 				cost = Freezer.getCost();
+				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
 				break;
 			case 4:
 				humans.add(new Shooter(fixedX, fixedY));
 				cost = Shooter.getCost();
+				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
 				break;
 			case 5:
 				humans.add(new Obstacle(fixedX, fixedY));
 				cost = Obstacle.getCost();
+				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
 				break;
 			case 6:
 				humans.add(new LandMine(fixedX, fixedY));
 				cost = LandMine.getCost();
+				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
 				break;
 
 			default:
+				// slotArray[fixedY/100][fixedX/100]=false;
 				break;
 			}
 			updateBalance(-cost);
@@ -251,32 +269,85 @@ public class GameManager {
 		user.setBalance(user.getBalance() + change);
 	}
 
-	/**
-	 * @param casual
-	 */
-	public void addRobot(RobotSide robot) {
-		robots.add(robot);
+	// public void addRobot(RobotSide robot) {
+	// robots.add(robot);
+	// }
+
+	public void addRobot(int robotCode, int xpos, int ypos) throws SlickException {
+		int fixedX = (xpos - xpos % 100);
+		int fixedY = (ypos - ypos % 100);
+
+		switch (robotCode) {
+		case 1:
+			robots.add(new Casual(fixedX, fixedY));
+			break;
+		case 2:
+			robots.add(new FastRobot(fixedX, fixedY));
+			break;
+		case 3:
+			robots.add(new TankRobot(fixedX, fixedY));
+			break;
+
+		default:
+			break;
+		}
 	}
 
-	/**
-	 * 
-	 */
-
 	public boolean checkBalance(int humanCode) {
-		if (user.getBalance() < 150) {
+		int cost = 0;
+		switch (humanCode) {
+		case 1:
+			cost = Miner.getCost();
+			break;
+		case 2:
+			cost = Swordsman.getCost();
+			break;
+		case 3:
+			cost = Freezer.getCost();
+			break;
+		case 4:
+			cost = Shooter.getCost();
+			break;
+		case 5:
+			cost = Obstacle.getCost();
+			break;
+		case 6:
+			cost = LandMine.getCost();
+			break;
+
+		default:
+			break;
+		}
+
+		if (user.getBalance() < cost) {
 			System.out.println("not enough diamonds!");
 			return false;
 		} else
 			return true;
 	}
 
+	public boolean checkSlot(int x, int y) {
+		if (slotArray[y / 100 - 1][x / 100 - 1] == true)
+			return false;
+		else
+			return true;
+	}
+
+	public int humansInARow(int row) {
+		int count = 0;
+		for (int i = 0; i < 12; i++) {
+			if (slotArray[row - 1][i] == false)
+				count++;
+		}
+		return count;
+	}
 
 	public void resetMap() throws SlickException {
 		score = 0;
 		humans.clear();
-		humans.add(new Shooter(100, 100));
+		// humans.add(new Shooter(100, 100));
 		robots.clear();
-		robots.add(new Casual(600, 100));
+		// robots.add(new Casual(600, 100));
 	}
 
 	// to draw game objects
