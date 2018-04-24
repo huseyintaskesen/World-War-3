@@ -8,7 +8,7 @@ public class TankRobot extends RobotSide{
 	private final int speed = 2;
 	
 	
-	public TankRobot(int x,int y) throws SlickException{
+	public TankRobot(float x,float y) throws SlickException{
 		super(x, y);
 		setImg(new Image(""));
 		setDamage(3);
@@ -19,6 +19,10 @@ public class TankRobot extends RobotSide{
 	public void run() {
 		super.run();
 		setSpeed(speed);
+	}
+
+	public float classSpeed() {
+		return speed;
 	}
 	
 

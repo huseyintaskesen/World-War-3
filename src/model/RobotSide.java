@@ -12,11 +12,11 @@ import org.newdawn.slick.SlickException;
 public abstract class RobotSide extends GameElement{
 	private int damage;
 	private int health;
-	private int curSpeed;
+	private float curSpeed;
 	private boolean isRunning;
 	private int attackTime;
 	
-	public RobotSide(int x,int y) throws SlickException{
+	public RobotSide(float x,float y) throws SlickException{
 		super(x, y);
 		isRunning=true;
 	}
@@ -47,11 +47,11 @@ public abstract class RobotSide extends GameElement{
 		this.health = health;
 	}
 	
-	public int getSpeed() {
+	public float getSpeed() {
 		return curSpeed;
 	}
 	
-	public void setSpeed(int speed) {
+	public void setSpeed(float speed) {
 		this.curSpeed=speed;
 	}
 	
@@ -59,10 +59,11 @@ public abstract class RobotSide extends GameElement{
 		tempHuman.takeDamage(getDamage());
 	}
 	public void updateLocation() {
-		setX(getX()-curSpeed/2);
+		setX(getX()-curSpeed/10);
 	}
 	public void run() {
 		isRunning=true;
+		setSpeed(classSpeed());
 	}
 	
 	public boolean isRunning() {
@@ -75,17 +76,18 @@ public abstract class RobotSide extends GameElement{
 		isRunning=false;
 	}
 
-	/**
-	 * @return the attackTime
-	 */
+	
 	public int getAttackTime() {
 		return attackTime;
 	}
 
-	/**
-	 * @param attackTime the attackTime to set
-	 */
+	
 	public void setAttackTime(int attackTime) {
 		this.attackTime = attackTime;
+	}
+
+	public abstract float classSpeed();
+	public void slow() {
+		setSpeed(classSpeed()/2);
 	}
 }

@@ -15,7 +15,7 @@ public abstract class HumanSide extends GameElement{
 	private int health;
 	private static int cost;
 	
-	public HumanSide(int x,int y) throws SlickException{
+	public HumanSide(float x,float y) throws SlickException{
 		super(x, y);
 		
 	}

@@ -12,10 +12,10 @@ import org.newdawn.slick.SlickException;
  */
 public class Casual extends RobotSide{
 	private final int startHealth=5;
-	private final int speed = 3;
+	private final float speed = 10;
 	
 	
-	public Casual(int x,int y) throws SlickException{
+	public Casual(float x,float y) throws SlickException{
 		super(x, y);
 		setImg(new Image("res/Robots & Humans/basicRobot.png"));
 		setDamage(2);
@@ -23,11 +23,9 @@ public class Casual extends RobotSide{
 		setSpeed(speed);
 	}
 
-	public void run() {
-		super.run();
-		setSpeed(speed);
+	public float classSpeed() {
+		return speed;
 	}
-	
 
 	
 }
