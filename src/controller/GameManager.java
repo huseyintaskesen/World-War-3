@@ -5,6 +5,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import model.RangedAttacker;
@@ -70,16 +71,25 @@ public class GameManager {
 	public void gameUpdate(int delta) {
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
-			if (humans.get(i) instanceof RangedAttacker) {
-				RangedAttacker tempHuman = (RangedAttacker) humans.get(i);
-				tempHuman.setReloadTime(tempHuman.getReloadTime() + delta);
+			HumanSide tempHuman = humans.get(i);
+			
+			// update reload time
+			if (tempHuman instanceof RangedAttacker) {
+				RangedAttacker rangedAttacker = (RangedAttacker) tempHuman;
+				rangedAttacker.setReloadTime(rangedAttacker.getReloadTime() + delta);
 
 				// update bullet location
-				for (int j = 0; j < tempHuman.getBullets().size(); j++) {
-					tempHuman.getBullets().get(j).updateLocation();
+				for (int j = 0; j < rangedAttacker.getBullets().size(); j++) {
+					rangedAttacker.getBullets().get(j).updateLocation();
 				}
 			}
+			else if (tempHuman instanceof Miner) {
+				Miner miner = (Miner) tempHuman;
+				miner.setMineTimer(miner.getMineTimer()+delta);
+			}
 		}
+		
+		// update reload time of robots
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).setAttackTime(robots.get(i).getAttackTime() + delta);
 		}
@@ -329,7 +339,7 @@ public class GameManager {
 	public boolean checkSlot(int x, int y) {
 		if (slotArray[y / 125 - 1][x / 125 - 2] == true)
 			return false;
-		else
+		else 
 			return true;
 	}
 
@@ -341,6 +351,19 @@ public class GameManager {
 		}
 		return count;
 	}
+	
+	public void collectMine(int x,int y) {
+		for (int i = 0; i < humans.size(); i++) {
+			if(humans.get(i) instanceof Miner) {
+				Miner miner = (Miner) humans.get(i);
+				if((miner.getX()== (x-x%125))&&(miner.isMineReady())&&((miner.getY()== (y-y%125)))){
+					updateBalance(50);
+					miner.resetTimer();
+				}
+			}
+		}
+		
+	}
 
 	public void resetMap() throws SlickException {
 		score = 0;
@@ -351,9 +374,12 @@ public class GameManager {
 	}
 
 	// to draw game objects
-	public void draw() {
-		mapManager.drawHumans(humans);
-		mapManager.drawRobots(robots);
+	public void draw(Graphics g) {
+		mapManager.drawHumans(humans,g);
+		mapManager.drawRobots(robots,g);
 	}
+
+	
+	
 
 }

@@ -85,7 +85,7 @@ public class Play extends BasicGameState {
 		// land.draw(100,100,1180,620);
 
 		// game objects are drawn
-		gameManager.draw();
+		gameManager.draw(g);
 
 		// pause menu is drawn when flag is up
 		if (pauseFlag)
@@ -94,6 +94,7 @@ public class Play extends BasicGameState {
 		// display mouse coordinates
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
+		g.fillRect(380, 30, 100, 40);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
 
@@ -178,12 +179,16 @@ public class Play extends BasicGameState {
 				gameManager.gameUpdate(timePassed);
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
-				if ((250 < xpos && xpos < 1280) && (125 < ypos && ypos < 720)) {
-					if (input.isMousePressed(1)) {
+				if ((250 < xpos && xpos < 1250) && (125 < ypos && ypos < 625)) {
+					if (input.isMousePressed(0)) {
 						//gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
-						gameManager.addHuman(selectedElement,xpos,ypos);
+						if(selectedElement==-1) {
+							gameManager.collectMine(xpos,ypos);
+						}
+						else
+							gameManager.addHuman(selectedElement,xpos,ypos);
 						//humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
-					} else if (input.isMousePressed(2)) {
+					} else if (input.isMousePressed(1)) {
 
 						gameManager.addRobot(1,xpos,ypos);
 						//robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
@@ -265,7 +270,8 @@ public class Play extends BasicGameState {
 					selectedElement=6;
 				}
 			}
-			else {// If clicked outside of the list, selection disappears
+			// If clicked outside of the list, selection disappears
+			else if (!((250 < xpos && xpos < 1250) && (125 < ypos && ypos < 625))){
 				if (input.isMouseButtonDown(0)) {
 					selectedElement=-1;
 				}
