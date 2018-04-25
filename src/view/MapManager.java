@@ -9,6 +9,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import model.HumanSide;
+import model.LandMine;
 import model.Miner;
 import model.RangedAttacker;
 import model.RobotSide;
@@ -72,6 +73,15 @@ public class MapManager {
 					g.setLineWidth(3);
 					g.setColor(Color.red);
 					g.drawRoundRect(miner.getX()+25, miner.getY()+25, 75, 75,30);
+					g.resetLineWidth();
+				}
+			}
+			else if (tempHuman instanceof LandMine) {
+				LandMine landMine = (LandMine) tempHuman;
+				if(landMine.isBombReady()) {
+					g.setLineWidth(3);
+					g.setColor(Color.blue);
+					g.drawRoundRect(landMine.getX()+25, landMine.getY()+25, 75, 75,30);
 					g.resetLineWidth();
 				}
 			}

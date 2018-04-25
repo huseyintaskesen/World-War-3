@@ -5,6 +5,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -68,7 +69,7 @@ public class GameManager {
 		user = u;
 	}
 
-	public void gameUpdate(int delta) {
+	public boolean gameUpdate(int delta) {
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
@@ -87,6 +88,10 @@ public class GameManager {
 				Miner miner = (Miner) tempHuman;
 				miner.setMineTimer(miner.getMineTimer()+delta);
 			}
+			else if (tempHuman instanceof LandMine) {
+				LandMine landMine = (LandMine) tempHuman;
+				landMine.setBombTimer(landMine.getBombTimer()+delta);
+			}
 		}
 		
 		// update reload time of robots
@@ -97,15 +102,19 @@ public class GameManager {
 		// update the map
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).updateLocation();
+			if(robots.get(i).getX()<=135){
+				return false;
+			}
 		}
 		// for (int i = 0; i < humans.size(); i++) {
 		// for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
 		// humans.get(i).getBullets().get(j).updateLocation();
 		// }
 		// }
+		return true;
 	}
 
-	public boolean handleCollisions() throws SlickException {
+	public void handleCollisions() throws SlickException {
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
 			RangedAttacker rangedAttacker = null;
@@ -121,11 +130,6 @@ public class GameManager {
 			for (int j = 0; j < robots.size(); j++) {
 				RobotSide tempRobot = robots.get(j);
 
-				// gameover when one robot reaches basement
-				if (tempRobot.getX() <= 100) {
-
-					return false;
-				}
 
 				if (rangedAttacker != null) {
 
@@ -169,7 +173,6 @@ public class GameManager {
 				handleHumanRemovals();
 			}
 		}
-		return true;
 	}
 
 	public void handleHumanRemovals() {

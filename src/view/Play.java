@@ -174,7 +174,8 @@ public class Play extends BasicGameState {
 			if (timePassed > 20) {
 
 
-				gameManager.gameUpdate(timePassed);
+				if(!gameManager.gameUpdate(timePassed))
+					gameover(sbg);
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
 				if ((250 < xpos && xpos < 1250) && (125 < ypos && ypos < 625)) {
@@ -200,8 +201,8 @@ public class Play extends BasicGameState {
 				// collision detection logic
 				/////////////
 
-				if(!gameManager.handleCollisions())
-					gameover(sbg);
+				gameManager.handleCollisions();
+					
 
 
 				// reset the timer
