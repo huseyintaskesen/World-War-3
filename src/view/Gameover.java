@@ -23,6 +23,12 @@ public class Gameover extends BasicGameState {
 		view = new Image("res/gameover.png");
 		gameOverSound = new Sound("res/game-over-sound.wav");
 	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		super.enter(container, game);
+		gameOverSound.play(1,0.3f);
+	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
@@ -33,7 +39,7 @@ public class Gameover extends BasicGameState {
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
-		gameOverSound.play(1,0.3f);
+		//gameOverSound.play(1,0.3f);
 
 		
 	}
