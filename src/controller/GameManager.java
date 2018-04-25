@@ -5,6 +5,8 @@ package controller;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import model.RangedAttacker;
@@ -67,19 +69,32 @@ public class GameManager {
 		user = u;
 	}
 
-	public void gameUpdate(int delta) {
+	public boolean gameUpdate(int delta) {
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
-			if (humans.get(i) instanceof RangedAttacker) {
-				RangedAttacker tempHuman = (RangedAttacker) humans.get(i);
-				tempHuman.setReloadTime(tempHuman.getReloadTime() + delta);
+			HumanSide tempHuman = humans.get(i);
+			
+			// update reload time
+			if (tempHuman instanceof RangedAttacker) {
+				RangedAttacker rangedAttacker = (RangedAttacker) tempHuman;
+				rangedAttacker.setReloadTime(rangedAttacker.getReloadTime() + delta);
 
 				// update bullet location
-				for (int j = 0; j < tempHuman.getBullets().size(); j++) {
-					tempHuman.getBullets().get(j).updateLocation();
+				for (int j = 0; j < rangedAttacker.getBullets().size(); j++) {
+					rangedAttacker.getBullets().get(j).updateLocation();
 				}
 			}
+			else if (tempHuman instanceof Miner) {
+				Miner miner = (Miner) tempHuman;
+				miner.setMineTimer(miner.getMineTimer()+delta);
+			}
+			else if (tempHuman instanceof LandMine) {
+				LandMine landMine = (LandMine) tempHuman;
+				landMine.setBombTimer(landMine.getBombTimer()+delta);
+			}
 		}
+		
+		// update reload time of robots
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).setAttackTime(robots.get(i).getAttackTime() + delta);
 		}
@@ -87,15 +102,19 @@ public class GameManager {
 		// update the map
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).updateLocation();
+			if(robots.get(i).getX()<=135){
+				return false;
+			}
 		}
 		// for (int i = 0; i < humans.size(); i++) {
 		// for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
 		// humans.get(i).getBullets().get(j).updateLocation();
 		// }
 		// }
+		return true;
 	}
 
-	public boolean handleCollisions() throws SlickException {
+	public void handleCollisions() throws SlickException {
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
 			RangedAttacker rangedAttacker = null;
@@ -111,11 +130,6 @@ public class GameManager {
 			for (int j = 0; j < robots.size(); j++) {
 				RobotSide tempRobot = robots.get(j);
 
-				// gameover when one robot reaches basement
-				if (tempRobot.getX() <= 100) {
-
-					return false;
-				}
 
 				if (rangedAttacker != null) {
 
@@ -159,7 +173,6 @@ public class GameManager {
 				handleHumanRemovals();
 			}
 		}
-		return true;
 	}
 
 	public void handleHumanRemovals() {
@@ -198,8 +211,8 @@ public class GameManager {
 	}
 
 	public void addHuman(int humanCode, int xpos, int ypos) throws SlickException {
-		int fixedX = (xpos - xpos % 100);
-		int fixedY = (ypos - ypos % 100);
+		int fixedX = (xpos - xpos % 125);
+		int fixedY = (ypos - ypos % 125);
 
 		if (checkBalance(humanCode) && checkSlot(fixedX, fixedY)) {
 			int cost = 0;
@@ -216,36 +229,36 @@ public class GameManager {
 			case 1:
 				humans.add(new Miner(fixedX, fixedY));
 				cost = Miner.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 2:
 				humans.add(new Swordsman(fixedX, fixedY));
 				cost = Swordsman.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 3:
 				humans.add(new Freezer(fixedX, fixedY));
 				cost = Freezer.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 4:
 				humans.add(new Shooter(fixedX, fixedY));
 				cost = Shooter.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 5:
 				humans.add(new Obstacle(fixedX, fixedY));
 				cost = Obstacle.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 6:
 				humans.add(new LandMine(fixedX, fixedY));
 				cost = LandMine.getCost();
-				slotArray[fixedY / 100 - 1][fixedX / 100 - 1] = true;
+				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 
 			default:
-				// slotArray[fixedY/100][fixedX/100]=false;
+				// slotArray[fixedY/125][fixedX/125]=false;
 				break;
 			}
 			updateBalance(-cost);
@@ -261,8 +274,8 @@ public class GameManager {
 	// }
 
 	public void addRobot(int robotCode, int xpos, int ypos) throws SlickException {
-		int fixedX = (xpos - xpos % 100);
-		int fixedY = (ypos - ypos % 100);
+		int fixedX = (xpos - xpos % 125);
+		int fixedY = (ypos - ypos % 125);
 
 		switch (robotCode) {
 		case 1:
@@ -314,9 +327,9 @@ public class GameManager {
 	}
 
 	public boolean checkSlot(int x, int y) {
-		if (slotArray[y / 100 - 1][x / 100 - 1] == true)
+		if (slotArray[y / 125 - 1][x / 125 - 2] == true)
 			return false;
-		else
+		else 
 			return true;
 	}
 
@@ -328,6 +341,19 @@ public class GameManager {
 		}
 		return count;
 	}
+	
+	public void collectMine(int x,int y) {
+		for (int i = 0; i < humans.size(); i++) {
+			if(humans.get(i) instanceof Miner) {
+				Miner miner = (Miner) humans.get(i);
+				if((miner.getX()== (x-x%125))&&(miner.isMineReady())&&((miner.getY()== (y-y%125)))){
+					updateBalance(50);
+					miner.resetTimer();
+				}
+			}
+		}
+		
+	}
 
 	public void resetMap() throws SlickException {
 		score = 0;
@@ -338,9 +364,12 @@ public class GameManager {
 	}
 
 	// to draw game objects
-	public void draw() {
-		mapManager.drawHumans(humans);
-		mapManager.drawRobots(robots);
+	public void draw(Graphics g) {
+		mapManager.drawHumans(humans,g);
+		mapManager.drawRobots(robots,g);
 	}
+
+	
+	
 
 }

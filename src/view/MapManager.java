@@ -5,7 +5,12 @@ package view;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+
 import model.HumanSide;
+import model.LandMine;
+import model.Miner;
 import model.RangedAttacker;
 import model.RobotSide;
 
@@ -42,7 +47,7 @@ public class MapManager {
 	/**
 	 * @param robots
 	 */
-	public void drawRobots(ArrayList<RobotSide> robots) {
+	public void drawRobots(ArrayList<RobotSide> robots,Graphics g) {
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).draw();
 		}
@@ -51,7 +56,7 @@ public class MapManager {
 	/**
 	 * @param humans
 	 */
-	public void drawHumans(ArrayList<HumanSide> humans) {
+	public void drawHumans(ArrayList<HumanSide> humans,Graphics g) {
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
 			tempHuman.draw();
@@ -60,6 +65,24 @@ public class MapManager {
 				RangedAttacker rangedAttacker = (RangedAttacker) tempHuman;
 				for (int j = 0; j < rangedAttacker.getBullets().size(); j++) {
 					rangedAttacker.getBullets().get(j).draw();
+				}
+			}
+			else if (tempHuman instanceof Miner) {
+				Miner miner = (Miner) tempHuman;
+				if(miner.isMineReady()) {
+					g.setLineWidth(3);
+					g.setColor(Color.red);
+					g.drawRoundRect(miner.getX()+25, miner.getY()+25, 75, 75,30);
+					g.resetLineWidth();
+				}
+			}
+			else if (tempHuman instanceof LandMine) {
+				LandMine landMine = (LandMine) tempHuman;
+				if(landMine.isBombReady()) {
+					g.setLineWidth(3);
+					g.setColor(Color.blue);
+					g.drawRoundRect(landMine.getX()+25, landMine.getY()+25, 75, 75,30);
+					g.resetLineWidth();
 				}
 			}
 		}
