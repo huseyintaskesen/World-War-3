@@ -203,27 +203,14 @@ public class GameManager {
 
 		if (checkBalance(humanCode) && checkSlot(fixedX, fixedY)) {
 			int cost = 0;
-			// if( (ypos - ypos % 100) >= 100 && (ypos - ypos % 100) <= 200);
-			// firstRow++;
-			// if( (ypos - ypos % 100) >= 200 && (ypos - ypos % 100) <= 300);
-			// secondRow++;
-			// if( (ypos - ypos % 100) >= 300 && (ypos - ypos % 100) <= 400);
-			// thirdRow++;
-			// if( (ypos - ypos % 100) >= 400 && (ypos - ypos % 100) <= 500);
-			// fourthRow++;
-			// if( (ypos - ypos % 100) >= 500 && (ypos - ypos % 100) <= 600);
-			// fifthRow++;
-			// if( (ypos - ypos % 100) >= 600 && (ypos - ypos % 100) <= 700);
-			// sixthRow++;
-
-			if (fixedY == 100)// bu deðerleri fixlediðimiz için 100 ile 200 arasýnda olamaz zaten 100,200 gibi
+			if (fixedY == 100)// bu degerleri fixledigimiz icin 100 ile 200 arasinda olamaz zaten 100,200 gibi
 								// tam katlar olacak hep
 				firstRow++;
-			////// Böyle devam edebiliriz ama bence 6 farklý variable ile tutmak çok
-			////// mantýklý deðil
-			////// bir array yapabiliriz ya da ben boolean arrayi düþünüyorum slot kontrol
-			////// etmek için
-			////// direk o arrayden çekebiliriz deðerleri
+			////// Boyle devam edebiliriz ama bence 6 farkli variable ile tutmak cok
+			////// mantikli degil
+			////// bir array yapabiliriz ya da ben boolean arrayi dusunuyorum slot kontrol
+			////// etmek icin
+			////// direk o arrayden cekebiliriz degerleri
 
 			switch (humanCode) {
 			case 1:
