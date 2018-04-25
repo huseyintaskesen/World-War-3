@@ -4,12 +4,7 @@
 package view;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Gameover extends BasicGameState {
 
 	Image view;
+	Sound gameOverSound;
 	public String mouse= "No input yet";
 	
 	public Gameover(int state) {
@@ -25,6 +21,7 @@ public class Gameover extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		view = new Image("res/gameover.png");
+		gameOverSound = new Sound("res/game-over-sound.wav");
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -36,6 +33,7 @@ public class Gameover extends BasicGameState {
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
+
 		
 	}
 
