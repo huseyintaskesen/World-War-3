@@ -10,8 +10,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
 import controller.GameManager;
-import model.Casual;
-import model.Shooter;
 import model.User;
 
 public class Play extends BasicGameState {
