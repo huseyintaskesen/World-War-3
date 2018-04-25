@@ -12,7 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Gameover extends BasicGameState {
 
 	Image view;
-	Sound gameOverSound;
+	private Sound gameOverSound;
 	public String mouse= "No input yet";
 	
 	public Gameover(int state) {
@@ -33,6 +33,7 @@ public class Gameover extends BasicGameState {
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
+		gameOverSound.play(1,0.3f);
 
 		
 	}
