@@ -21,7 +21,7 @@ public class Play extends BasicGameState {
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
 	int timePassed2 = 0;
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
-	int score = 0;
+//	int score = 0;
 
 	Image view; // background image
 	Image pause; // pause menu
@@ -98,8 +98,8 @@ public class Play extends BasicGameState {
 
 		g.setFont(myFont);
 		g.drawString(""+user.getBalance(), 380, 30);
-		g.drawString("Score: " + score / 1000, 600, 30);
-		
+		g.drawString("Score: " + gameManager.getScore() / 1000, 600, 30);
+		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 600, 70);
 		
 		
 		//Selected element rectangle
@@ -155,7 +155,7 @@ public class Play extends BasicGameState {
 //				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
 //			}
 			//timeCount += delta;
-			score += delta;
+//			score += delta;
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
