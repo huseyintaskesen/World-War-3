@@ -28,8 +28,8 @@ public class Hints extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
 		
-		g.drawRect(700, 30, 70, 30);
-		g.drawString("Back", 710, 35);
+//		g.drawRect(700, 30, 70, 30);
+//		g.drawString("Back", 710, 35);
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
@@ -43,7 +43,7 @@ public class Hints extends BasicGameState {
 		int ypos = 720 - Mouse.getY();
 		mouse = "x : "+xpos+" y : "+ypos;
 		
-		if ((700 < xpos && xpos < 770) && (30 < ypos && ypos < 60)){
+		if ((25 < xpos && xpos < 250) && (30 < ypos && ypos < 78)){
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(2);
 			}
