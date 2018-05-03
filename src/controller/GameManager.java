@@ -15,6 +15,7 @@ import model.FastRobot;
 import model.Freezer;
 import model.HumanSide;
 import model.LandMine;
+import model.Laser;
 import model.MeleeAttacker;
 import model.Miner;
 import model.Obstacle;
@@ -39,6 +40,7 @@ public class GameManager {
 	// private static ArrayList<RangedAttacker> humans;
 	private static ArrayList<HumanSide> humans;
 	private static ArrayList<RobotSide> robots;
+	private static Laser[] lasers;
 
 	private MapManager mapManager;
 	private int score = 0;
@@ -58,6 +60,7 @@ public class GameManager {
 		// humans = new ArrayList<RangedAttacker>();
 		humans = new ArrayList<HumanSide>();
 		robots = new ArrayList<RobotSide>();
+		lasers = new Laser[4];
 		slotArray = new boolean[4][12];
 	}
 
@@ -71,7 +74,7 @@ public class GameManager {
 	}
 
 	public boolean gameUpdate(int delta) {
-		score = score +delta;
+		score = score + delta;
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
@@ -106,8 +109,23 @@ public class GameManager {
 		// update the map
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).updateLocation();
-			if (robots.get(i).getX() <= 135) {
-				if(score>highScore)
+			float x = robots.get(i).getX();
+			float y = robots.get(i).getY();
+			if (x <= 230) {
+				int laserPos = (int) (y / 125) - 1;
+
+				if (lasers[laserPos] != null) {
+
+					lasers[laserPos].damageRobots(robots);
+					lasers[laserPos] = null;
+					handleRobotRemovals();
+				}
+				// robots.get(i).takeDamage(9999);
+
+				// lasers.set((int)(y/125)-1, null);
+			}
+			if (x <= 135) {
+				if (score > highScore)
 					highScore = score;
 				return false;
 			}
@@ -203,6 +221,7 @@ public class GameManager {
 				}
 
 				// delete marked humans
+				slotArray[(int) (tempHuman.getY() / 125) - 1][(int) (tempHuman.getX() / 125) - 2] = false;
 				humans.remove(i);
 				i--;
 			}
@@ -368,12 +387,29 @@ public class GameManager {
 
 	}
 
+	public void removeHuman(int x, int y) {
+		for (int i = 0; i < humans.size(); i++) {
+			HumanSide tempHuman = humans.get(i);
+			if ((tempHuman.getX() == (x - x % 125)) 
+					&& ((tempHuman.getY() == (y - y % 125)))) {
+				tempHuman.setToBeRemoved();
+			}
+		}
+		handleHumanRemovals();
+	}
+
 	public void resetMap() throws SlickException {
 		score = 0;
 		humans.clear();
 		// humans.add(new Shooter(100, 100));
 		robots.clear();
 		// robots.add(new Casual(600, 100));
+
+		// initialize 4 lasers
+		lasers[0] = new Laser(125, 125);
+		lasers[1] = new Laser(125, 250);
+		lasers[2] = new Laser(125, 375);
+		lasers[3] = new Laser(125, 500);
 
 		// reset the slot array
 		for (int i = 0; i < slotArray.length; i++) {
@@ -388,6 +424,7 @@ public class GameManager {
 	public void draw(Graphics g) {
 		mapManager.drawHumans(humans, g);
 		mapManager.drawRobots(robots, g);
+		mapManager.drawLasers(lasers, g);
 	}
 
 	public int getScore() {
