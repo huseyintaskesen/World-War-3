@@ -28,8 +28,6 @@ public class Hints extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
 		
-//		g.drawRect(700, 30, 70, 30);
-//		g.drawString("Back", 710, 35);
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
@@ -51,7 +49,7 @@ public class Hints extends BasicGameState {
 		
 		if ((120 < xpos && xpos < 185) && (102 < ypos && ypos < 130)){
 			if (input.isMouseButtonDown(0)) {
-				flag = false;
+				flag = true;
 				view = new Image("res/Hints screens/Hints-Miner.png");
 			}
 		}

@@ -16,6 +16,7 @@ public class UIManager extends StateBasedGame{
 	public static final int credits = 3;
 	public static final int gameover = 4; // TODO gameover screen
 	public static final int hints = 5;
+	//public static final int chooseLevel = 6;
 	
 	public UIManager(String gamename) {
 		super(gamename);
@@ -25,6 +26,7 @@ public class UIManager extends StateBasedGame{
 		this.addState(new Credits(credits));
 		this.addState(new Gameover(gameover));
 		this.addState(new Hints(hints));
+		//this.addState(new Hints(chooseLevel));
 	}
 
 	public void initStatesList(GameContainer gc) throws SlickException {
@@ -34,6 +36,7 @@ public class UIManager extends StateBasedGame{
 		this.getState(credits).init(gc, this);
 		this.getState(gameover).init(gc, this);
 		this.getState(hints).init(gc, this);
+		//this.getState(chooseLevel).init(gc, this);
 		this.enterState(menu);
 		
 	}
