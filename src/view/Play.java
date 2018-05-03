@@ -21,7 +21,7 @@ public class Play extends BasicGameState {
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
 	int timePassed2 = 0;
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
-//	int score = 0;
+	// int score = 0;
 
 	Image view; // background image
 	Image pause; // pause menu
@@ -29,16 +29,13 @@ public class Play extends BasicGameState {
 	private Music music;
 
 	// declare lists of game objects
-//	ArrayList<AttackerHuman> humans;
-//	ArrayList<Robot> robots;
-
+	// ArrayList<AttackerHuman> humans;
+	// ArrayList<Robot> robots;
 
 	private GameManager gameManager;
 	private User user;
 
-	
 	private int selectedElement = -1;
-	
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
 
@@ -47,22 +44,22 @@ public class Play extends BasicGameState {
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		
+
 		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
 
 		// background and pause menu images
-		//view = new Image("res/playgame.png");
-		view = new Image("res/Play-Survival.png");
+		// view = new Image("res/playgame.png");
+		view = new Image("res/Play-Survival2.png");
 		pause = new Image("res/pause.png");
 
-//		// lists of game objects are initialized
-//		humans = new ArrayList<AttackerHuman>();
-//		robots = new ArrayList<Robot>();
+		// // lists of game objects are initialized
+		// humans = new ArrayList<AttackerHuman>();
+		// robots = new ArrayList<Robot>();
 
 		gameManager = GameManager.getInstance();
-		user = new User("Dummy");//TODO name
+		user = new User("Dummy");// TODO name
 		gameManager.defineUser(user);
-		
+
 		land = new Image("res/Land.png");
 
 		gameManager.resetMap();
@@ -77,8 +74,8 @@ public class Play extends BasicGameState {
 		view.draw(0, 0); // background image drawn
 
 		// temporary gray background
-		//g.setColor(Color.lightGray);
-		//g.fillRect(100, 100, 1180, 620);
+		// g.setColor(Color.lightGray);
+		// g.fillRect(100, 100, 1180, 620);
 
 		// land.draw(100,100,1180,620);
 
@@ -92,21 +89,27 @@ public class Play extends BasicGameState {
 		// display mouse coordinates
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
-		g.fillRect(380, 30, 100, 40);
 		g.setColor(Color.black);
 		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
-		g.drawString(""+user.getBalance(), 380, 30);
+		g.drawString("" + user.getBalance(), 380, 30);
 		g.drawString("Score: " + gameManager.getScore() / 1000, 600, 30);
 		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 600, 70);
-		
-		
-		//Selected element rectangle
-		g.setLineWidth(4);
-		g.setColor(Color.orange);
-		g.resetLineWidth();
-		g.drawRect(17, 100*selectedElement, 118, 100);
+
+		// Selected element rectangle
+		if (selectedElement > 0) {
+			g.setLineWidth(4);
+			g.setColor(Color.orange);
+			g.resetLineWidth();
+			g.drawRect(17, 100 * selectedElement, 118, 100);
+		}
+		else if (selectedElement == 0) {
+			g.setLineWidth(3);
+			g.setColor(Color.red);
+			g.resetLineWidth();
+			g.drawRect(135, 650, 50, 50);
+		}
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -147,69 +150,70 @@ public class Play extends BasicGameState {
 
 		} else {// Pause flag is down, game is running
 
-
 			// calculate time passed
 			timePassed += delta;
 			timePassed2 += delta;
-//			for (int i = 0; i < humans.size(); i++) {
-//				humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
-//			}
-			//timeCount += delta;
-//			score += delta;
+			// for (int i = 0; i < humans.size(); i++) {
+			// humans.get(i).setReloadTime(humans.get(i).getReloadTime()+delta);
+			// }
+			// timeCount += delta;
+			// score += delta;
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if(timePassed2>3000)
-				{
-					//gameManager.gameUpdate(timePassed2);
+			if (timePassed2 > 3000) {
+				// gameManager.gameUpdate(timePassed2);
 
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for first row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for second row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for third row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for fourth row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for fifth row
-					
-					timePassed2=0;
-				}
+				// gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for
+				// first row
+				// gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for
+				// second row
+				// gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for
+				// third row
+				// gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for
+				// fourth row
+				// gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for
+				// fifth row
+
+				timePassed2 = 0;
+			}
 			if (timePassed > 20) {
 
-
-				if(!gameManager.gameUpdate(timePassed))
+				if (!gameManager.gameUpdate(timePassed))
 					gameover(sbg);
 				// add human or robot simply by clicking the corresponding mouse button
 				// added for first iteration demo, testing purposes
 				if ((250 < xpos && xpos < 1250) && (125 < ypos && ypos < 625)) {
 					if (input.isMousePressed(0)) {
-						//gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
-						if(selectedElement==-1) {
-							gameManager.collectMine(xpos,ypos);
+						// gameManager.addAttackerHuman(new Shooter((xpos - xpos % 100), (ypos - ypos %
+						// 100)));
+						if (selectedElement == -1) {
+							gameManager.collectMine(xpos, ypos);
+						}
+						else if (selectedElement == 0) {
+							gameManager.removeHuman(xpos,ypos);
 						}
 						else
-							gameManager.addHuman(selectedElement,xpos,ypos);
-						//humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
+							gameManager.addHuman(selectedElement, xpos, ypos);
+						// humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 					} else if (input.isMousePressed(1)) {
 
-						gameManager.addRobot(1,xpos,ypos);
-						//robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
+						gameManager.addRobot(1, xpos, ypos);
+						// robots.add(new Casual((xpos - xpos % 100), (ypos - ypos % 100)));
 					}
 				}
-
-
-
 
 				/////////////
 				// collision detection logic
 				/////////////
 
 				gameManager.handleCollisions();
-					
-
 
 				// reset the timer
 				timePassed = 0;
 			}
-			//timePassed2=0;
-			
+			// timePassed2=0;
+
 			// Pause button
 			if ((1031 < xpos && xpos < 1095) && (15 < ypos && ypos < 79)) {
 				if (input.isMouseButtonDown(0)) {
@@ -224,11 +228,9 @@ public class Play extends BasicGameState {
 					sbg.enterState(0);
 				}
 			}
-			
-			
-			
+
 			if ((320 < xpos && xpos < 370) && (25 < ypos && ypos < 70)) {
-				if (input.isMouseButtonDown(0)) 
+				if (input.isMouseButtonDown(0))
 					user.setBalance(99999);
 			}
 			/////////////
@@ -236,46 +238,52 @@ public class Play extends BasicGameState {
 			///////////
 			if ((17 < xpos && xpos < 135) && (100 < ypos && ypos < 200)) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=1;
+					selectedElement = 1;
 				}
 			}
-			
+
 			else if ((17 < xpos && xpos < 135) && (200 < ypos && ypos < 300)) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=2;
+					selectedElement = 2;
 				}
 			}
-			
+
 			else if ((17 < xpos && xpos < 135) && (300 < ypos && ypos < 400)) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=3;
+					selectedElement = 3;
 				}
 			}
-			
+
 			else if ((17 < xpos && xpos < 135) && (400 < ypos && ypos < 500)) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=4;
+					selectedElement = 4;
 				}
 			}
-			
+
 			else if ((17 < xpos && xpos < 135) && (500 < ypos && ypos < 600)) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=5;
+					selectedElement = 5;
 				}
 			}
-			
+
 			else if ((17 < xpos && xpos < 135) && (600 < ypos && ypos < 700)) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=6;
+					selectedElement = 6;
+				}
+			}
+
+			else if ((135 < xpos && xpos < 185) && (650 < ypos && ypos < 700)) {
+				if (input.isMouseButtonDown(0)) {
+					selectedElement = 0;
 				}
 			}
 			// If clicked outside of the list, selection disappears
-			else if (!((250 < xpos && xpos < 1250) && (125 < ypos && ypos < 625))){
+			else if (!((250 < xpos && xpos < 1250) && (125 < ypos && ypos < 625))) {
 				if (input.isMouseButtonDown(0)) {
-					selectedElement=-1;
+					selectedElement = -1;
 				}
 			}
-		}// end of else of pause menu
+		} // end of else of pause menu
 	}
 
 	/**
@@ -286,7 +294,6 @@ public class Play extends BasicGameState {
 		gameManager.resetMap();
 		sbg.enterState(4);
 	}
-
 
 	public int getID() {
 		return 1;

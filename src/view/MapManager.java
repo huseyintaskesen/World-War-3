@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 
 import model.HumanSide;
 import model.LandMine;
+import model.Laser;
 import model.Miner;
 import model.RangedAttacker;
 import model.RobotSide;
@@ -87,6 +88,17 @@ public class MapManager {
 			}
 		}
 
+	}
+
+	/**
+	 * @param lasers
+	 * @param g
+	 */
+	public void drawLasers(Laser[] lasers, Graphics g) {
+		for (int i = 0; i < lasers.length; i++) {
+			if(lasers[i]!=null)
+				lasers[i].draw();
+		}
 	}
 
 }
