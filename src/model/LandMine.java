@@ -3,8 +3,8 @@ package model;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class LandMine extends Passive {
-	private final int startHealth = 40;
+public class LandMine extends MeleeAttacker {
+	private final int startHealth = 9999;
 	private int bombTimer;
 	private boolean bombReady;
 	public LandMine(int x, int y) throws SlickException{
@@ -32,5 +32,17 @@ public class LandMine extends Passive {
 	public void resetTimer() {
 		bombReady=false;
 		bombTimer=0;
+	}
+
+	/* (non-Javadoc)
+	 * @see model.MeleeAttacker#attackToRobot(model.RobotSide)
+	 */
+	@Override
+	public void attackToRobot(RobotSide robot) {
+		if(isBombReady()) {
+			robot.takeDamage(9999);
+			this.setToBeRemoved();
+		}
+		
 	}
 }

@@ -38,7 +38,7 @@ public abstract class HumanSide extends GameElement{
 	
 	
 	public void takeDamage(int damage) {
-		if(health<=0)
+		if(health-damage<=0)
 			setToBeRemoved();
 		else
 			health=health-damage;
