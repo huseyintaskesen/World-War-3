@@ -19,7 +19,7 @@ public class LandMine extends MeleeAttacker {
 		return bombTimer;
 	}
 	public void setBombTimer(int mineTimer) {
-		if(mineTimer<3000)
+		if(mineTimer<5000)
 			this.bombTimer = mineTimer;
 		else
 			bombReady = true;

@@ -291,7 +291,6 @@ public class Play extends BasicGameState {
 	 *
 	 */
 	private void gameover(StateBasedGame sbg) throws SlickException {
-		gameManager.resetMap();
 		sbg.enterState(4);
 	}
 
