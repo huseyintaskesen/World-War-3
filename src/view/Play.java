@@ -168,10 +168,7 @@ public class Play extends BasicGameState {
 				{
 					//gameManager.gameUpdate(timePassed2);
 
-					if(rowCount != 5){
-						humanCount = gameManager.humansInARow(rowCount);
-						rowCount++;
-					}
+
 					//if(humanCount > = 2)
 				//	gameManager.addRobot(1,(1240), (188));//for first row
 //					gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row

@@ -18,6 +18,7 @@ public class Settings extends BasicGameState {
 	Image view;
 	public String mouse= "No input yet";
 	private boolean mousePressed;
+	private boolean mousePressed2;
 	
 	public Settings(int state) {
 
@@ -57,6 +58,16 @@ public class Settings extends BasicGameState {
 			if (!input.isMouseButtonDown(0) && mousePressed) {
 				mousePressed = false;
 				gc.setMusicOn(gc.isMusicOn());
+			}
+		}
+		if((550 < xpos && xpos < 814)&&(160 < ypos && ypos < 220)){
+			if(input.isMouseButtonDown(0)&& !mousePressed2){
+				mousePressed2 = true;
+				gc.setSoundOn(!gc.isSoundOn());
+			}
+			if (!input.isMouseButtonDown(0) && mousePressed) {
+				mousePressed2 = false;
+				gc.setSoundOn(gc.isSoundOn());
 			}
 		}
 		
