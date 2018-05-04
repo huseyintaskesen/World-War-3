@@ -3,10 +3,14 @@
  */
 package view;
 
+import java.awt.Font;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import controller.GameManager;
 
 
 public class Gameover extends BasicGameState {
@@ -15,6 +19,9 @@ public class Gameover extends BasicGameState {
 	private Sound gameOverSound;
 	public String mouse= "No input yet";
 	
+	private GameManager gameManager;
+	private TrueTypeFont myFont;
+	
 	public Gameover(int state) {
 
 	}
@@ -22,12 +29,25 @@ public class Gameover extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		view = new Image("res/gameover.png");
 		gameOverSound = new Sound("res/game-over-sound.wav");
+		gameManager = GameManager.getInstance();
+		
+		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.BOLD, 30), true);
 	}
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		super.enter(container, game);
+//		gameManager = GameManager.getInstance();
 		gameOverSound.play(1,0.3f);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.newdawn.slick.state.BasicGameState#leave(org.newdawn.slick.GameContainer, org.newdawn.slick.state.StateBasedGame)
+	 */
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		super.leave(container, game);
+		gameManager.resetMap();
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -41,7 +61,8 @@ public class Gameover extends BasicGameState {
 		g.drawString(mouse, 300, 300);
 		//gameOverSound.play(1,0.3f);
 
-		
+		g.setFont(myFont);
+		g.drawString("" + gameManager.getScore() / 1000, 666, 140);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -55,6 +76,8 @@ public class Gameover extends BasicGameState {
 			}
 		}
 	}
+	
+
 	public int getID() {
 		// TODO Auto-generated method stub
 		return 4;

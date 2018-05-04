@@ -15,6 +15,7 @@ import model.FastRobot;
 import model.Freezer;
 import model.HumanSide;
 import model.LandMine;
+import model.Laser;
 import model.MeleeAttacker;
 import model.Miner;
 import model.Obstacle;
@@ -39,9 +40,11 @@ public class GameManager {
 	// private static ArrayList<RangedAttacker> humans;
 	private static ArrayList<HumanSide> humans;
 	private static ArrayList<RobotSide> robots;
+	private static Laser[] lasers;
 
 	private MapManager mapManager;
 	private int score = 0;
+	private int highScore = 0;
 
 	private boolean[][] slotArray;
 
@@ -57,6 +60,7 @@ public class GameManager {
 		// humans = new ArrayList<RangedAttacker>();
 		humans = new ArrayList<HumanSide>();
 		robots = new ArrayList<RobotSide>();
+		lasers = new Laser[4];
 		slotArray = new boolean[4][12];
 	}
 
@@ -70,10 +74,11 @@ public class GameManager {
 	}
 
 	public boolean gameUpdate(int delta) {
+		score = score + delta;
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
-			
+
 			// update reload time
 			if (tempHuman instanceof RangedAttacker) {
 				RangedAttacker rangedAttacker = (RangedAttacker) tempHuman;
@@ -83,17 +88,19 @@ public class GameManager {
 				for (int j = 0; j < rangedAttacker.getBullets().size(); j++) {
 					rangedAttacker.getBullets().get(j).updateLocation();
 				}
-			}
-			else if (tempHuman instanceof Miner) {
+			} else if (tempHuman instanceof Miner) {
 				Miner miner = (Miner) tempHuman;
-				miner.setMineTimer(miner.getMineTimer()+delta);
-			}
-			else if (tempHuman instanceof LandMine) {
+				miner.setMineTimer(miner.getMineTimer() + delta);
+			} else if (tempHuman instanceof LandMine) {
 				LandMine landMine = (LandMine) tempHuman;
-				landMine.setBombTimer(landMine.getBombTimer()+delta);
+				landMine.setBombTimer(landMine.getBombTimer() + delta);
+			} else if (tempHuman instanceof Swordsman) {
+				Swordsman swordsman = (Swordsman) tempHuman;
+				swordsman.setChargeTime(swordsman.getChargeTime() + delta);
 			}
+
 		}
-		
+
 		// update reload time of robots
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).setAttackTime(robots.get(i).getAttackTime() + delta);
@@ -102,15 +109,28 @@ public class GameManager {
 		// update the map
 		for (int i = 0; i < robots.size(); i++) {
 			robots.get(i).updateLocation();
-			if(robots.get(i).getX()<=135){
+			float x = robots.get(i).getX();
+			float y = robots.get(i).getY();
+			if (x <= 230) {
+				int laserPos = (int) (y / 125) - 1;
+
+				if (lasers[laserPos] != null) {
+
+					lasers[laserPos].damageRobots(robots);
+					lasers[laserPos] = null;
+					handleRobotRemovals();
+				}
+				// robots.get(i).takeDamage(9999);
+
+				// lasers.set((int)(y/125)-1, null);
+			}
+			if (x <= 135) {
+				if (score > highScore)
+					highScore = score;
 				return false;
 			}
 		}
-		// for (int i = 0; i < humans.size(); i++) {
-		// for (int j = 0; j < humans.get(i).getBullets().size(); j++) {
-		// humans.get(i).getBullets().get(j).updateLocation();
-		// }
-		// }
+
 		return true;
 	}
 
@@ -130,7 +150,7 @@ public class GameManager {
 			for (int j = 0; j < robots.size(); j++) {
 				RobotSide tempRobot = robots.get(j);
 
-
+				// ranged attacker collisions
 				if (rangedAttacker != null) {
 
 					// fire a bullet
@@ -149,27 +169,38 @@ public class GameManager {
 								&& rangedAttacker.getY() == tempRobot.getY()
 								&& rangedAttacker.getBullets().get(k).getX() - 10 <= tempRobot.getX()) {
 							rangedAttacker.getBullets().get(k).damageRobot(tempRobot, rangedAttacker);
-							// if (tempRobot.getHealth() <= 0) {
-							// // robots.remove(tempRobot);
-							// tempRobot.setToBeRemoved();
-							// }
-
 						}
 
 					}
 				}
 
-				handleRobotRemovals();
-				// damage human as robot
+				// human robot collision
 				if (((tempHuman.getX() + 60) > tempRobot.getX()) && tempHuman.getY() == tempRobot.getY()
 						&& tempHuman.getX() - 10 <= tempRobot.getX() && tempRobot.getAttackTime() >= 1000) {
 
-					tempRobot.stop();
+					if (!(meleeAttacker instanceof LandMine && !(((LandMine) meleeAttacker).isBombReady())))
+						tempRobot.stop();
+
+					// melee attacker collisions
+					if (meleeAttacker != null) {
+						if (meleeAttacker instanceof Swordsman) {
+							// do something
+							if (((Swordsman) meleeAttacker).getChargeTime() > 1000) {
+								meleeAttacker.attackToRobot(tempRobot);
+								((Swordsman) meleeAttacker).setChargeTime(0);
+							}
+						} else if (meleeAttacker instanceof LandMine)
+							meleeAttacker.attackToRobot(tempRobot);
+					}
+
+					// damage human as robot
+					// tempRobot.stop();
 					tempRobot.attackToHuman(tempHuman);
 
 					tempRobot.setAttackTime(0);
 				}
 
+				handleRobotRemovals();
 				handleHumanRemovals();
 			}
 		}
@@ -190,6 +221,7 @@ public class GameManager {
 				}
 
 				// delete marked humans
+				slotArray[(int) (tempHuman.getY() / 125) - 1][(int) (tempHuman.getX() / 125) - 2] = false;
 				humans.remove(i);
 				i--;
 			}
@@ -329,7 +361,7 @@ public class GameManager {
 	public boolean checkSlot(int x, int y) {
 		if (slotArray[y / 125 - 1][x / 125 - 2] == true)
 			return false;
-		else 
+		else
 			return true;
 	}
 
@@ -341,18 +373,29 @@ public class GameManager {
 		}
 		return count;
 	}
-	
-	public void collectMine(int x,int y) {
+
+	public void collectMine(int x, int y) {
 		for (int i = 0; i < humans.size(); i++) {
-			if(humans.get(i) instanceof Miner) {
+			if (humans.get(i) instanceof Miner) {
 				Miner miner = (Miner) humans.get(i);
-				if((miner.getX()== (x-x%125))&&(miner.isMineReady())&&((miner.getY()== (y-y%125)))){
+				if ((miner.getX() == (x - x % 125)) && (miner.isMineReady()) && ((miner.getY() == (y - y % 125)))) {
 					updateBalance(50);
 					miner.resetTimer();
 				}
 			}
 		}
-		
+
+	}
+
+	public void removeHuman(int x, int y) {
+		for (int i = 0; i < humans.size(); i++) {
+			HumanSide tempHuman = humans.get(i);
+			if ((tempHuman.getX() == (x - x % 125)) 
+					&& ((tempHuman.getY() == (y - y % 125)))) {
+				tempHuman.setToBeRemoved();
+			}
+		}
+		handleHumanRemovals();
 	}
 
 	public void resetMap() throws SlickException {
@@ -361,15 +404,35 @@ public class GameManager {
 		// humans.add(new Shooter(100, 100));
 		robots.clear();
 		// robots.add(new Casual(600, 100));
+
+		// initialize 4 lasers
+		lasers[0] = new Laser(125, 125);
+		lasers[1] = new Laser(125, 250);
+		lasers[2] = new Laser(125, 375);
+		lasers[3] = new Laser(125, 500);
+
+		// reset the slot array
+		for (int i = 0; i < slotArray.length; i++) {
+			for (int j = 0; j < slotArray[i].length; j++) {
+				slotArray[i][j] = false;
+			}
+		}
+
 	}
 
 	// to draw game objects
 	public void draw(Graphics g) {
-		mapManager.drawHumans(humans,g);
-		mapManager.drawRobots(robots,g);
+		mapManager.drawHumans(humans, g);
+		mapManager.drawRobots(robots, g);
+		mapManager.drawLasers(lasers, g);
 	}
 
-	
-	
+	public int getScore() {
+		return score;
+	}
+
+	public int getHighScore() {
+		return highScore;
+	}
 
 }
