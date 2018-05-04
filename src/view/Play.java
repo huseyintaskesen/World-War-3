@@ -22,6 +22,8 @@ public class Play extends BasicGameState {
 	int timePassed2 = 0;
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
 	int score = 0;
+	int humanCount = 0;
+	int rowCount = 1;
 
 	Image view; // background image
 	Image pause; // pause menu
@@ -159,15 +161,20 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if(timePassed2>3000)
+			if(timePassed2>5000)
 				{
 					//gameManager.gameUpdate(timePassed2);
 
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for first row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for second row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for third row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for fourth row
-//					gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for fifth row
+					if(rowCount != 5){
+						humanCount = gameManager.humansInARow(rowCount);
+						rowCount++;
+					}
+					//if(humanCount > = 2)
+				//	gameManager.addRobot(1,(1240), (188));//for first row
+//					gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row
+//					gameManager.addHuman(1,((1240 - 1240%100)), (290-290%100));// for third row
+//					gameManager.addHuman(1,((1240 - 1240%100)), (410-410%100));// for fourth row
+//					gameManager.addHuman(1,((1240 - 1240%100)), (510-510%100));// for fifth row
 					
 					timePassed2=0;
 				}
