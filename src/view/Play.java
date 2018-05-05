@@ -38,7 +38,7 @@ public class Play extends BasicGameState {
 	// ArrayList<Robot> robots;
 
 	private GameManager gameManager;
-	private User user;
+	//private User user;
 
 	private int selectedElement = -1;
 
@@ -61,8 +61,8 @@ public class Play extends BasicGameState {
 		// robots = new ArrayList<Robot>();
 
 		gameManager = GameManager.getInstance();
-		user = new User("Dummy");// TODO name
-		gameManager.defineUser(user);
+//		user = new User("Dummy");// TODO name
+//		gameManager.defineUser(user);
 
 		land = new Image("res/Land.png");
 
@@ -96,7 +96,7 @@ public class Play extends BasicGameState {
 		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
-		g.drawString("" + user.getBalance(), 380, 30);
+		g.drawString("" + gameManager.getBalance(), 380, 30);
 		g.drawString("Score: " + gameManager.getScore() / 1000, 600, 30);
 		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 600, 70);
 
@@ -272,7 +272,7 @@ public class Play extends BasicGameState {
 
 			if ((320 < xpos && xpos < 370) && (25 < ypos && ypos < 70)) {
 				if (input.isMouseButtonDown(0))
-					user.setBalance(99999);
+					gameManager.setBalance(99999);
 			}
 			/////////////
 			/// Human Selection

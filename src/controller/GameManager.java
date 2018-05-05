@@ -428,4 +428,27 @@ public class GameManager {
 		return highScore;
 	}
 
+	/**
+	 * @return
+	 */
+	public int getBalance() {
+		return user.getBalance();
+	}
+
+	/**
+	 * @param i
+	 */
+	public void setBalance(int i) {
+		user.setBalance(i);
+		
+	}
+
+	/**
+	 * @return
+	 */
+	public String getName() {
+		
+		return user.getName();
+	}
+
 }

@@ -63,6 +63,7 @@ public class Gameover extends BasicGameState {
 
 		g.setFont(myFont);
 		g.drawString("" + gameManager.getScore() / 1000, 666, 140);
+		g.drawString(gameManager.getName() , 735, 100);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
