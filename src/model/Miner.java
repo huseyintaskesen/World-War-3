@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 
 public class Miner extends Passive {
 	private final int startHealth = 20;
-	
+	public final static int cost = 50;
 	private int mineTimer;
 
 	private boolean mineReady;
@@ -15,7 +15,7 @@ public class Miner extends Passive {
 		setImg(new Image("res/Robots & Humans/miner.png"));
 		
 		setHealth(startHealth);
-		setCost(50);
+
 		mineReady = false;
 	}
 	

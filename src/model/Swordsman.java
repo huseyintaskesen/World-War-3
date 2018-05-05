@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 
 public class Swordsman extends MeleeAttacker {
 	private final int startHealth = 20;
-	
+	public final static int cost = 100;
 	private int chargeTime;
 	
 	public Swordsman(int x, int y) throws SlickException{
@@ -14,7 +14,6 @@ public class Swordsman extends MeleeAttacker {
 		
 		setDamage(2);
 		setHealth(startHealth);
-		setCost(100);
 	}
 	
 	public int getChargeTime() {
