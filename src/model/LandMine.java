@@ -5,13 +5,13 @@ import org.newdawn.slick.SlickException;
 
 public class LandMine extends MeleeAttacker {
 	private final int startHealth = 9999;
+	public final static int cost = 50;
 	private int bombTimer;
 	private boolean bombReady;
 	public LandMine(int x, int y) throws SlickException{
 		super(x,y);
 		setImg(new Image("res/Robots & Humans/mine.png"));
 		setHealth(startHealth);
-		setCost(50);
 		bombTimer = 0;
 	}
 	

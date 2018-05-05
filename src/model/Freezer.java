@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 public class Freezer extends RangedAttacker {
 	private final int startHealth = 20;
+	public final static int cost = 200;
 	public Freezer(int x, int y) throws SlickException{
 		super(x,y);
 		setImg(new Image("res/Robots & Humans/freezer.png"));
@@ -12,6 +13,5 @@ public class Freezer extends RangedAttacker {
 		setHealth(startHealth);
 		setDamage(3);
 		setRange(400);
-		setCost(200);
 	}
 }

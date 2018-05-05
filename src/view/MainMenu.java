@@ -10,16 +10,14 @@ import java.awt.Font;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.gui.TextField;
 
-
-
 public class MainMenu extends BasicGameState {
 
 	Image menu;
-	public String mouse= "No input yet";
+	public String mouse = "No input yet";
 	private TextField text1;
-	private UnicodeFont font = getNewFont("Arial" , 30);
+	private UnicodeFont font = getNewFont("Arial", 30);
 	private String userName;
-
+	private Music music;
 
 	public MainMenu(int state) {
 
@@ -28,9 +26,12 @@ public class MainMenu extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		menu = new Image("res/main menu.png");
 		font.loadGlyphs();
-		text1 = new TextField(gc, font, 932,257,195,30);
-		
+		text1 = new TextField(gc, font, 932, 257, 195, 30);
 
+		// music
+		music = new Music("res/soundtrack.aiff");
+		music.loop();
+		music.setVolume(0.5f);
 
 	}
 
@@ -39,12 +40,11 @@ public class MainMenu extends BasicGameState {
 		menu.draw(0, 0);
 		text1.render(gc, g);
 
+		// playNow.draw(100,100);
+		// quit.draw(100,200);
 
-//		playNow.draw(100,100);
-//		quit.draw(100,200);
-		
-//		g.fillOval(75, 100, 100, 100);
-//		g.drawString("Play", 80, 70);
+		// g.fillOval(75, 100, 100, 100);
+		// g.drawString("Play", 80, 70);
 		g.setColor(Color.white);
 		g.fillRect(300, 300, 150, 30);
 		g.setColor(Color.black);
@@ -56,25 +56,21 @@ public class MainMenu extends BasicGameState {
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
 		int ypos = 720 - Mouse.getY();
-		mouse = "x : "+xpos+" y : "+ypos;
-
+		mouse = "x : " + xpos + " y : " + ypos;
 
 		if ((907 < xpos && xpos < 1154) && (300 < ypos && ypos < 353)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(1);
 			}
-		}
-		else if ((661 < xpos && xpos < 858) && (480 < ypos && ypos < 520)) {
+		} else if ((661 < xpos && xpos < 858) && (480 < ypos && ypos < 520)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(2);
 			}
-		}
-		else if ((661 < xpos && xpos < 858) && (530 < ypos && ypos < 568)) {
+		} else if ((661 < xpos && xpos < 858) && (530 < ypos && ypos < 568)) {
 			if (input.isMouseButtonDown(0)) {
 				sbg.enterState(3);
 			}
-		}
-		else if ((661 < xpos && xpos < 858) && (583 < ypos && ypos < 620)) {
+		} else if ((661 < xpos && xpos < 858) && (583 < ypos && ypos < 620)) {
 			if (input.isMouseButtonDown(0)) {
 				gc.exit();
 			}
@@ -92,12 +88,12 @@ public class MainMenu extends BasicGameState {
 	public int getID() {
 		return 0;
 	}
-	public UnicodeFont getNewFont(String fontName , int fontSize){
-		UnicodeFont returnFont = new UnicodeFont(new Font(fontName , Font.BOLD , fontSize));
+
+	public UnicodeFont getNewFont(String fontName, int fontSize) {
+		UnicodeFont returnFont = new UnicodeFont(new Font(fontName, Font.BOLD, fontSize));
 		returnFont.addAsciiGlyphs();
 		returnFont.getEffects().add(new ColorEffect(java.awt.Color.red));
 		return (returnFont);
 	}
-
 
 }
