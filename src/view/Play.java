@@ -30,7 +30,6 @@ public class Play extends BasicGameState {
 	int second;
 	int firstRow;
 	int secondRow;
-	int rowNum = 1;
 	// int score = 0;
 
 	Image view; // background image
