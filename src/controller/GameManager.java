@@ -46,7 +46,7 @@ public class GameManager {
 	private int score = 0;
 	private int highScore = 0;
 
-	public boolean[][] slotArray;
+	private boolean[][] slotArray;
 
 	int firstRow = 0, secondRow = 0, thirdRow = 0, fourthRow = 0, fifthRow = 0, sixthRow = 0;
 

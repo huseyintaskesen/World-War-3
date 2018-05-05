@@ -65,7 +65,7 @@ public class Settings extends BasicGameState {
 				mousePressed2 = true;
 				gc.setSoundOn(!gc.isSoundOn());
 			}
-			if (!input.isMouseButtonDown(0) && mousePressed) {
+			if (!input.isMouseButtonDown(0) && mousePressed2) {
 				mousePressed2 = false;
 				gc.setSoundOn(gc.isSoundOn());
 			}
