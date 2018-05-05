@@ -43,7 +43,7 @@ public abstract class GameElement {
 	}
 	
 	public void draw() {
-		img.draw(getX()+25, getY()+25, 50, 50);
+		img.draw(getX()+25, getY()+25, 75, 75);
 	}
 	
 	public boolean isToBeRemoved() {

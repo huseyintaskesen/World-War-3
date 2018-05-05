@@ -1,4 +1,8 @@
+/view/
+<<<<<<< HEAD
+/controller/
+/model/
+=======
 /model/
 /controller/
-/view/
-/game/
+>>>>>>> d5673e5630beb405830389081d1a0aeac01ae0c2
