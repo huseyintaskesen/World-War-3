@@ -360,7 +360,7 @@ public class GameManager {
 	public int humansInARow(int row) {
 		int count = 0;
 		for (int i = 0; i < 12; i++) {
-			if (slotArray[row - 1][i] == false)
+			if (slotArray[row - 1][i] == true)
 				count++;
 		}
 		return count;
