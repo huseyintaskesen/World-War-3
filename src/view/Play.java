@@ -5,6 +5,7 @@ package view;
 
 import java.awt.Font;
 
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
@@ -23,7 +24,12 @@ public class Play extends BasicGameState {
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
 	int score = 0;
 	int rowNum=1;
-	int humanCount;
+	int[] humanCount;
+	int INT_MAX;
+	int first;
+	int second;
+	int firstRow;
+	int secondRow;
 	// int score = 0;
 
 	Image view; // background image
@@ -38,12 +44,12 @@ public class Play extends BasicGameState {
 	private GameManager gameManager;
 	private User user;
 
+
 	private int selectedElement = -1;
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
 
 	public Play(int state) {
-
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -66,6 +72,11 @@ public class Play extends BasicGameState {
 		land = new Image("res/Land.png");
 
 		gameManager.resetMap();
+		//human numbers in a row
+		humanCount = new int[4];
+		first = second = INT_MAX;
+
+
 
 		// music
 		music = new Music("res/soundtrack.aiff");
@@ -164,23 +175,34 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if(timePassed2>3000) {
+			if(timePassed2>5000) {
 				//gameManager.gameUpdate(timePassed2);
 
-				if (rowNum == 5) {
-					rowNum = 1;
-				} else
-					humanCount = gameManager.humansInARow(rowNum);
 
-				for (int i = 0; i < humanCount + 1; i++) {
-					if (rowNum == 1) {
-						gameManager.addRobot(1, (1240), (188));//for first row
+					for(int i =1; i < 5; i++){
+						humanCount[i-1] = gameManager.humansInARow(i);
 					}
-					if (rowNum == 2) {
-						gameManager.addRobot(1, (1240), (310));//for second row
+					for(int j=1;j<humanCount.length+1;j++){
+						if(humanCount[j-1] < first){
+							secondRow = j;
+							firstRow = j;
+							second = first;
+							first = humanCount[j-1];
+						}
+						else if (humanCount[j-1] < second && humanCount[j-1] != first)
+						{
+							secondRow = j;
+							second = humanCount[j-1];
+						}
 
-				}
-			}
+					}
+
+
+					gameManager.addRobot(1, (1240), (125*firstRow));//for first row
+					gameManager.addRobot(1, (1240), (125*secondRow));//for first row
+
+
+
 
 					//gameManager.addRobot(1,(1240), (188));//for first row
 //					gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row
