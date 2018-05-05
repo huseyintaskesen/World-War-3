@@ -22,8 +22,8 @@ public class Play extends BasicGameState {
 	int timePassed2 = 0;
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
 	int score = 0;
-	int humanCount = 0;
-	int rowCount = 1;
+	int rowNum=1;
+	int humanCount;
 	// int score = 0;
 
 	Image view; // background image
@@ -164,19 +164,32 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if(timePassed2>5000)
-				{
-					//gameManager.gameUpdate(timePassed2);
+			if(timePassed2>3000) {
+				//gameManager.gameUpdate(timePassed2);
 
+				if (rowNum == 5) {
+					rowNum = 1;
+				} else
+					humanCount = gameManager.humansInARow(rowNum);
 
-					//if(humanCount > = 2)
-				//	gameManager.addRobot(1,(1240), (188));//for first row
+				for (int i = 0; i < humanCount + 1; i++) {
+					if (rowNum == 1) {
+						gameManager.addRobot(1, (1240), (188));//for first row
+					}
+					if (rowNum == 2) {
+						gameManager.addRobot(1, (1240), (310));//for second row
+
+				}
+			}
+
+					//gameManager.addRobot(1,(1240), (188));//for first row
 //					gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row
-//					gameManager.addHuman(1,((1240 - 1240%100)), (290-290%100));// for third row
+//					gameManager.addHuman(1,((1240 - 1240%100)), (310-310%100));// for third row
 //					gameManager.addHuman(1,((1240 - 1240%100)), (410-410%100));// for fourth row
 //					gameManager.addHuman(1,((1240 - 1240%100)), (510-510%100));// for fifth row
 					
 					timePassed2=0;
+					rowNum++;
 				}
 
 			if (timePassed2 > 3000) {
