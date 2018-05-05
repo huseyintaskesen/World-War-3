@@ -27,18 +27,12 @@ public class Play extends BasicGameState {
 	int second;
 	int firstRow;
 	int secondRow;
-	// int score = 0;
 
 	Image view; // background image
 	Image pause; // pause menu
-	Image land;
-
-	// declare lists of game objects
-	// ArrayList<AttackerHuman> humans;
-	// ArrayList<Robot> robots;
 
 	private GameManager gameManager;
-	//private User user;
+	// private User user;
 
 	private int selectedElement = -1;
 
@@ -52,24 +46,16 @@ public class Play extends BasicGameState {
 		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
 
 		// background and pause menu images
-		// view = new Image("res/playgame.png");
 		view = new Image("res/Play-Survival2.png");
 		pause = new Image("res/pause.png");
 
-		// // lists of game objects are initialized
-		// humans = new ArrayList<AttackerHuman>();
-		// robots = new ArrayList<Robot>();
-
 		gameManager = GameManager.getInstance();
-//		user = new User("Dummy");// TODO name
-//		gameManager.defineUser(user);
-
-		land = new Image("res/Land.png");
+		// user = new User("Dummy");
+		// gameManager.defineUser(user);
 
 		gameManager.resetMap();
 		// human numbers in a row
 		humanCount = new int[4];
-		
 
 	}
 
@@ -79,8 +65,6 @@ public class Play extends BasicGameState {
 		// temporary gray background
 		// g.setColor(Color.lightGray);
 		// g.fillRect(100, 100, 1180, 620);
-
-		// land.draw(100,100,1180,620);
 
 		// game objects are drawn
 		gameManager.draw(g);
@@ -106,15 +90,35 @@ public class Play extends BasicGameState {
 			g.setColor(Color.orange);
 			g.resetLineWidth();
 			g.drawRect(17, 100 * selectedElement, 118, 100);
-		} else if (selectedElement == 0) {
+		} else if (selectedElement == 0) {// trash bin
 			g.setLineWidth(3);
 			g.setColor(Color.red);
 			g.resetLineWidth();
 			g.drawRect(135, 650, 50, 50);
 		}
+
+		// fast forward rectangle
+		if (gameManager.isFastForward()) {
+			g.setLineWidth(3);
+			g.setColor(Color.blue);
+			g.resetLineWidth();
+			g.drawRect(1095, 20, 50, 50);
+		}
+
+		// sound rectangle
+		if (!gc.isMusicOn() && !gc.isSoundOn()) {
+			g.setLineWidth(3);
+			g.setColor(Color.red);
+			g.drawRect(1155, 20, 50, 50);
+			g.drawLine(1200, 20, 1155, 70);
+			g.resetLineWidth();
+		}
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		if (gameManager.isFastForward())
+			delta = delta * 2;
+
 		// get mouse coordinates
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
@@ -167,36 +171,36 @@ public class Play extends BasicGameState {
 				// gameManager.gameUpdate(timePassed2);
 
 				first = second = 9999;
-				
+
 				for (int i = 1; i < 5; i++) {
 					humanCount[i - 1] = gameManager.humansInARow(i);
 				}
 				for (int j = 0; j < humanCount.length; j++) {
-					if(humanCount[j]<=first) {
+					if (humanCount[j] <= first) {
 						first = humanCount[j];
-						firstRow = j+1;
+						firstRow = j + 1;
 					}
 				}
-				
+
 				for (int k = 0; k < humanCount.length; k++) {
-					if(humanCount[k]<=second && first < second) {
+					if (humanCount[k] <= second && first < second) {
 						second = humanCount[k];
-						secondRow = k+1;
+						secondRow = k + 1;
 					}
 				}
-				
-//				for (int j = 1; j < humanCount.length + 1; j++) {
-//					if (humanCount[j - 1] <= first) {
-//						secondRow = j;
-//						firstRow = j;
-//						second = first;
-//						first = humanCount[j - 1];
-//					} else if (humanCount[j - 1] <= second ) {
-//						secondRow = j;
-//						second = humanCount[j - 1];
-//					}
-//
-//				}
+
+				// for (int j = 1; j < humanCount.length + 1; j++) {
+				// if (humanCount[j - 1] <= first) {
+				// secondRow = j;
+				// firstRow = j;
+				// second = first;
+				// first = humanCount[j - 1];
+				// } else if (humanCount[j - 1] <= second ) {
+				// secondRow = j;
+				// second = humanCount[j - 1];
+				// }
+				//
+				// }
 
 				gameManager.addRobot(1, (1240), (125 * firstRow));// for first row
 				gameManager.addRobot(1, (1240), (125 * secondRow));// for first row
@@ -208,10 +212,9 @@ public class Play extends BasicGameState {
 				// gameManager.addHuman(1,((1240 - 1240%100)), (510-510%100));// for fifth row
 
 				timePassed2 = 0;
-				
+
 			}
 
-			
 			if (timePassed > 20) {
 
 				if (!gameManager.gameUpdate(timePassed))
@@ -248,17 +251,31 @@ public class Play extends BasicGameState {
 			// timePassed2=0;
 
 			// Pause button
-			if ((1040 < xpos && xpos < 1090) && (20 < ypos && ypos < 70)) {
+			if ((1040 < xpos && xpos < 1085) && (20 < ypos && ypos < 70)) {
 				if (input.isMouseButtonDown(0)) {
 					pauseFlag = true;
 				}
 			}
 
 			// Sound button
-			if ((1150 < xpos && xpos < 1200) && (20 < ypos && ypos < 70)) {
+			if ((1095 < xpos && xpos < 1145) && (20 < ypos && ypos < 70)) {
 				if (input.isMousePressed(0)) {
-					gc.setMusicOn(!gc.isMusicOn());
-					gc.setSoundOn(!gc.isSoundOn());
+					gameManager.setFastForward(!gameManager.isFastForward());
+
+				}
+			}
+
+			// Sound button
+			if ((1155 < xpos && xpos < 1200) && (20 < ypos && ypos < 70)) {
+				if (input.isMousePressed(0)) {
+					if (!gc.isMusicOn() && !gc.isSoundOn()) {
+						gc.setMusicOn(true);
+						gc.setSoundOn(true);
+					}
+					else {
+						gc.setMusicOn(false);
+						gc.setSoundOn(false);
+					}
 				}
 			}
 

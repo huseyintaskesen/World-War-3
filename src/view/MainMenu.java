@@ -41,7 +41,7 @@ public class MainMenu extends BasicGameState {
 		
 		
 		gameManager = GameManager.getInstance();
-		user = new User("Dummy");// TODO name
+		user = new User("Dummy");
 		gameManager.defineUser(user);
 
 		textField = new TextField(gc, new TrueTypeFont (new Font("Pixeled Regular", Font.BOLD, 24), true), 932, 257, 195, 30);

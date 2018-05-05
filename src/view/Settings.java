@@ -16,8 +16,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Settings extends BasicGameState {
 	Image view;
 	public String mouse = "No input yet";
-	private boolean mousePressed;
-	private boolean mousePressed2;
 
 	public Settings(int state) {
 
