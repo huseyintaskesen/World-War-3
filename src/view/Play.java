@@ -4,6 +4,7 @@
 package view;
 
 import java.awt.Font;
+import java.util.Random;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -27,6 +28,10 @@ public class Play extends BasicGameState {
 	int second;
 	int firstRow;
 	int secondRow;
+	int robotCode;
+	int minRobotCode;
+	int maxRobotCode;
+	Random rnd;
 
 	Image view; // background image
 	Image pause; // pause menu
@@ -56,6 +61,9 @@ public class Play extends BasicGameState {
 		gameManager.resetMap();
 		// human numbers in a row
 		humanCount = new int[4];
+		rnd = new Random();
+		minRobotCode = 1;
+		maxRobotCode = 3;
 
 	}
 
@@ -201,9 +209,11 @@ public class Play extends BasicGameState {
 				// }
 				//
 				// }
+				robotCode = rnd.nextInt((maxRobotCode-minRobotCode)+1) + minRobotCode;
+				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
 
-				gameManager.addRobot(1, (1240), (125 * firstRow));// for first row
-				gameManager.addRobot(1, (1240), (125 * secondRow));// for first row
+				robotCode = rnd.nextInt((maxRobotCode-minRobotCode)+1) + minRobotCode;
+				gameManager.addRobot(robotCode, (1240), (125 * secondRow));// for second least human counted row
 
 				// gameManager.addRobot(1,(1240), (188));//for first row
 				// gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row

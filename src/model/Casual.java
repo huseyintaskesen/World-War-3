@@ -12,7 +12,7 @@ import org.newdawn.slick.SlickException;
  */
 public class Casual extends RobotSide{
 	private final int startHealth=5;
-	private final float speed = 10;
+	private final float speed = 8;
 	
 	
 	public Casual(float x,float y) throws SlickException{
