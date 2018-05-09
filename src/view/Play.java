@@ -32,6 +32,7 @@ public class Play extends BasicGameState {
 	int minRobotCode;
 	int maxRobotCode;
 	Random rnd;
+	int gameUpdateTime;
 
 	Image view; // background image
 	Image pause; // pause menu
@@ -64,6 +65,7 @@ public class Play extends BasicGameState {
 		rnd = new Random();
 		minRobotCode = 1;
 		maxRobotCode = 3;
+		gameUpdateTime = 10000;
 
 	}
 
@@ -175,7 +177,7 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if (timePassed2 > 5000) {
+			if (timePassed2 > gameUpdateTime) {
 				// gameManager.gameUpdate(timePassed2);
 
 				first = second = 9999;
@@ -222,6 +224,7 @@ public class Play extends BasicGameState {
 				// gameManager.addHuman(1,((1240 - 1240%100)), (510-510%100));// for fifth row
 
 				timePassed2 = 0;
+				gameUpdateTime = gameUpdateTime - 100;
 
 			}
 
