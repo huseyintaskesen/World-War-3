@@ -49,7 +49,7 @@ public class Play extends BasicGameState {
 
 		// background and pause menu images
 		// view = new Image("res/playgame.png");
-		view = new Image("res/Play-Survival2.png");
+		view = new Image("res/Play-Survival.png");
 		pause = new Image("res/pause.png");
 
 		// // lists of game objects are initialized

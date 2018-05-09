@@ -10,7 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import model.RangedAttacker;
-import model.Casual;
+import model.CasualRobot;
 import model.FastRobot;
 import model.Freezer;
 import model.HumanSide;
@@ -311,7 +311,7 @@ public class GameManager {
 
 		switch (robotCode) {
 		case 1:
-			robots.add(new Casual(fixedX, fixedY));
+			robots.add(new CasualRobot(fixedX, fixedY));
 			break;
 		case 2:
 			robots.add(new FastRobot(fixedX, fixedY));

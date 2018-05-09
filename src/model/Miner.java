@@ -4,7 +4,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Miner extends Passive {
-	private final int startHealth = 20;
+	private final int startHealth = 3;
 	
 	private int mineTimer;
 

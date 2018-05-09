@@ -26,7 +26,7 @@ public class UIManager extends StateBasedGame{
 		this.addState(new Credits(credits));
 		this.addState(new Gameover(gameover));
 		this.addState(new Hints(hints));
-		//this.addState(new Hints(chooseLevel));
+		//this.addState(new ChooseLevel(chooseLevel));
 	}
 
 	public void initStatesList(GameContainer gc) throws SlickException {

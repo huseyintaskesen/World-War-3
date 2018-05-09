@@ -11,13 +11,13 @@ import org.newdawn.slick.SlickException;
  *
  */
 public class Shooter extends RangedAttacker{
-	private final int startHealth=20;
+	private final int startHealth = 7;
 	
 	public Shooter(int x,int y) throws SlickException {
 		super(x, y);
 		setImg(new Image("res/Robots & Humans/doubleShooter.png"));
 		
-		setDamage(2);
+		setDamage(3);
 		setHealth(startHealth);
 		setRange(400);//TODO to be changed
 		setCost(150);
