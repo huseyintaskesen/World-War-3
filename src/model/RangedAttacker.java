@@ -49,7 +49,10 @@ public abstract class RangedAttacker extends HumanSide {
 	}
 	
 	public void attackToRobot(RobotSide casual) throws SlickException {
-		bullets.add(new Bullet(getX()+50, getY()+25, getDamage()));
+		if(this instanceof Shooter)
+			bullets.add(new NormalBullet(getX()+50, getY()+25, getDamage()));
+		else if(this instanceof Freezer)
+			bullets.add(new FreezerBullet(getX()+50, getY()+25, getDamage()));
 //		shotSound.play(0.3f,0.3f);
 //		shotSound.play(0.5f,0.1f);
 //		shotSound.play(0.3f,0.1f);

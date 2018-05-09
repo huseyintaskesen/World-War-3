@@ -23,5 +23,9 @@ public class Shooter extends RangedAttacker{
 		setRange(400);//TODO to be changed
 	}
 
+	
+	
+	
+
 
 }
