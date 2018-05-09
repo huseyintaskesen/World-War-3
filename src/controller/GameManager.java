@@ -47,8 +47,7 @@ public class GameManager {
 	private int highScore = 0;
 
 	private boolean[][] slotArray;
-
-	int firstRow = 0, secondRow = 0, thirdRow = 0, fourthRow = 0, fifthRow = 0, sixthRow = 0;
+	private boolean fastForward;
 
 	/*
 	 * A private Constructor prevents any other class from instantiating.
@@ -248,44 +247,36 @@ public class GameManager {
 
 		if (checkBalance(humanCode) && checkSlot(fixedX, fixedY)) {
 			int cost = 0;
-			if (fixedY == 100)// bu degerleri fixledigimiz icin 100 ile 200 arasinda olamaz zaten 100,200 gibi
-								// tam katlar olacak hep
-				firstRow++;
-			////// Boyle devam edebiliriz ama bence 6 farkli variable ile tutmak cok
-			////// mantikli degil
-			////// bir array yapabiliriz ya da ben boolean arrayi dusunuyorum slot kontrol
-			////// etmek icin
-			////// direk o arrayden cekebiliriz degerleri
 
 			switch (humanCode) {
 			case 1:
 				humans.add(new Miner(fixedX, fixedY));
-				cost = Miner.getCost();
+				cost = Miner.cost;
 				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 2:
 				humans.add(new Swordsman(fixedX, fixedY));
-				cost = Swordsman.getCost();
+				cost = Swordsman.cost;
 				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 3:
 				humans.add(new Freezer(fixedX, fixedY));
-				cost = Freezer.getCost();
+				cost = Freezer.cost;
 				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 4:
 				humans.add(new Shooter(fixedX, fixedY));
-				cost = Shooter.getCost();
+				cost = Shooter.cost;
 				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 5:
 				humans.add(new Obstacle(fixedX, fixedY));
-				cost = Obstacle.getCost();
+				cost = Obstacle.cost;
 				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 			case 6:
 				humans.add(new LandMine(fixedX, fixedY));
-				cost = LandMine.getCost();
+				cost = LandMine.cost;
 				slotArray[fixedY / 125 - 1][fixedX / 125 - 2] = true;
 				break;
 
@@ -329,22 +320,22 @@ public class GameManager {
 		int cost = 0;
 		switch (humanCode) {
 		case 1:
-			cost = Miner.getCost();
+			cost = Miner.cost;
 			break;
 		case 2:
-			cost = Swordsman.getCost();
+			cost = Swordsman.cost;
 			break;
 		case 3:
-			cost = Freezer.getCost();
+			cost = Freezer.cost;
 			break;
 		case 4:
-			cost = Shooter.getCost();
+			cost = Shooter.cost;
 			break;
 		case 5:
-			cost = Obstacle.getCost();
+			cost = Obstacle.cost;
 			break;
 		case 6:
-			cost = LandMine.getCost();
+			cost = LandMine.cost;
 			break;
 
 		default:
@@ -368,7 +359,7 @@ public class GameManager {
 	public int humansInARow(int row) {
 		int count = 0;
 		for (int i = 0; i < 12; i++) {
-			if (slotArray[row - 1][i] == false)
+			if (slotArray[row - 1][i] == true)
 				count++;
 		}
 		return count;
@@ -390,8 +381,7 @@ public class GameManager {
 	public void removeHuman(int x, int y) {
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
-			if ((tempHuman.getX() == (x - x % 125)) 
-					&& ((tempHuman.getY() == (y - y % 125)))) {
+			if ((tempHuman.getX() == (x - x % 125)) && ((tempHuman.getY() == (y - y % 125)))) {
 				tempHuman.setToBeRemoved();
 			}
 		}
@@ -399,6 +389,8 @@ public class GameManager {
 	}
 
 	public void resetMap() throws SlickException {
+		user.reset();
+		fastForward= false;
 		score = 0;
 		humans.clear();
 		// humans.add(new Shooter(100, 100));
@@ -433,6 +425,44 @@ public class GameManager {
 
 	public int getHighScore() {
 		return highScore;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getBalance() {
+		return user.getBalance();
+	}
+
+	/**
+	 * @param i
+	 */
+	public void setBalance(int i) {
+		user.setBalance(i);
+
+	}
+
+	/**
+	 * @return
+	 */
+	public String getName() {
+
+		return user.getName();
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isFastForward() {
+		return fastForward;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setFastForward(boolean fastForward) {
+		this.fastForward = fastForward;
+
 	}
 
 }

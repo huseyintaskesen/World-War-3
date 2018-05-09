@@ -10,8 +10,8 @@ import org.newdawn.slick.SlickException;
  * @author ibrahim
  *
  */
-public class Bullet extends GameElement{
-	private Image bullet=new Image("res/bullet.png");
+public abstract class Bullet extends GameElement{
+	//private Image bullet=new Image("res/bullet.png");
 	
 	private int speed;	
 	private int damage;
@@ -28,12 +28,12 @@ public class Bullet extends GameElement{
 	
 	public void damageRobot(RobotSide robot,RangedAttacker rangedAttacker) {
 		robot.takeDamage(damage);
-		if(rangedAttacker instanceof Freezer)
+		if(this instanceof FreezerBullet)
 			robot.slow();
 		rangedAttacker.getBullets().remove(this);
 	}
 	
 	public void draw() {
-		bullet.draw(getX()+25, getY()+25, 25, 10);
+		getImg().draw(getX()+30, getY()+12, 25, 10);
 	}
 }

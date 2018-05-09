@@ -28,4 +28,7 @@ public class User {
 		this.balance = balance;
 	}
 	
+	public void reset() {
+		balance = 1000;
+	}
 }

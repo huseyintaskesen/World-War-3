@@ -4,6 +4,7 @@
 package view;
 
 import java.awt.Font;
+import java.util.Random;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -21,26 +22,29 @@ public class Play extends BasicGameState {
 	int timePassed = 0; // time passed is calculated so that we can take actions at certain times
 	int timePassed2 = 0;
 	int timeCount = 0; // another variable time, used for creating bullets with a specified delay
-	// int score = 0;
+	int score = 0;
+	int[] humanCount;
+	int first;
+	int second;
+	int firstRow;
+	int secondRow;
+	int robotCode;
+	int minRobotCode;
+	int maxRobotCode;
+	Random rnd;
+	int gameUpdateTime;
 
 	Image view; // background image
 	Image pause; // pause menu
-	Image land;
-	private Music music;
-
-	// declare lists of game objects
-	// ArrayList<AttackerHuman> humans;
-	// ArrayList<Robot> robots;
 
 	private GameManager gameManager;
-	private User user;
+	// private User user;
 
 	private int selectedElement = -1;
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
 
 	public Play(int state) {
-
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -48,26 +52,26 @@ public class Play extends BasicGameState {
 		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
 
 		// background and pause menu images
+<<<<<<< HEAD
 		// view = new Image("res/playgame.png");
 		view = new Image("res/Play-Survival.png");
+=======
+		view = new Image("res/Play-Survival2.png");
+>>>>>>> bacfcf9ebd143ed4905e5f284449ee26191dd496
 		pause = new Image("res/pause.png");
 
-		// // lists of game objects are initialized
-		// humans = new ArrayList<AttackerHuman>();
-		// robots = new ArrayList<Robot>();
-
 		gameManager = GameManager.getInstance();
-		user = new User("Dummy");// TODO name
-		gameManager.defineUser(user);
-
-		land = new Image("res/Land.png");
+		// user = new User("Dummy");
+		// gameManager.defineUser(user);
 
 		gameManager.resetMap();
+		// human numbers in a row
+		humanCount = new int[4];
+		rnd = new Random();
+		minRobotCode = 1;
+		maxRobotCode = 3;
+		gameUpdateTime = 10000;
 
-		// music
-		music = new Music("res/soundtrack.aiff");
-		music.loop();
-		music.setVolume(0.0f);
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -76,8 +80,6 @@ public class Play extends BasicGameState {
 		// temporary gray background
 		// g.setColor(Color.lightGray);
 		// g.fillRect(100, 100, 1180, 620);
-
-		// land.draw(100,100,1180,620);
 
 		// game objects are drawn
 		gameManager.draw(g);
@@ -93,7 +95,7 @@ public class Play extends BasicGameState {
 		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
-		g.drawString("" + user.getBalance(), 380, 30);
+		g.drawString("" + gameManager.getBalance(), 380, 30);
 		g.drawString("Score: " + gameManager.getScore() / 1000, 600, 30);
 		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 600, 70);
 
@@ -103,16 +105,35 @@ public class Play extends BasicGameState {
 			g.setColor(Color.orange);
 			g.resetLineWidth();
 			g.drawRect(17, 100 * selectedElement, 118, 100);
-		}
-		else if (selectedElement == 0) {
+		} else if (selectedElement == 0) {// trash bin
 			g.setLineWidth(3);
 			g.setColor(Color.red);
 			g.resetLineWidth();
 			g.drawRect(135, 650, 50, 50);
 		}
+
+		// fast forward rectangle
+		if (gameManager.isFastForward()) {
+			g.setLineWidth(3);
+			g.setColor(Color.blue);
+			g.resetLineWidth();
+			g.drawRect(1095, 20, 50, 50);
+		}
+
+		// sound rectangle
+		if (!gc.isMusicOn() && !gc.isSoundOn()) {
+			g.setLineWidth(3);
+			g.setColor(Color.red);
+			g.drawRect(1155, 20, 50, 50);
+			g.drawLine(1200, 20, 1155, 70);
+			g.resetLineWidth();
+		}
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		if (gameManager.isFastForward())
+			delta = delta * 2;
+
 		// get mouse coordinates
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
@@ -161,22 +182,57 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if (timePassed2 > 3000) {
+			if (timePassed2 > gameUpdateTime) {
 				// gameManager.gameUpdate(timePassed2);
 
-				// gameManager.addRobot(new Casual((1220 - 1220%100), (110 - 110%100)));// for
-				// first row
-				// gameManager.addRobot(new Casual((1220 - 1220%100), (190-190%100)));// for
-				// second row
-				// gameManager.addRobot(new Casual((1220 - 1220%100), (290-290%100)));// for
-				// third row
-				// gameManager.addRobot(new Casual((1220 - 1220%100), (410-410%100)));// for
-				// fourth row
-				// gameManager.addRobot(new Casual((1220 - 1220%100), (510-510%100)));// for
-				// fifth row
+				first = second = 9999;
+
+				for (int i = 1; i < 5; i++) {
+					humanCount[i - 1] = gameManager.humansInARow(i);
+				}
+				for (int j = 0; j < humanCount.length; j++) {
+					if (humanCount[j] <= first) {
+						first = humanCount[j];
+						firstRow = j + 1;
+					}
+				}
+
+				for (int k = 0; k < humanCount.length; k++) {
+					if (humanCount[k] <= second && first < second) {
+						second = humanCount[k];
+						secondRow = k + 1;
+					}
+				}
+
+				// for (int j = 1; j < humanCount.length + 1; j++) {
+				// if (humanCount[j - 1] <= first) {
+				// secondRow = j;
+				// firstRow = j;
+				// second = first;
+				// first = humanCount[j - 1];
+				// } else if (humanCount[j - 1] <= second ) {
+				// secondRow = j;
+				// second = humanCount[j - 1];
+				// }
+				//
+				// }
+				robotCode = rnd.nextInt((maxRobotCode-minRobotCode)+1) + minRobotCode;
+				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
+
+				robotCode = rnd.nextInt((maxRobotCode-minRobotCode)+1) + minRobotCode;
+				gameManager.addRobot(robotCode, (1240), (125 * secondRow));// for second least human counted row
+
+				// gameManager.addRobot(1,(1240), (188));//for first row
+				// gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row
+				// gameManager.addHuman(1,((1240 - 1240%100)), (310-310%100));// for third row
+				// gameManager.addHuman(1,((1240 - 1240%100)), (410-410%100));// for fourth row
+				// gameManager.addHuman(1,((1240 - 1240%100)), (510-510%100));// for fifth row
 
 				timePassed2 = 0;
+				gameUpdateTime = gameUpdateTime - 100;
+
 			}
+
 			if (timePassed > 20) {
 
 				if (!gameManager.gameUpdate(timePassed))
@@ -189,11 +245,9 @@ public class Play extends BasicGameState {
 						// 100)));
 						if (selectedElement == -1) {
 							gameManager.collectMine(xpos, ypos);
-						}
-						else if (selectedElement == 0) {
-							gameManager.removeHuman(xpos,ypos);
-						}
-						else
+						} else if (selectedElement == 0) {
+							gameManager.removeHuman(xpos, ypos);
+						} else
 							gameManager.addHuman(selectedElement, xpos, ypos);
 						// humans.add(new Shooter((xpos - xpos % 100), (ypos - ypos % 100)));
 					} else if (input.isMousePressed(1)) {
@@ -215,14 +269,36 @@ public class Play extends BasicGameState {
 			// timePassed2=0;
 
 			// Pause button
-			if ((1031 < xpos && xpos < 1095) && (15 < ypos && ypos < 79)) {
+			if ((1040 < xpos && xpos < 1085) && (20 < ypos && ypos < 70)) {
 				if (input.isMouseButtonDown(0)) {
 					pauseFlag = true;
 				}
 			}
 
+			// Sound button
+			if ((1095 < xpos && xpos < 1145) && (20 < ypos && ypos < 70)) {
+				if (input.isMousePressed(0)) {
+					gameManager.setFastForward(!gameManager.isFastForward());
+
+				}
+			}
+
+			// Sound button
+			if ((1155 < xpos && xpos < 1200) && (20 < ypos && ypos < 70)) {
+				if (input.isMousePressed(0)) {
+					if (!gc.isMusicOn() && !gc.isSoundOn()) {
+						gc.setMusicOn(true);
+						gc.setSoundOn(true);
+					}
+					else {
+						gc.setMusicOn(false);
+						gc.setSoundOn(false);
+					}
+				}
+			}
+
 			// Quit button
-			if ((1203 < xpos && xpos < 1267) && (15 < ypos && ypos < 79)) {
+			if ((1210 < xpos && xpos < 1260) && (20 < ypos && ypos < 70)) {
 				if (input.isMouseButtonDown(0)) {
 					gameManager.resetMap();
 					sbg.enterState(0);
@@ -231,7 +307,7 @@ public class Play extends BasicGameState {
 
 			if ((320 < xpos && xpos < 370) && (25 < ypos && ypos < 70)) {
 				if (input.isMouseButtonDown(0))
-					user.setBalance(99999);
+					gameManager.setBalance(99999);
 			}
 			/////////////
 			/// Human Selection
@@ -291,7 +367,6 @@ public class Play extends BasicGameState {
 	 *
 	 */
 	private void gameover(StateBasedGame sbg) throws SlickException {
-		gameManager.resetMap();
 		sbg.enterState(4);
 	}
 
