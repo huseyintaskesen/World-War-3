@@ -34,6 +34,6 @@ public abstract class Bullet extends GameElement{
 	}
 	
 	public void draw() {
-		getImg().draw(getX()+30, getY()+12, 25, 10);
+		getImg().draw(getX()+35, getY()+5, 20, 20);
 	}
 }

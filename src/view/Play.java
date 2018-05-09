@@ -52,12 +52,9 @@ public class Play extends BasicGameState {
 		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
 
 		// background and pause menu images
-<<<<<<< HEAD
 		// view = new Image("res/playgame.png");
 		view = new Image("res/Play-Survival.png");
-=======
 		view = new Image("res/Play-Survival2.png");
->>>>>>> bacfcf9ebd143ed4905e5f284449ee26191dd496
 		pause = new Image("res/pause.png");
 
 		gameManager = GameManager.getInstance();

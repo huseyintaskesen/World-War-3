@@ -20,7 +20,7 @@ public class FreezerBullet extends Bullet {
 	 */
 	public FreezerBullet(float x, float y, int damage) throws SlickException {
 		super(x, y, damage);
-		setImg(new Image("res/laser.png"));
+		setImg(new Image("res/freezerbullet.png"));
 	}
 
 }
