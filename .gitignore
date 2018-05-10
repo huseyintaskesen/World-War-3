@@ -21,3 +21,5 @@ out/
 
 # OSX files
 .DS_Store
+.classpath
+.classpath

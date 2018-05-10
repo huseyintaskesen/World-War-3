@@ -90,7 +90,7 @@ public class Play extends BasicGameState {
 		// display mouse coordinates
 //		g.setColor(Color.white);
 //		g.fillRect(300, 300, 150, 30);
-//		g.setColor(Color.black);
+		g.setColor(Color.black);
 //		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
