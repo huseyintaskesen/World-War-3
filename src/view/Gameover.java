@@ -28,6 +28,7 @@ public class Gameover extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		view = new Image("res/gameover.png");
+		view = new Image("res/gameover2.png");
 		gameOverSound = new Sound("res/game-over-sound.wav");
 		gameManager = GameManager.getInstance();
 		
@@ -62,8 +63,10 @@ public class Gameover extends BasicGameState {
 		//gameOverSound.play(1,0.3f);
 
 		g.setFont(myFont);
-		g.drawString("" + gameManager.getScore() / 1000, 666, 160);
-		g.drawString(gameManager.getName() , 560, 125);
+//		g.drawString("" + gameManager.getScore() / 1000, 645, 153);
+//		g.drawString(gameManager.getName() , 570, 122);
+		g.drawString("Your score " + gameManager.getScore() / 1000, 470, 140);
+		g.drawString("GAME OVER " + gameManager.getName() , 470, 100);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {

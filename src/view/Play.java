@@ -55,8 +55,8 @@ public class Play extends BasicGameState {
 
 		// background and pause menu images
 		// view = new Image("res/playgame.png");
-		//view = new Image("res/Play-Survival.png");
-		view = new Image("res/Play-Survival2.png");
+		view = new Image("res/Play-Survival.png");
+		//view = new Image("res/Play-Survival2.png");
 		pause = new Image("res/pause.png");
 
 		gameManager = GameManager.getInstance();
@@ -94,9 +94,9 @@ public class Play extends BasicGameState {
 //		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
-		g.drawString("" + gameManager.getBalance(), 380, 30);
-		g.drawString("Score: " + gameManager.getScore() / 1000, 600, 30);
-		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 600, 70);
+		g.drawString("" + gameManager.getBalance(), 390, 25);
+		g.drawString("Score: " + gameManager.getScore() / 1000, 620, 25);
+		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 620, 65);
 
 		// Selected element rectangle
 		if (selectedElement > 0) {
