@@ -28,10 +28,10 @@ public class Hints extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		view.draw(0, 0);
 		
-		g.setColor(Color.white);
-		g.fillRect(300, 300, 150, 30);
-		g.setColor(Color.black);
-		g.drawString(mouse, 300, 300);
+//		g.setColor(Color.white);
+//		g.fillRect(300, 300, 150, 30);
+//		g.setColor(Color.black);
+//		g.drawString(mouse, 300, 300);
 		
 	}
 

@@ -88,10 +88,10 @@ public class Play extends BasicGameState {
 			pause.draw(500, 200);
 
 		// display mouse coordinates
-		g.setColor(Color.white);
-		g.fillRect(300, 300, 150, 30);
-		g.setColor(Color.black);
-		g.drawString(mouse, 300, 300);
+//		g.setColor(Color.white);
+//		g.fillRect(300, 300, 150, 30);
+//		g.setColor(Color.black);
+//		g.drawString(mouse, 300, 300);
 
 		g.setFont(myFont);
 		g.drawString("" + gameManager.getBalance(), 380, 30);
