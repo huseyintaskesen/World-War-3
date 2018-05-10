@@ -44,6 +44,8 @@ public class Play extends BasicGameState {
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
 
+	private boolean demoFlag;
+
 	public Play(int state) {
 	}
 
@@ -125,6 +127,12 @@ public class Play extends BasicGameState {
 			g.drawLine(1200, 20, 1155, 70);
 			g.resetLineWidth();
 		}
+
+		if (demoFlag) {
+			g.setColor(Color.orange);
+			g.drawString("Demo activated", 850, 70);
+		}
+
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -179,7 +187,7 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if (timePassed2 > gameUpdateTime) {
+			if (timePassed2 > gameUpdateTime && !demoFlag) {
 				// gameManager.gameUpdate(timePassed2);
 
 				first = second = 9999;
@@ -213,10 +221,10 @@ public class Play extends BasicGameState {
 				// }
 				//
 				// }
-				robotCode = rnd.nextInt((maxRobotCode-minRobotCode)+1) + minRobotCode;
+				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
 				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
 
-				robotCode = rnd.nextInt((maxRobotCode-minRobotCode)+1) + minRobotCode;
+				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
 				gameManager.addRobot(robotCode, (1240), (125 * secondRow));// for second least human counted row
 
 				// gameManager.addRobot(1,(1240), (188));//for first row
@@ -230,7 +238,7 @@ public class Play extends BasicGameState {
 
 			}
 
-			if (timePassed > 20) {
+			if (timePassed > 16) {
 
 				if (!gameManager.gameUpdate(timePassed))
 					gameover(sbg);
@@ -286,8 +294,7 @@ public class Play extends BasicGameState {
 					if (!gc.isMusicOn() && !gc.isSoundOn()) {
 						gc.setMusicOn(true);
 						gc.setSoundOn(true);
-					}
-					else {
+					} else {
 						gc.setMusicOn(false);
 						gc.setSoundOn(false);
 					}
@@ -303,8 +310,17 @@ public class Play extends BasicGameState {
 			}
 
 			if ((320 < xpos && xpos < 370) && (25 < ypos && ypos < 70)) {
-				if (input.isMouseButtonDown(0))
-					gameManager.setBalance(99999);
+				if (input.isMousePressed(0)) {
+					if (!demoFlag) {
+						demoFlag = true;
+						gameManager.setBalance(99999);
+					} else {
+						gameManager.setBalance(250);
+						demoFlag = false;
+					}
+
+				}
+
 			}
 			/////////////
 			/// Human Selection
