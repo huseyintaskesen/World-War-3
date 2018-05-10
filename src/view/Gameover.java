@@ -62,6 +62,7 @@ public class Gameover extends BasicGameState {
 //		g.drawString(mouse, 300, 300);
 		//gameOverSound.play(1,0.3f);
 
+		g.setColor(Color.black);
 		g.setFont(myFont);
 //		g.drawString("" + gameManager.getScore() / 1000, 645, 153);
 //		g.drawString(gameManager.getName() , 570, 122);

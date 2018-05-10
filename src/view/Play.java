@@ -29,8 +29,9 @@ public class Play extends BasicGameState {
 	int firstRow;
 	int secondRow;
 	int robotCode;
-	int minRobotCode;
-	int maxRobotCode;
+	//int rowCode;
+	int maxRobotCode = 3;
+	int minRobotCode = 1;
 	Random rnd;
 	int gameUpdateTime;
 
@@ -67,8 +68,6 @@ public class Play extends BasicGameState {
 		// human numbers in a row
 		humanCount = new int[4];
 		rnd = new Random();
-		minRobotCode = 1;
-		maxRobotCode = 3;
 		gameUpdateTime = 10000;
 
 	}
@@ -90,9 +89,10 @@ public class Play extends BasicGameState {
 		// display mouse coordinates
 //		g.setColor(Color.white);
 //		g.fillRect(300, 300, 150, 30);
-		g.setColor(Color.black);
+//		g.setColor(Color.black);
 //		g.drawString(mouse, 300, 300);
 
+		g.setColor(Color.white);
 		g.setFont(myFont);
 		g.drawString("" + gameManager.getBalance(), 390, 25);
 		g.drawString("Score: " + gameManager.getScore() / 1000, 620, 25);
@@ -221,6 +221,13 @@ public class Play extends BasicGameState {
 				// }
 				//
 				// }
+				
+//				rowCode = rnd.nextInt(4) + 1;
+//				robotCode = rnd.nextInt(3) + 1;
+//				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
+//				robotCode = rnd.nextInt(3) + 1;
+//				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
+				
 				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
 				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
 
