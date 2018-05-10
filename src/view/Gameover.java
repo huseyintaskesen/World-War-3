@@ -4,6 +4,9 @@
 package view;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;

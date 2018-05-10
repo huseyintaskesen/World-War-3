@@ -3,6 +3,8 @@
  */
 package controller;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -124,8 +126,20 @@ public class GameManager {
 				// lasers.set((int)(y/125)-1, null);
 			}
 			if (x <= 135) {
-				if (score > highScore)
+				if (score > highScore) {
 					highScore = score;
+					PrintWriter output;
+					try {
+						output = new PrintWriter("HighScore.txt");
+				        output.println("\n" + user.getName() + "   " + highScore/1000);
+				        output.close();
+					} catch (FileNotFoundException e) {
+						
+						System.out.printf("ERROR: ", e);
+						
+					}
+
+				}
 				return false;
 			}
 		}
