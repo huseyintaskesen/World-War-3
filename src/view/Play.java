@@ -4,6 +4,10 @@
 package view;
 
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.input.Mouse;
@@ -29,7 +33,7 @@ public class Play extends BasicGameState {
 	int firstRow;
 	int secondRow;
 	int robotCode;
-	//int rowCode;
+	int rowCode;
 	int maxRobotCode = 3;
 	int minRobotCode = 1;
 	Random rnd;
@@ -51,7 +55,7 @@ public class Play extends BasicGameState {
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
+		
 		myFont = new TrueTypeFont(new Font("Pixeled Regular", Font.PLAIN, 30), true);
 
 		// background and pause menu images
@@ -96,6 +100,26 @@ public class Play extends BasicGameState {
 		g.setFont(myFont);
 		g.drawString("" + gameManager.getBalance(), 390, 25);
 		g.drawString("Score: " + gameManager.getScore() / 1000, 620, 25);
+//		BufferedReader br;
+//		String hs;
+//		String [] v = {};
+//		int j = 0;
+//		try {
+//			br = new BufferedReader(new FileReader("HighScore.txt"));
+//			while ((hs = br.readLine()) != null) {
+//				v = hs.split("   ");
+//				j++;
+//			}	
+//			int i = Integer.parseInt(v[j]);
+//			gameManager.setHighScore(i);
+//			br.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+		
+		
 		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 620, 65);
 
 		// Selected element rectangle
@@ -136,6 +160,7 @@ public class Play extends BasicGameState {
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		
 		if (gameManager.isFastForward())
 			delta = delta * 2;
 
@@ -222,17 +247,18 @@ public class Play extends BasicGameState {
 				//
 				// }
 				
-//				rowCode = rnd.nextInt(4) + 1;
-//				robotCode = rnd.nextInt(3) + 1;
-//				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
-//				robotCode = rnd.nextInt(3) + 1;
-//				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
+				rowCode = rnd.nextInt(4) + 1;
+				robotCode = rnd.nextInt(3) + 1;
+				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
+				rowCode = rnd.nextInt(4) + 1;
+				robotCode = rnd.nextInt(3) + 1;
+				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
 				
-				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
-				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
-
-				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
-				gameManager.addRobot(robotCode, (1240), (125 * secondRow));// for second least human counted row
+//				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
+//				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
+//
+//				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
+//				gameManager.addRobot(robotCode, (1240), (125 * secondRow));// for second least human counted row
 
 				// gameManager.addRobot(1,(1240), (188));//for first row
 				// gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row

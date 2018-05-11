@@ -11,6 +11,10 @@ import controller.GameManager;
 import model.User;
 
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.newdawn.slick.gui.TextField;
 
 public class MainMenu extends BasicGameState {
@@ -32,7 +36,8 @@ public class MainMenu extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		menu = new Image("res/main menu.png");
-		
+	
+	
 
 		// music
 		music = new Music("res/soundtrack.aiff");

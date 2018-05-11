@@ -3,7 +3,10 @@
  */
 package controller;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -56,7 +59,7 @@ public class GameManager {
 	 */
 	private GameManager() {
 		mapManager = MapManager.getInstance();
-
+		
 		// lists of game objects are initialized
 		// humans = new ArrayList<RangedAttacker>();
 		humans = new ArrayList<HumanSide>();
@@ -64,6 +67,7 @@ public class GameManager {
 		lasers = new Laser[4];
 		slotArray = new boolean[4][12];
 	}
+	
 
 	/* Static 'instance' method */
 	public static GameManager getInstance() {
@@ -75,6 +79,7 @@ public class GameManager {
 	}
 
 	public boolean gameUpdate(int delta) {
+
 		score = score + delta;
 		// update reload time
 		for (int i = 0; i < humans.size(); i++) {
@@ -439,6 +444,9 @@ public class GameManager {
 
 	public int getHighScore() {
 		return highScore;
+	}
+	public void setHighScore(int i) {
+		highScore = i;
 	}
 
 	/**
