@@ -3,6 +3,8 @@
  */
 package controller;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -10,7 +12,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import model.RangedAttacker;
-import model.Casual;
+import model.CasualRobot;
 import model.FastRobot;
 import model.Freezer;
 import model.HumanSide;
@@ -47,7 +49,7 @@ public class GameManager {
 	private int highScore = 0;
 
 	private boolean[][] slotArray;
-
+	private boolean fastForward;
 
 	/*
 	 * A private Constructor prevents any other class from instantiating.
@@ -124,8 +126,20 @@ public class GameManager {
 				// lasers.set((int)(y/125)-1, null);
 			}
 			if (x <= 135) {
-				if (score > highScore)
+				if (score > highScore) {
 					highScore = score;
+					PrintWriter output;
+					try {
+						output = new PrintWriter("HighScore.txt");
+				        output.println("\n" + user.getName() + "   " + highScore/1000);
+				        output.close();
+					} catch (FileNotFoundException e) {
+						
+						System.out.printf("ERROR: ", e);
+						
+					}
+
+				}
 				return false;
 			}
 		}
@@ -247,7 +261,6 @@ public class GameManager {
 
 		if (checkBalance(humanCode) && checkSlot(fixedX, fixedY)) {
 			int cost = 0;
-			
 
 			switch (humanCode) {
 			case 1:
@@ -303,7 +316,7 @@ public class GameManager {
 
 		switch (robotCode) {
 		case 1:
-			robots.add(new Casual(fixedX, fixedY));
+			robots.add(new CasualRobot(fixedX, fixedY));
 			break;
 		case 2:
 			robots.add(new FastRobot(fixedX, fixedY));
@@ -382,8 +395,7 @@ public class GameManager {
 	public void removeHuman(int x, int y) {
 		for (int i = 0; i < humans.size(); i++) {
 			HumanSide tempHuman = humans.get(i);
-			if ((tempHuman.getX() == (x - x % 125)) 
-					&& ((tempHuman.getY() == (y - y % 125)))) {
+			if ((tempHuman.getX() == (x - x % 125)) && ((tempHuman.getY() == (y - y % 125)))) {
 				tempHuman.setToBeRemoved();
 			}
 		}
@@ -392,6 +404,7 @@ public class GameManager {
 
 	public void resetMap() throws SlickException {
 		user.reset();
+		fastForward= false;
 		score = 0;
 		humans.clear();
 		// humans.add(new Shooter(100, 100));
@@ -440,15 +453,30 @@ public class GameManager {
 	 */
 	public void setBalance(int i) {
 		user.setBalance(i);
-		
+
 	}
 
 	/**
 	 * @return
 	 */
 	public String getName() {
-		
+
 		return user.getName();
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isFastForward() {
+		return fastForward;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setFastForward(boolean fastForward) {
+		this.fastForward = fastForward;
+
 	}
 
 }

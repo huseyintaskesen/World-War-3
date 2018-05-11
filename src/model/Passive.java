@@ -7,6 +7,6 @@ public abstract class Passive extends HumanSide{
 
 	public Passive(int x, int y) throws SlickException {
 		super(x, y);
-		
+		setDamage(0);
 	}
 }

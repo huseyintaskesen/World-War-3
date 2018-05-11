@@ -32,10 +32,10 @@ public class Credits extends BasicGameState {
 		
 //		g.fillOval(75, 100, 100, 100);
 //		g.drawString("Play", 80, 70);
-		g.setColor(Color.white);
-		g.fillRect(300, 300, 150, 30);
-		g.setColor(Color.black);
-		g.drawString(mouse, 300, 300);
+//		g.setColor(Color.white);
+//		g.fillRect(300, 300, 150, 30);
+//		g.setColor(Color.black);
+//		g.drawString(mouse, 300, 300);
 		
 	}
 

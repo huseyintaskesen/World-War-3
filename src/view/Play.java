@@ -4,6 +4,7 @@
 package view;
 
 import java.awt.Font;
+import java.util.Random;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -27,22 +28,24 @@ public class Play extends BasicGameState {
 	int second;
 	int firstRow;
 	int secondRow;
-	// int score = 0;
+	int robotCode;
+	//int rowCode;
+	int maxRobotCode = 3;
+	int minRobotCode = 1;
+	Random rnd;
+	int gameUpdateTime;
 
 	Image view; // background image
 	Image pause; // pause menu
-	Image land;
-
-	// declare lists of game objects
-	// ArrayList<AttackerHuman> humans;
-	// ArrayList<Robot> robots;
 
 	private GameManager gameManager;
-	//private User user;
+	// private User user;
 
 	private int selectedElement = -1;
 
 	private boolean pauseFlag = false; // to determine whether the game is in pause menu
+
+	private boolean demoFlag;
 
 	public Play(int state) {
 	}
@@ -53,23 +56,19 @@ public class Play extends BasicGameState {
 
 		// background and pause menu images
 		// view = new Image("res/playgame.png");
-		view = new Image("res/Play-Survival2.png");
+		view = new Image("res/Play-Survival.png");
+		//view = new Image("res/Play-Survival2.png");
 		pause = new Image("res/pause.png");
 
-		// // lists of game objects are initialized
-		// humans = new ArrayList<AttackerHuman>();
-		// robots = new ArrayList<Robot>();
-
 		gameManager = GameManager.getInstance();
-//		user = new User("Dummy");// TODO name
-//		gameManager.defineUser(user);
-
-		land = new Image("res/Land.png");
+		// user = new User("Dummy");
+		// gameManager.defineUser(user);
 
 		gameManager.resetMap();
 		// human numbers in a row
 		humanCount = new int[4];
-		
+		rnd = new Random();
+		gameUpdateTime = 10000;
 
 	}
 
@@ -80,8 +79,6 @@ public class Play extends BasicGameState {
 		// g.setColor(Color.lightGray);
 		// g.fillRect(100, 100, 1180, 620);
 
-		// land.draw(100,100,1180,620);
-
 		// game objects are drawn
 		gameManager.draw(g);
 
@@ -90,15 +87,16 @@ public class Play extends BasicGameState {
 			pause.draw(500, 200);
 
 		// display mouse coordinates
-		g.setColor(Color.white);
-		g.fillRect(300, 300, 150, 30);
-		g.setColor(Color.black);
-		g.drawString(mouse, 300, 300);
+//		g.setColor(Color.white);
+//		g.fillRect(300, 300, 150, 30);
+//		g.setColor(Color.black);
+//		g.drawString(mouse, 300, 300);
 
+		g.setColor(Color.white);
 		g.setFont(myFont);
-		g.drawString("" + gameManager.getBalance(), 380, 30);
-		g.drawString("Score: " + gameManager.getScore() / 1000, 600, 30);
-		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 600, 70);
+		g.drawString("" + gameManager.getBalance(), 390, 25);
+		g.drawString("Score: " + gameManager.getScore() / 1000, 620, 25);
+		g.drawString("High Score: " + gameManager.getHighScore() / 1000, 620, 65);
 
 		// Selected element rectangle
 		if (selectedElement > 0) {
@@ -106,15 +104,41 @@ public class Play extends BasicGameState {
 			g.setColor(Color.orange);
 			g.resetLineWidth();
 			g.drawRect(17, 100 * selectedElement, 118, 100);
-		} else if (selectedElement == 0) {
+		} else if (selectedElement == 0) {// trash bin
 			g.setLineWidth(3);
 			g.setColor(Color.red);
 			g.resetLineWidth();
 			g.drawRect(135, 650, 50, 50);
 		}
+
+		// fast forward rectangle
+		if (gameManager.isFastForward()) {
+			g.setLineWidth(3);
+			g.setColor(Color.blue);
+			g.resetLineWidth();
+			g.drawRect(1095, 20, 50, 50);
+		}
+
+		// sound rectangle
+		if (!gc.isMusicOn() && !gc.isSoundOn()) {
+			g.setLineWidth(3);
+			g.setColor(Color.red);
+			g.drawRect(1155, 20, 50, 50);
+			g.drawLine(1200, 20, 1155, 70);
+			g.resetLineWidth();
+		}
+
+		if (demoFlag) {
+			g.setColor(Color.orange);
+			g.drawString("Demo activated", 850, 70);
+		}
+
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		if (gameManager.isFastForward())
+			delta = delta * 2;
+
 		// get mouse coordinates
 		Input input = gc.getInput();
 		int xpos = Mouse.getX();
@@ -163,43 +187,52 @@ public class Play extends BasicGameState {
 
 			// reset the timer when 0.02 seconds has passed
 			// update the map every 0.02 seconds(50 FPS)
-			if (timePassed2 > 5000) {
+			if (timePassed2 > gameUpdateTime && !demoFlag) {
 				// gameManager.gameUpdate(timePassed2);
 
 				first = second = 9999;
-				
+
 				for (int i = 1; i < 5; i++) {
 					humanCount[i - 1] = gameManager.humansInARow(i);
 				}
 				for (int j = 0; j < humanCount.length; j++) {
-					if(humanCount[j]<=first) {
+					if (humanCount[j] <= first) {
 						first = humanCount[j];
-						firstRow = j+1;
+						firstRow = j + 1;
 					}
 				}
-				
-				for (int k = 0; k < humanCount.length; k++) {
-					if(humanCount[k]<=second && first < second) {
-						second = humanCount[k];
-						secondRow = k+1;
-					}
-				}
-				
-//				for (int j = 1; j < humanCount.length + 1; j++) {
-//					if (humanCount[j - 1] <= first) {
-//						secondRow = j;
-//						firstRow = j;
-//						second = first;
-//						first = humanCount[j - 1];
-//					} else if (humanCount[j - 1] <= second ) {
-//						secondRow = j;
-//						second = humanCount[j - 1];
-//					}
-//
-//				}
 
-				gameManager.addRobot(1, (1240), (125 * firstRow));// for first row
-				gameManager.addRobot(1, (1240), (125 * secondRow));// for first row
+				for (int k = 0; k < humanCount.length; k++) {
+					if (humanCount[k] <= second && first < second) {
+						second = humanCount[k];
+						secondRow = k + 1;
+					}
+				}
+
+				// for (int j = 1; j < humanCount.length + 1; j++) {
+				// if (humanCount[j - 1] <= first) {
+				// secondRow = j;
+				// firstRow = j;
+				// second = first;
+				// first = humanCount[j - 1];
+				// } else if (humanCount[j - 1] <= second ) {
+				// secondRow = j;
+				// second = humanCount[j - 1];
+				// }
+				//
+				// }
+				
+//				rowCode = rnd.nextInt(4) + 1;
+//				robotCode = rnd.nextInt(3) + 1;
+//				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
+//				robotCode = rnd.nextInt(3) + 1;
+//				gameManager.addRobot(robotCode, (1240), (125 * rowCode));
+				
+				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
+				gameManager.addRobot(robotCode, (1240), (125 * firstRow));// for least human counted row
+
+				robotCode = rnd.nextInt((maxRobotCode - minRobotCode) + 1) + minRobotCode;
+				gameManager.addRobot(robotCode, (1240), (125 * secondRow));// for second least human counted row
 
 				// gameManager.addRobot(1,(1240), (188));//for first row
 				// gameManager.addHuman(1,((1240 - 1240%100)), (190-190%100));// for second row
@@ -208,11 +241,11 @@ public class Play extends BasicGameState {
 				// gameManager.addHuman(1,((1240 - 1240%100)), (510-510%100));// for fifth row
 
 				timePassed2 = 0;
-				
+				gameUpdateTime = gameUpdateTime - 100;
+
 			}
 
-			
-			if (timePassed > 20) {
+			if (timePassed > 16) {
 
 				if (!gameManager.gameUpdate(timePassed))
 					gameover(sbg);
@@ -248,17 +281,30 @@ public class Play extends BasicGameState {
 			// timePassed2=0;
 
 			// Pause button
-			if ((1040 < xpos && xpos < 1090) && (20 < ypos && ypos < 70)) {
+			if ((1040 < xpos && xpos < 1085) && (20 < ypos && ypos < 70)) {
 				if (input.isMouseButtonDown(0)) {
 					pauseFlag = true;
 				}
 			}
 
 			// Sound button
-			if ((1150 < xpos && xpos < 1200) && (20 < ypos && ypos < 70)) {
+			if ((1095 < xpos && xpos < 1145) && (20 < ypos && ypos < 70)) {
 				if (input.isMousePressed(0)) {
-					gc.setMusicOn(!gc.isMusicOn());
-					gc.setSoundOn(!gc.isSoundOn());
+					gameManager.setFastForward(!gameManager.isFastForward());
+
+				}
+			}
+
+			// Sound button
+			if ((1155 < xpos && xpos < 1200) && (20 < ypos && ypos < 70)) {
+				if (input.isMousePressed(0)) {
+					if (!gc.isMusicOn() && !gc.isSoundOn()) {
+						gc.setMusicOn(true);
+						gc.setSoundOn(true);
+					} else {
+						gc.setMusicOn(false);
+						gc.setSoundOn(false);
+					}
 				}
 			}
 
@@ -271,8 +317,17 @@ public class Play extends BasicGameState {
 			}
 
 			if ((320 < xpos && xpos < 370) && (25 < ypos && ypos < 70)) {
-				if (input.isMouseButtonDown(0))
-					gameManager.setBalance(99999);
+				if (input.isMousePressed(0)) {
+					if (!demoFlag) {
+						demoFlag = true;
+						gameManager.setBalance(99999);
+					} else {
+						gameManager.setBalance(250);
+						demoFlag = false;
+					}
+
+				}
+
 			}
 			/////////////
 			/// Human Selection

@@ -4,6 +4,9 @@
 package view;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -28,6 +31,7 @@ public class Gameover extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		view = new Image("res/gameover.png");
+		view = new Image("res/gameover2.png");
 		gameOverSound = new Sound("res/game-over-sound.wav");
 		gameManager = GameManager.getInstance();
 		
@@ -55,15 +59,18 @@ public class Gameover extends BasicGameState {
 		
 //		g.fillOval(75, 100, 100, 100);
 //		g.drawString("Play", 80, 70);
-		g.setColor(Color.white);
-		g.fillRect(300, 300, 150, 30);
-		g.setColor(Color.black);
-		g.drawString(mouse, 300, 300);
+//		g.setColor(Color.white);
+//		g.fillRect(300, 300, 150, 30);
+//		g.setColor(Color.black);
+//		g.drawString(mouse, 300, 300);
 		//gameOverSound.play(1,0.3f);
 
+		g.setColor(Color.black);
 		g.setFont(myFont);
-		g.drawString("" + gameManager.getScore() / 1000, 666, 140);
-		g.drawString(gameManager.getName() , 735, 100);
+//		g.drawString("" + gameManager.getScore() / 1000, 645, 153);
+//		g.drawString(gameManager.getName() , 570, 122);
+		g.drawString("Your score " + gameManager.getScore() / 1000, 470, 140);
+		g.drawString("GAME OVER " + gameManager.getName() , 470, 100);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {

@@ -4,6 +4,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Swordsman extends MeleeAttacker {
+
 	private final int startHealth = 20;
 	public final static int cost = 100;
 	private int chargeTime;
